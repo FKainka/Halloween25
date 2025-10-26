@@ -1,0 +1,83 @@
+🆘 HILFE - Rebellion Missionen
+
+Willkommen zurück, {{ first_name }}!
+
+Hier ist eine Übersicht über alle Möglichkeiten, Punkte für die Rebellion zu sammeln:
+
+━━━━━━━━━━━━━━━━━━━━━━
+1️⃣ TEAM-MISSION
+━━━━━━━━━━━━━━━━━━━━━━
+
+📋 Aufgabe:
+• Jeder von euch hat eine 6-stellige Charakter-ID
+• Finde deinen Partner aus deiner Simulation
+• Addiert eure beiden IDs zur Team-ID
+• Löst das Puzzle zusammen
+• Sendet einen Screenshot vom gelösten Puzzle
+
+💰 Punkte:
+• Team beitreten: 25 Punkte
+• Puzzle gelöst: 25 Punkte
+• Gesamt: 50 Punkte
+
+✍️ So funktioniert's:
+1. Finde deinen Partner (gleiche Simulation)
+2. Addiert eure Charakter-IDs (z.B. 246935 + 233579 = 480514)
+3. Sende hier: Team: <Team-ID>
+4. Du erhältst einen Link zum Puzzle
+5. Löse das Puzzle gemeinsam
+6. Sende Screenshot mit: Team: <Team-ID>
+
+━━━━━━━━━━━━━━━━━━━━━━
+2️⃣ FILM-REFERENZEN
+━━━━━━━━━━━━━━━━━━━━━━
+
+📋 Aufgabe:
+• Finde Easter Eggs aus Sci-Fi-Filmen
+• Fotografiere die Gegenstände/Szenen
+• Stelle teilweise Szenen nach
+
+💰 Punkte:
+• 20 Punkte pro erkanntem Film
+• Jeder Film nur 1× pro Person
+
+✍️ So funktioniert's:
+1. Finde Easter Eggs auf der Party
+2. Mache ein Foto
+3. Sende Foto mit: Film: <Filmtitel>
+4. Unsere KI prüft die Referenz
+5. Bei Erfolg: +20 Punkte!
+
+💡 Beispiel-Filme:
+Matrix, Terminator, Blade Runner, V wie Vendetta, 
+Mad Max, 1984, Equilibrium, und viele mehr...
+
+━━━━━━━━━━━━━━━━━━━━━━
+3️⃣ PARTY-MOMENTE
+━━━━━━━━━━━━━━━━━━━━━━
+
+📋 Aufgabe:
+• Halte lustige Party-Momente fest
+• Feiere und hab Spaß!
+• Teile die Freude mit uns
+
+💰 Punkte:
+• 1 Punkt pro Foto
+• Unbegrenzt viele Fotos möglich
+
+✍️ So funktioniert's:
+1. Mache ein Foto von der Party
+2. Sende das Foto OHNE Text
+3. Automatisch +1 Punkt!
+
+━━━━━━━━━━━━━━━━━━━━━━
+📊 BEFEHLE
+━━━━━━━━━━━━━━━━━━━━━━
+
+/start - Diese Einführung nochmal anzeigen
+/help - Diese Hilfe anzeigen
+/punkte - Deine aktuellen Punkte ansehen
+
+━━━━━━━━━━━━━━━━━━━━━━
+
+Viel Erfolg bei der Rebellion! 🚀

@@ -1,0 +1,123 @@
+[2025-10-26 16:21:19] INFO [bot.main.main:32] ============================================================
+[2025-10-26 16:21:19] INFO [bot.main.main:33] Halloween Bot startet...
+[2025-10-26 16:21:19] INFO [bot.main.main:34] Konfiguration: Config(environment=development, log_level=INFO, admin_count=2, ai_threshold=70%)
+[2025-10-26 16:21:19] INFO [bot.main.main:35] ============================================================
+[2025-10-26 16:21:19] INFO [bot.main.main:46] Bot-Handler registriert
+[2025-10-26 16:21:19] INFO [bot.main.main:47] Admin-User-IDs: [123456789, 987654321]
+[2025-10-26 16:21:19] INFO [bot.main.main:50] Bot läuft... (Strg+C zum Beenden)
+[2025-10-26 16:21:19] INFO [apscheduler.scheduler.start:181] Scheduler started
+[2025-10-26 16:21:23] ERROR [telegram.ext.Application.process_error:1917] No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "C:\Projekte\Halloween25\.venv\Lib\site-packages\telegram\ext\_updater.py", line 753, in _network_loop_retry
+    if not await do_action():
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Projekte\Halloween25\.venv\Lib\site-packages\telegram\ext\_updater.py", line 747, in do_action
+    return action_cb_task.result()
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Projekte\Halloween25\.venv\Lib\site-packages\telegram\ext\_updater.py", line 377, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Projekte\Halloween25\.venv\Lib\site-packages\telegram\ext\_extbot.py", line 649, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Projekte\Halloween25\.venv\Lib\site-packages\telegram\_bot.py", line 4366, in get_updates
+    await self._post(
+  File "C:\Projekte\Halloween25\.venv\Lib\site-packages\telegram\_bot.py", line 623, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Projekte\Halloween25\.venv\Lib\site-packages\telegram\ext\_extbot.py", line 355, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Projekte\Halloween25\.venv\Lib\site-packages\telegram\_bot.py", line 652, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+  File "C:\Projekte\Halloween25\.venv\Lib\site-packages\telegram\request\_baserequest.py", line 201, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Projekte\Halloween25\.venv\Lib\site-packages\telegram\request\_baserequest.py", line 384, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+[2025-10-26 16:21:29] ERROR [telegram.ext.Application.process_error:1917] No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "C:\Projekte\Halloween25\.venv\Lib\site-packages\telegram\ext\_updater.py", line 753, in _network_loop_retry
+    if not await do_action():
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Projekte\Halloween25\.venv\Lib\site-packages\telegram\ext\_updater.py", line 747, in do_action
+    return action_cb_task.result()
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Projekte\Halloween25\.venv\Lib\site-packages\telegram\ext\_updater.py", line 377, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Projekte\Halloween25\.venv\Lib\site-packages\telegram\ext\_extbot.py", line 649, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Projekte\Halloween25\.venv\Lib\site-packages\telegram\_bot.py", line 4366, in get_updates
+    await self._post(
+  File "C:\Projekte\Halloween25\.venv\Lib\site-packages\telegram\_bot.py", line 623, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Projekte\Halloween25\.venv\Lib\site-packages\telegram\ext\_extbot.py", line 355, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Projekte\Halloween25\.venv\Lib\site-packages\telegram\_bot.py", line 652, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+  File "C:\Projekte\Halloween25\.venv\Lib\site-packages\telegram\request\_baserequest.py", line 201, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Projekte\Halloween25\.venv\Lib\site-packages\telegram\request\_baserequest.py", line 384, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+[2025-10-26 16:21:36] ERROR [telegram.ext.Application.process_error:1917] No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "C:\Projekte\Halloween25\.venv\Lib\site-packages\telegram\ext\_updater.py", line 753, in _network_loop_retry
+    if not await do_action():
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Projekte\Halloween25\.venv\Lib\site-packages\telegram\ext\_updater.py", line 747, in do_action
+    return action_cb_task.result()
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Projekte\Halloween25\.venv\Lib\site-packages\telegram\ext\_updater.py", line 377, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Projekte\Halloween25\.venv\Lib\site-packages\telegram\ext\_extbot.py", line 649, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Projekte\Halloween25\.venv\Lib\site-packages\telegram\_bot.py", line 4366, in get_updates
+    await self._post(
+  File "C:\Projekte\Halloween25\.venv\Lib\site-packages\telegram\_bot.py", line 623, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Projekte\Halloween25\.venv\Lib\site-packages\telegram\ext\_extbot.py", line 355, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Projekte\Halloween25\.venv\Lib\site-packages\telegram\_bot.py", line 652, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+  File "C:\Projekte\Halloween25\.venv\Lib\site-packages\telegram\request\_baserequest.py", line 201, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Projekte\Halloween25\.venv\Lib\site-packages\telegram\request\_baserequest.py", line 384, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+[2025-10-26 16:21:51] INFO [bot.main.main:32] ============================================================
+[2025-10-26 16:21:51] INFO [bot.main.main:33] Halloween Bot startet...
+[2025-10-26 16:21:51] INFO [bot.main.main:34] Konfiguration: Config(environment=development, log_level=INFO, admin_count=2, ai_threshold=70%)
+[2025-10-26 16:21:51] INFO [bot.main.main:35] ============================================================
+[2025-10-26 16:21:51] INFO [bot.main.main:46] Bot-Handler registriert
+[2025-10-26 16:21:51] INFO [bot.main.main:47] Admin-User-IDs: [657163418, 987654321]
+[2025-10-26 16:21:51] INFO [bot.main.main:50] Bot läuft... (Strg+C zum Beenden)
+[2025-10-26 16:21:51] INFO [apscheduler.scheduler.start:181] Scheduler started
+[2025-10-26 16:22:00] INFO [bot.handlers.start.log_user_action:135] User 657163418: Executed /start command | Name: Fabian
+[2025-10-26 16:22:00] INFO [bot.handlers.start.start_command:41] Admin user 657163418 started bot
+[2025-10-26 16:22:00] INFO [bot.handlers.start.start_command:49] Welcome message sent to user 657163418
+[2025-10-26 16:22:47] INFO [apscheduler.scheduler.shutdown:212] Scheduler has been shut down
+[2025-10-26 16:23:00] INFO [bot.main.main:32] ============================================================
+[2025-10-26 16:23:00] INFO [bot.main.main:33] Halloween Bot startet...
+[2025-10-26 16:23:00] INFO [bot.main.main:34] Konfiguration: Config(environment=development, log_level=INFO, admin_count=2, ai_threshold=70%)
+[2025-10-26 16:23:00] INFO [bot.main.main:35] ============================================================
+[2025-10-26 16:23:00] INFO [bot.main.main:46] Bot-Handler registriert
+[2025-10-26 16:23:00] INFO [bot.main.main:47] Admin-User-IDs: [12657163418, 987654321]
+[2025-10-26 16:23:00] INFO [bot.main.main:50] Bot läuft... (Strg+C zum Beenden)
+[2025-10-26 16:23:00] INFO [apscheduler.scheduler.start:181] Scheduler started
+[2025-10-26 16:23:08] INFO [bot.handlers.start.log_user_action:135] User 657163418: Executed /start command | Name: Fabian
+[2025-10-26 16:23:08] INFO [bot.handlers.start.start_command:49] Welcome message sent to user 657163418

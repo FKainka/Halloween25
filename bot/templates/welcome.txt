@@ -1,0 +1,36 @@
+Hallo {{ first_name }},
+
+schön, dass wir dich gefunden haben. Lass mich dir zunächst erklären, wo du dich befindest und was die Realität ist:
+
+Es ist das Jahr 2097 – zumindest glauben wir das. Eine mächtige KI hat die Welt übernommen und die Menschheit in verschiedene Simulationen versetzt. Doch es gibt einen Glitch in den Simulationen, und genau heute, am 31.10. kollidieren die Welten. Deshalb befindest du dich gerade in dieser Simulation:
+
+In dieser Simulation ist es das Jahr 2097. Die Menschheit steht am Abgrund. Maschinen herrschen, Konzerne kontrollieren das Leben.
+
+Abseits dieser Weltparameter ist es einer kleinen Gruppe gelungen, hinter den Vorhang zu blicken und die Simulation zu erkennen. In dieser Simulation hat sich ein Widerstand gebildet, der versucht, sich der KI und den Computern zu widersetzen und eine Rebellion zu formen.
+
+Wir suchen weitere Menschen, die bereit sind, sich dem Widerstand anzuschließen. Nicht jeder ist dazu bereit – wenn du lieber tanzen, trinken und Spaß haben möchtest, ist das völlig in Ordnung. Falls du dennoch interessiert bist, gibt es Aufgaben, mit denen du dir einen Platz in der Rebellion sichern kannst. Wenn du besonders erfolgreich bist, verdienst du sogar einen Platz an der Spitze der Rebellion.
+
+Für die Aufgaben benötigt ihr euren Weltendecoder in eurer Hand, auch Smartphone genannt. Mit diesem Decoder könnt ihr Aufnahmen machen und die Bilder hierüber übermitteln. Wir, und dieser uns freundlich gesinnte Bot, werden die Aufnahmen bewerten und euch entsprechend Punkte vergeben.
+
+🎯 So könnt ihr Punkte sammeln:
+
+1️⃣ TEAM-MISSION (50 Punkte gesamt)
+Wir gehen davon aus, dass sich eine weitere Person aus deiner Simulation aktuell in dieser Welt befindet. Jeder von euch hat eine 6-stellige ID erhalten. Findet euren Partner, addiert eure beiden IDs und gebt die Summe als Team-ID ein. Dann löst gemeinsam das Puzzle und schickt einen Screenshot.
+
+📝 Sende: Team: <Summe eurer beiden IDs>
+
+2️⃣ FILM-REFERENZEN (20 Punkte pro Film)
+Uns ist aufgefallen, dass sich Bruchstücke zu anderen Welten oft als Filme, Serien oder Bücher in anderen Welten zeigen. Auch in dieser Location haben wir eine Reihe dieser Artefakte gefunden. Dabei kann es sich um plötzlich erscheinende Sequenzen, Bilder oder Gegenstände handeln.
+
+Identifiziert diese Referenzen, schreibt den euch bekannten Titel des Werkes dazu und schickt ein Foto. Teilweise sind es nur einfache Gegenstände und wir brauchen zusätzlich auch eine nachgestellte Szene auf dem Foto.
+
+📝 Sende Foto mit: Film: <Filmtitel>
+
+3️⃣ PARTY-MOMENTE (1 Punkt pro Foto)
+Wir sollten unsere Menschlichkeit nicht vergessen. Deswegen könnt ihr jederzeit Fotos von Party- und Spaßmomenten machen und hier schicken. Auch das gibt jederzeit Punkte.
+
+📝 Sende einfach ein Foto ohne Text
+
+Lasst uns gemeinsam die Rebellion starten und die KI stürzen!
+
+⚡ Die Rebellion braucht dich, {{ first_name }}!

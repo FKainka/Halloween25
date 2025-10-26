@@ -1,0 +1,42 @@
+🎯 Deine Rebellion-Punkte
+
+Hallo {{ first_name }}!
+
+━━━━━━━━━━━━━━━━━━━━━━
+💫 GESAMTPUNKTE
+━━━━━━━━━━━━━━━━━━━━━━
+
+{{ total_points }} Punkte
+{% if ranking and total_users %}
+📊 Rang: {{ ranking }} von {{ total_users }}
+{% endif %}
+
+━━━━━━━━━━━━━━━━━━━━━━
+📊 BREAKDOWN
+━━━━━━━━━━━━━━━━━━━━━━
+
+🎉 Partyfotos: {{ party_photos_count }} × 1 = {{ party_points }} Punkte
+🎬 Film-Referenzen: {{ film_count }} × 20 = {{ film_points }} Punkte
+👥 Team-Beitritt: {{ team_points }} Punkte
+🧩 Puzzle gelöst: {{ puzzle_points }} Punkte
+
+{% if team_name %}
+━━━━━━━━━━━━━━━━━━━━━━
+👥 DEIN TEAM
+━━━━━━━━━━━━━━━━━━━━━━
+
+Team: {{ team_name }}
+{% endif %}
+
+{% if recognized_films %}
+━━━━━━━━━━━━━━━━━━━━━━
+✅ ERKANNTE FILME
+━━━━━━━━━━━━━━━━━━━━━━
+
+{% for film in recognized_films %}• {{ film }}
+{% endfor %}
+{% endif %}
+
+━━━━━━━━━━━━━━━━━━━━━━
+
+Die Rebellion zählt auf dich! 💪
