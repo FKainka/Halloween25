@@ -43,6 +43,26 @@ class Universe:
     trello_card_id: Optional[str] = None
     trello_list_id: Optional[str] = None
     
+    def is_complete(self) -> bool:
+        """Prüft ob alle erforderlichen Elemente vorhanden sind"""
+        has_characters = len(self.characters) >= 2
+        has_character_ids = len(self.character_ids) >= 2
+        has_team_id = self.team_id is not None
+        has_easter_egg = self.easter_egg is not None
+        has_film_clip = self.film_clip is not None
+        has_puzzle = self.puzzle_link is not None
+        has_posters = len(self.posters) > 0
+        
+        return all([
+            has_characters,
+            has_character_ids,
+            has_team_id,
+            has_easter_egg,
+            has_film_clip,
+            has_puzzle,
+            has_posters
+        ])
+    
     def to_dict(self) -> dict:
         """Konvertiert das Universum in ein Dictionary"""
         return {

@@ -11,9 +11,15 @@ Dieses Tool ermöglicht die bidirektionale Synchronisation zwischen der `Univers
   - `pull`: Änderungen von Trello herunterladen
   - `sync`: Automatische bidirektionale Synchronisation
 - ✅ **Statusverwaltung**: Universen werden in Listen organisiert
-  - "Fertiggeplant" 
-  - "In Planung"
-  - "Potentiell"
+  - "Universen/Easter Eggs" (konfigurierbar)
+- ✅ **Automatische ID-Generierung**: 
+  - 6-stellige Charakter-IDs aus Namen generiert
+  - Team-ID als Summe der beiden Charakter-IDs
+- ✅ **Intelligente Labels**: 
+  - **Fertig**: Alle Elemente vorhanden (Charaktere, IDs, Easter Egg, Links, Plakate)
+  - **Todo**: Noch fehlende Elemente
+  - Status-Labels (fertiggeplant, in_planung, potentiell)
+- ✅ **Plakat-Links**: Unterstützt sowohl lokale Pfade als auch URLs
 
 ## Installation
 
@@ -53,6 +59,9 @@ python main.py export
 
 # YAML zu Markdown importieren
 python main.py import
+
+# Automatisch Charakter-IDs generieren
+python main.py generate-ids
 ```
 
 ### Workflow-Beispiel

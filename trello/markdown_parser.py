@@ -131,9 +131,14 @@ class MarkdownParser:
         if puzzle_match:
             universe.puzzle_link = puzzle_match.group(1)
         
-        # Parse Plakate
-        poster_matches = re.findall(r'!\[.*?\]\((bilder/[^\)]+)\)', block)
+        # Parse Plakate (sowohl lokale Pfade als auch URLs)
+        poster_matches = re.findall(r'!\[.*?\]\(((?:bilder/[^\)]+|https?://[^\)]+))\)', block)
         universe.posters = poster_matches
+        
+        # Parse Plakate als Links (neue Variante)
+        poster_link_matches = re.findall(r'\*\*Plakate?:\*\*\s*\[.*?\]\((https?://[^\)]+)\)', block)
+        if poster_link_matches:
+            universe.posters.extend(poster_link_matches)
         
         return universe
     
@@ -219,6 +224,10 @@ class MarkdownParser:
         if universe.posters:
             parts.append("- **Plakate:**")
             for poster in universe.posters:
-                parts.append(f"  - ![{universe.title}]({poster})")
+                # URLs als Links, lokale Pfade als Bilder
+                if poster.startswith('http://') or poster.startswith('https://'):
+                    parts.append(f"  - [{universe.title} Plakat]({poster})")
+                else:
+                    parts.append(f"  - ![{universe.title}]({poster})")
         
         return '\n'.join(parts)

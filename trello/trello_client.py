@@ -75,6 +75,9 @@ class TrelloClient:
         if labels:
             self._add_labels_to_card(card_id, labels)
         
+        # Lade lokale Plakate hoch
+        self._upload_local_posters(card_id, universe)
+        
         return card_id
     
     def update_card(self, card_id: str, universe: Universe) -> None:
@@ -87,6 +90,14 @@ class TrelloClient:
         }
         
         self._request('PUT', f'cards/{card_id}', params=params)
+        
+        # Aktualisiere Labels
+        labels = self._build_labels(universe)
+        if labels:
+            self._update_labels_on_card(card_id, labels)
+        
+        # Lade lokale Plakate hoch
+        self._upload_local_posters(card_id, universe)
     
     def get_cards(self, list_id: str) -> List[Dict]:
         """Holt alle Karten aus einer Liste"""
@@ -146,17 +157,114 @@ class TrelloClient:
         return '\n'.join(parts)
     
     def _build_labels(self, universe: Universe) -> List[str]:
-        """Erstellt Labels für die Karte (Status als Label)"""
+        """Erstellt Labels für die Karte (Status + Fertig/Todo)"""
         labels = []
+        
+        # Status als Label
         if universe.status:
             labels.append(universe.status)
+        
+        # Fertig/Todo Label basierend auf Vollständigkeit
+        if universe.is_complete():
+            labels.append('Fertig')
+        else:
+            labels.append('Todo')
+        
         return labels
     
+    def get_or_create_label(self, label_name: str, color: str = 'blue') -> str:
+        """Holt oder erstellt ein Label auf dem Board"""
+        # Hole alle Labels vom Board
+        response = self._request('GET', f'boards/{self.board_id}/labels')
+        labels = response.json()
+        
+        # Suche nach bestehendem Label (case-insensitive)
+        for label in labels:
+            if label['name'].lower() == label_name.lower():
+                return label['id']
+        
+        # Erstelle neues Label
+        color_map = {
+            'fertig': 'green',
+            'todo': 'orange',
+            'fertiggeplant': 'blue',
+            'in_planung': 'yellow',
+            'potentiell': 'purple'
+        }
+        
+        label_color = color_map.get(label_name.lower(), color)
+        
+        response = self._request(
+            'POST',
+            f'boards/{self.board_id}/labels',
+            params={
+                'name': label_name,
+                'color': label_color
+            }
+        )
+        return response.json()['id']
+    
     def _add_labels_to_card(self, card_id: str, labels: List[str]) -> None:
-        """Fügt Labels zu einer Karte hinzu (vereinfacht)"""
-        # Hinweis: Labels müssen normalerweise auf dem Board bereits existieren
-        # Dies ist eine vereinfachte Version
-        pass
+        """Fügt Labels zu einer Karte hinzu"""
+        for label_name in labels:
+            label_id = self.get_or_create_label(label_name)
+            try:
+                self._request('POST', f'cards/{card_id}/idLabels', params={'value': label_id})
+            except:
+                pass  # Label existiert bereits auf der Karte
+    
+    def _update_labels_on_card(self, card_id: str, labels: List[str]) -> None:
+        """Aktualisiert Labels auf einer Karte (entfernt alte, fügt neue hinzu)"""
+        # Hole aktuelle Labels der Karte
+        response = self._request('GET', f'cards/{card_id}', params={'fields': 'idLabels'})
+        current_label_ids = response.json().get('idLabels', [])
+        
+        # Entferne alle aktuellen Labels
+        for label_id in current_label_ids:
+            try:
+                self._request('DELETE', f'cards/{card_id}/idLabels/{label_id}')
+            except:
+                pass
+        
+        # Füge neue Labels hinzu
+        self._add_labels_to_card(card_id, labels)
+    
+    def _upload_local_posters(self, card_id: str, universe: Universe) -> None:
+        """Lädt lokale Plakat-Bilder als Attachments hoch"""
+        import os
+        from pathlib import Path
+        
+        if not universe.posters:
+            return
+        
+        # Bestimme Basis-Pfad (relativ zur notes-Datei)
+        base_path = Path(__file__).parent.parent / 'notes'
+        
+        for poster in universe.posters:
+            # Nur lokale Dateien hochladen (nicht URLs)
+            if poster.startswith('http://') or poster.startswith('https://'):
+                continue
+            
+            # Prüfe ob Datei existiert
+            poster_path = base_path / poster
+            if not poster_path.exists():
+                continue
+            
+            try:
+                # Lade Datei hoch
+                with open(poster_path, 'rb') as f:
+                    files = {'file': (poster_path.name, f)}
+                    
+                    # Upload als Attachment
+                    url = f"{self.BASE_URL}/cards/{card_id}/attachments"
+                    params = self.auth_params.copy()
+                    
+                    response = requests.post(url, params=params, files=files)
+                    response.raise_for_status()
+                    
+                print(f"    📎 Plakat hochgeladen: {poster_path.name}")
+            except Exception as e:
+                print(f"    ⚠️  Fehler beim Hochladen von {poster}: {e}")
     
     def parse_card_to_universe(self, card: Dict) -> Universe:
         """Konvertiert eine Trello-Karte zurück zu einem Universe-Objekt"""
