@@ -86,11 +86,32 @@ def main():
         from handlers.photo import photo_handler
         from handlers.text import text_handler
         from handlers.team import team_command
+        from handlers.admin import (
+            admin_help_command,
+            admin_command,
+            admin_players_command,
+            admin_player_command,
+            admin_teams_command,
+            admin_stats_command,
+            admin_points_command,
+            admin_eastereggs_command
+        )
         
+        # User Commands
         application.add_handler(CommandHandler("start", start_command))
         application.add_handler(CommandHandler("help", help_command))
         application.add_handler(CommandHandler("punkte", points_command))
         application.add_handler(CommandHandler("team", team_command))
+        
+        # Admin Commands
+        application.add_handler(CommandHandler("admin_help", admin_help_command))
+        application.add_handler(CommandHandler("admin", admin_command))
+        application.add_handler(CommandHandler("admin_players", admin_players_command))
+        application.add_handler(CommandHandler("admin_player", admin_player_command))
+        application.add_handler(CommandHandler("admin_teams", admin_teams_command))
+        application.add_handler(CommandHandler("admin_stats", admin_stats_command))
+        application.add_handler(CommandHandler("admin_points", admin_points_command))
+        application.add_handler(CommandHandler("admin_eastereggs", admin_eastereggs_command))
         
         # Foto-Handler (ohne Command)
         application.add_handler(MessageHandler(filters.PHOTO, photo_handler))
