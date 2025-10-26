@@ -1,0 +1,435 @@
+universes:
+- title: Matrix
+  status: fertiggeplant
+  characters:
+  - name: Trinity
+    id: '246935'
+  - name: Neo
+    id: '233579'
+  character_ids:
+  - '246935'
+  - '233579'
+  team_id: '480514'
+  easter_egg:
+    name: Blaue und Rote Pille
+    description: Eine rote und blaue Pille, die prominent platziert werden. Idealerweise
+      soll hier die Szene mit Morpheus und Neo nachgestellt werden, in der Morpheus
+      Neo die Wahl zwischen der roten und blauen Pille anbietet.
+    example_image: https://imgs.search.brave.com/nUdiVGgGQQ_F-J3GIKjbwH0s4mL20N752rerFP9ayMA/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zdDMu/ZGVwb3NpdHBob3Rv/cy5jb20vNDgwNTcw/My8xNjE3MC9pLzQ1/MC9kZXBvc2l0cGhv/dG9zXzE2MTcwNDYw/NC1zdG9jay1waG90/by1yZWQtYW5kLWJs/dWUtcGlsbHMtb24u/anBn
+  film_clip: https://youtu.be/CWIfwZ99AVA?si=nrqu70hBEvESXYdl&t=215
+  puzzle_link: https://www.jigsawplanet.com/?rc=play&pid=33d524e0e905&pieces=24
+  posters:
+  - https://imgs.search.brave.com/nUdiVGgGQQ_F-J3GIKjbwH0s4mL20N752rerFP9ayMA/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zdDMu/ZGVwb3NpdHBob3Rv/cy5jb20vNDgwNTcw/My8xNjE3MC9pLzQ1/MC9kZXBvc2l0cGhv/dG9zXzE2MTcwNDYw/NC1zdG9jay1waG90/by1yZWQtYW5kLWJs/dWUtcGlsbHMtb24u/anBn
+  trello_card_id: null
+  trello_list_id: null
+- title: Demolition Man
+  status: fertiggeplant
+  characters:
+  - name: Spartan
+    id: '037534'
+  - name: Huxley
+    id: '380315'
+  character_ids:
+  - '037534'
+  - '380315'
+  team_id: '417849'
+  easter_egg:
+    name: Drei Muscheln
+    description: Drei Muscheln werden anstelle von Toilettenpapier benutzt. Es sollen
+      3 Muscheln in einem Badezimmer platziert werden, idealerweise in einer Szene,
+      die an das Original erinnert.
+    example_image: https://imgs.search.brave.com/BYJZHHTIQ4wG3qBICh6AyuIRZesub9ky5nY-oIZ9HBc/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWFn/ZXMuZ3V0ZWZyYWdl/Lm5ldC9tZWRpYS9m/cmFnZW4vYmlsZGVy/L3dpZS1iZW51dHp0/LW1hbi1kaWUtZHJl/aS1tdXNjaGVsbi8w/X2JpZy5qcGc_dj0x/Njk2MTAxNTg1Njc3
+  film_clip: https://www.youtube.com/watch?v=imv7g7akeok
+  puzzle_link: https://www.jigsawplanet.com/?rc=play&pid=3494319d2445&pieces=24
+  posters:
+  - https://imgs.search.brave.com/BYJZHHTIQ4wG3qBICh6AyuIRZesub9ky5nY-oIZ9HBc/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWFn/ZXMuZ3V0ZWZyYWdl/Lm5ldC9tZWRpYS9m/cmFnZW4vYmlsZGVy/L3dpZS1iZW51dHp0/LW1hbi1kaWUtZHJl/aS1tdXNjaGVsbi8w/X2JpZy5qcGc_dj0x/Njk2MTAxNTg1Njc3
+  - bilder/DemolitionMan.jpg
+  - bilder/DemolitionMan2.jpg
+  - bilder/DemolitionMan2.webp
+  trello_card_id: null
+  trello_list_id: null
+- title: Terminator
+  status: fertiggeplant
+  characters:
+  - name: Sarah
+    id: '213642'
+  - name: John
+    id: '012573'
+  character_ids:
+  - '213642'
+  - '012573'
+  team_id: '226215'
+  easter_egg:
+    name: Totenkopf mit roten LED-Augen
+    description: Ein Totenkopf mit leuchtend roten LED-Augen, der an den Terminator
+      erinnert.
+    example_image: https://www.figuren-shop.de/media/image/e0/b8/d7/2D_ERsatzbilder-NOW-0948-ML8625_15_1280x1280.jpg
+  film_clip: https://www.youtube.com/watch?v=XPtVZ69lomk
+  puzzle_link: https://www.jigsawplanet.com/?rc=play&pid=09f7d810363c&pieces=24
+  posters:
+  - https://www.figuren-shop.de/media/image/e0/b8/d7/2D_ERsatzbilder-NOW-0948-ML8625_15_1280x1280.jpg
+  - bilder/Terminator.jpg
+  - bilder/Terminator2.jpg
+  trello_card_id: null
+  trello_list_id: null
+- title: The Fifth Element
+  status: fertiggeplant
+  characters:
+  - name: Leeloo
+    id: '205251'
+  - name: Korben
+    id: '259951'
+  character_ids:
+  - '205251'
+  - '259951'
+  team_id: '465202'
+  easter_egg:
+    name: Element Steine
+    description: Symbolisieren die Einheit der Elemente gegen das Böse.
+    example_image: https://i.ytimg.com/vi/AZ-VMEI-mwM/maxresdefault.jpg
+  film_clip: https://www.youtube.com/watch?v=jjE30P8Hf9E
+  puzzle_link: https://www.jigsawplanet.com/?rc=play&pid=26d27f5d2bd2&pieces=25
+  posters:
+  - https://i.ytimg.com/vi/AZ-VMEI-mwM/maxresdefault.jpg
+  - bilder/Das-fuenfte-element.jpg
+  trello_card_id: null
+  trello_list_id: null
+- title: V wie Vendetta
+  status: fertiggeplant
+  characters:
+  - name: V
+    id: '462487'
+  - name: Evey
+    id: '280235'
+  character_ids:
+  - '462487'
+  - '280235'
+  team_id: '742722'
+  easter_egg:
+    name: Guy Fawkes Maske
+    description: ''
+    example_image: null
+  film_clip: null
+  puzzle_link: https://www.jigsawplanet.com/?rc=play&pid=165db06bc0ff&pieces=24
+  posters: []
+  trello_card_id: null
+  trello_list_id: null
+- title: Blade Runner
+  status: fertiggeplant
+  characters:
+  - name: Rick
+    id: '129864'
+  - name: Rachael
+    id: '137712'
+  character_ids:
+  - '129864'
+  - '137712'
+  team_id: '267576'
+  easter_egg:
+    name: Origami Einhorn
+    description: ''
+    example_image: null
+  film_clip: null
+  puzzle_link: https://www.jigsawplanet.com/?rc=play&pid=33ecfbdf7c26&pieces=24
+  posters: []
+  trello_card_id: null
+  trello_list_id: null
+- title: Gattaca
+  status: fertiggeplant
+  characters:
+  - name: Vincent
+    id: '395627'
+  - name: Irene
+    id: '313788'
+  character_ids:
+  - '395627'
+  - '313788'
+  team_id: '709415'
+  easter_egg:
+    name: Blut auf der Tastatur
+    description: Liebe und Täuschung in einer genetischen Welt.
+    example_image: null
+  film_clip: null
+  puzzle_link: https://www.jigsawplanet.com/?rc=play&pid=19e9eaf09352&pieces=24
+  posters: []
+  trello_card_id: null
+  trello_list_id: null
+- title: In Time
+  status: fertiggeplant
+  characters: []
+  character_ids: []
+  team_id: null
+  easter_egg:
+    name: Leuchtende Zeit-Tattoos
+    description: Verknüpfen Lebenserwartung und soziale Klasse.
+    example_image: null
+  film_clip: null
+  puzzle_link: https://www.jigsawplanet.com/?rc=play&pid=2cc250f928ae&pieces=24
+  posters: []
+  trello_card_id: null
+  trello_list_id: null
+- title: Wanted
+  status: fertiggeplant
+  characters:
+  - name: Wesley
+    id: '328023'
+  - name: Fox
+    id: '488289'
+  character_ids:
+  - '328023'
+  - '488289'
+  team_id: '816312'
+  easter_egg:
+    name: Gebogene Kugel
+    description: ''
+    example_image: null
+  film_clip: null
+  puzzle_link: https://www.jigsawplanet.com/?rc=play&pid=308318787d3c&pieces=24
+  posters: []
+  trello_card_id: null
+  trello_list_id: null
+- title: Ex Machina
+  status: fertiggeplant
+  characters:
+  - name: Caleb
+    id: '438087'
+  - name: Ava
+    id: '351091'
+  character_ids:
+  - '438087'
+  - '351091'
+  team_id: '789178'
+  easter_egg:
+    name: Spiegelnde Glaswände
+    description: Verdeutlichen Selbsttäuschung und Projektion.
+    example_image: null
+  film_clip: null
+  puzzle_link: https://www.jigsawplanet.com/?rc=play&pid=2a11e236bde6&pieces=24
+  posters: []
+  trello_card_id: null
+  trello_list_id: null
+- title: Genesis Backup [Admins]
+  status: fertiggeplant
+  characters:
+  - name: William
+    id: '290481'
+  - name: Feng
+    id: '231612'
+  character_ids:
+  - '290481'
+  - '231612'
+  team_id: '522093'
+  easter_egg: null
+  film_clip: null
+  puzzle_link: null
+  posters: []
+  trello_card_id: null
+  trello_list_id: null
+- title: Starship Troopers
+  status: fertiggeplant
+  characters:
+  - name: Rico
+    id: '252571'
+  - name: Dizzy
+    id: '354638'
+  character_ids:
+  - '252571'
+  - '354638'
+  team_id: '607209'
+  easter_egg:
+    name: Bug-Kopf
+    description: Ein Modell oder Bild eines Bug-Kopfes, der die außerird
+    example_image: null
+  film_clip: null
+  puzzle_link: https://www.jigsawplanet.com/?rc=play&pid=1ba467a51156&pieces=24
+  posters: []
+  trello_card_id: null
+  trello_list_id: null
+- title: Equilibrium
+  status: fertiggeplant
+  characters:
+  - name: Preston
+    id: '141796'
+  - name: Mary
+    id: '454548'
+  character_ids:
+  - '141796'
+  - '454548'
+  team_id: '596344'
+  easter_egg:
+    name: Zerbrochene Glasampulle mit Prozium
+    description: Steht für Emotion als Revolution.
+    example_image: null
+  film_clip: null
+  puzzle_link: https://www.jigsawplanet.com/?rc=play&pid=31068426f747&pieces=24
+  posters: []
+  trello_card_id: null
+  trello_list_id: null
+- title: Robocop
+  status: fertiggeplant
+  characters:
+  - name: Murphy
+    id: '453532'
+  - name: RoboCop
+    id: '464388'
+  character_ids:
+  - '453532'
+  - '464388'
+  team_id: '917920'
+  easter_egg:
+    name: RoboCop Helm
+    description: Verkörpert die Verschmelzung von Mensch und Maschine.
+    example_image: null
+  film_clip: null
+  puzzle_link: https://www.jigsawplanet.com/?rc=play&pid=136cb09e1bab&pieces=24
+  posters: []
+  trello_card_id: null
+  trello_list_id: null
+- title: I, Robot
+  status: fertiggeplant
+  characters: []
+  character_ids: []
+  team_id: null
+  easter_egg:
+    name: Roboter mit menschlichen Eigenschaften
+    description: Thematisiert die Grenzen zwischen Mensch und Maschine.
+    example_image: null
+  film_clip: null
+  puzzle_link: https://www.jigsawplanet.com/?rc=play&pid=2bd0afc7ac31&pieces=24
+  posters: []
+  trello_card_id: null
+  trello_list_id: null
+- title: Mad Max
+  status: fertiggeplant
+  characters:
+  - name: Max
+    id: '116856'
+  - name: Furiosa
+    id: '174759'
+  character_ids:
+  - '116856'
+  - '174759'
+  team_id: '291615'
+  easter_egg:
+    name: Silbernes Chromspray
+    description: Ritual der Hingabe für Freiheit.
+    example_image: null
+  film_clip: null
+  puzzle_link: https://www.jigsawplanet.com/?rc=play&pid=32bcf53ca340&pieces=24
+  posters: []
+  trello_card_id: null
+  trello_list_id: null
+- title: 2001 Odyssee im Weltraum
+  status: fertiggeplant
+  characters: []
+  character_ids: []
+  team_id: null
+  easter_egg:
+    name: Affen
+    description: ''
+    example_image: null
+  film_clip: null
+  puzzle_link: https://www.jigsawplanet.com/?rc=play&pid=3cea4bb2ead5&pieces=24
+  posters: []
+  trello_card_id: null
+  trello_list_id: null
+- title: Her
+  status: fertiggeplant
+  characters:
+  - name: Theodore
+    id: '217832'
+  - name: Samantha
+    id: '478068'
+  character_ids:
+  - '217832'
+  - '478068'
+  team_id: '695900'
+  easter_egg:
+    name: Ohrhörer
+    description: Bindeglied zwischen Realität und KI-Liebe.
+    example_image: null
+  film_clip: null
+  puzzle_link: https://www.jigsawplanet.com/?rc=play&pid=049c3aeacc9c&pieces=24
+  posters: []
+  trello_card_id: null
+  trello_list_id: null
+- title: Transcendence
+  status: fertiggeplant
+  characters:
+  - name: Dr Will Caster
+    id: 014449
+  - name: Evelyn
+    id: '350826'
+  character_ids:
+  - 014449
+  - '350826'
+  team_id: '365275'
+  easter_egg:
+    name: Nano Staubwolke
+    description: Easter Eggisiert digitales Bewusstsein jenseits des Körpers.
+    example_image: null
+  film_clip: null
+  puzzle_link: https://www.jigsawplanet.com/?rc=play&pid=23be85959819&pieces=24
+  posters: []
+  trello_card_id: null
+  trello_list_id: null
+- title: '1984'
+  status: fertiggeplant
+  characters:
+  - name: Winston
+    id: '394595'
+  - name: Julia
+    id: '200481'
+  character_ids:
+  - '394595'
+  - '200481'
+  team_id: '595076'
+  easter_egg:
+    name: Papierbotschaft Down with Big Brother
+    description: Liebe als Akt der Rebellion.
+    example_image: null
+  film_clip: null
+  puzzle_link: https://www.jigsawplanet.com/?rc=play&pid=0b0270c81347&pieces=24
+  posters: []
+  trello_card_id: null
+  trello_list_id: null
+- title: Maze Runner
+  status: fertiggeplant
+  characters:
+  - name: Thomas
+    id: '243971'
+  - name: Teresa
+    id: '261346'
+  character_ids:
+  - '243971'
+  - '261346'
+  team_id: '505317'
+  easter_egg:
+    name: Das Labyrinth
+    description: Suche nach Wahrheit in einer manipulierten Welt.
+    example_image: null
+  film_clip: null
+  puzzle_link: https://www.jigsawplanet.com/?rc=play&pid=2417c53715a3&pieces=24
+  posters: []
+  trello_card_id: null
+  trello_list_id: null
+- title: Die Insel
+  status: fertiggeplant
+  characters:
+  - name: Lincoln Six Echo
+    id: '102399'
+  - name: Jordan Two Delta
+    id: '350575'
+  character_ids:
+  - '102399'
+  - '350575'
+  team_id: '452974'
+  easter_egg:
+    name: Weiße Anzüge und genetische Klone
+    description: Der Traum von Freiheit als Illusion.
+    example_image: null
+  film_clip: null
+  puzzle_link: https://www.jigsawplanet.com/?rc=play&pid=08a586b5ee9d&pieces=24
+  posters: []
+  trello_card_id: null
+  trello_list_id: null
