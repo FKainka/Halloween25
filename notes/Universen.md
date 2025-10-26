@@ -72,6 +72,7 @@
   - IDs: 462487, 280235
   - TeamID: 742722
 - **Easter Egg:** Guy Fawkes Maske
+  - **Beschreibung:** Guy Fawkes Maske
 - **Puzzle Link:** [V wie Vendetta Puzzle Link](https://www.jigsawplanet.com/?rc=play&pid=165db06bc0ff&pieces=24)
 
 ## Blade Runner
@@ -80,6 +81,7 @@
   - IDs: 129864, 137712
   - TeamID: 267576
 - **Easter Egg:** Origami Einhorn
+  - **Beschreibung:** Origami Einhorn
 - **Puzzle Link:** [Blade Runner Puzzle Link](https://www.jigsawplanet.com/?rc=play&pid=33ecfbdf7c26&pieces=24)
 
 ## Gattaca
@@ -102,6 +104,7 @@
   - IDs: 328023, 488289
   - TeamID: 816312
 - **Easter Egg:** Gebogene Kugel
+  - **Beschreibung:** Gebogene Kugel
 - **Puzzle Link:** [Wanted Puzzle Link](https://www.jigsawplanet.com/?rc=play&pid=308318787d3c&pieces=24)
 
 ## Ex Machina
@@ -118,8 +121,6 @@
   - William, Feng
   - IDs: 290481, 231612
   - TeamID: 522093
-- **Easter Egg:** Grüner Stein
-----
 
 ## Starship Troopers
 - **Charaktere:**
@@ -164,6 +165,7 @@
 
 ## 2001 Odyssee im Weltraum
 - **Easter Egg:** Affen
+  - **Beschreibung:** Affen?
 - **Puzzle Link:** [2001 Odyssee im Weltraum Puzzle Link](https://www.jigsawplanet.com/?rc=play&pid=3cea4bb2ead5&pieces=24)
 
 ## Her

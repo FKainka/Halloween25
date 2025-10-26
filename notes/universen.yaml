@@ -101,7 +101,7 @@ universes:
   team_id: '742722'
   easter_egg:
     name: Guy Fawkes Maske
-    description: ''
+    description: Guy Fawkes Maske
     example_image: null
   film_clip: null
   puzzle_link: https://www.jigsawplanet.com/?rc=play&pid=165db06bc0ff&pieces=24
@@ -121,7 +121,7 @@ universes:
   team_id: '267576'
   easter_egg:
     name: Origami Einhorn
-    description: ''
+    description: Origami Einhorn
     example_image: null
   film_clip: null
   puzzle_link: https://www.jigsawplanet.com/?rc=play&pid=33ecfbdf7c26&pieces=24
@@ -175,7 +175,7 @@ universes:
   team_id: '816312'
   easter_egg:
     name: Gebogene Kugel
-    description: ''
+    description: Gebogene Kugel
     example_image: null
   film_clip: null
   puzzle_link: https://www.jigsawplanet.com/?rc=play&pid=308318787d3c&pieces=24
@@ -320,7 +320,7 @@ universes:
   team_id: null
   easter_egg:
     name: Affen
-    description: ''
+    description: Affen?
     example_image: null
   film_clip: null
   puzzle_link: https://www.jigsawplanet.com/?rc=play&pid=3cea4bb2ead5&pieces=24
