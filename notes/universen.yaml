@@ -103,7 +103,7 @@ universes:
     name: Guy Fawkes Maske
     description: Guy Fawkes Maske
     example_image: null
-  film_clip: null
+  film_clip: https://www.youtube.com/watch?v=lqWvvRAj9E4
   puzzle_link: https://www.jigsawplanet.com/?rc=play&pid=165db06bc0ff&pieces=24
   posters: []
   trello_card_id: null
@@ -123,7 +123,7 @@ universes:
     name: Origami Einhorn
     description: Origami Einhorn
     example_image: null
-  film_clip: null
+  film_clip: https://www.youtube.com/watch?v=ZRcpnM26nJM
   puzzle_link: https://www.jigsawplanet.com/?rc=play&pid=33ecfbdf7c26&pieces=24
   posters: []
   trello_card_id: null
@@ -143,7 +143,7 @@ universes:
     name: Blut auf der Tastatur
     description: Liebe und Täuschung in einer genetischen Welt.
     example_image: null
-  film_clip: null
+  film_clip: https://www.youtube.com/watch?v=SISq9xaC7LA
   puzzle_link: https://www.jigsawplanet.com/?rc=play&pid=19e9eaf09352&pieces=24
   posters: []
   trello_card_id: null
@@ -157,7 +157,7 @@ universes:
     name: Leuchtende Zeit-Tattoos
     description: Verknüpfen Lebenserwartung und soziale Klasse.
     example_image: null
-  film_clip: null
+  film_clip: https://www.youtube.com/watch?v=16b2cFpK7MA
   puzzle_link: https://www.jigsawplanet.com/?rc=play&pid=2cc250f928ae&pieces=24
   posters: []
   trello_card_id: null
@@ -177,7 +177,7 @@ universes:
     name: Gebogene Kugel
     description: Gebogene Kugel
     example_image: null
-  film_clip: null
+  film_clip: https://www.youtube.com/watch?v=bsTbiXRi9FY
   puzzle_link: https://www.jigsawplanet.com/?rc=play&pid=308318787d3c&pieces=24
   posters: []
   trello_card_id: null
@@ -197,7 +197,7 @@ universes:
     name: Spiegelnde Glaswände
     description: Verdeutlichen Selbsttäuschung und Projektion.
     example_image: null
-  film_clip: null
+  film_clip: https://www.youtube.com/watch?v=OQ_yuZpUSgM
   puzzle_link: https://www.jigsawplanet.com/?rc=play&pid=2a11e236bde6&pieces=24
   posters: []
   trello_card_id: null
@@ -234,7 +234,7 @@ universes:
     name: Bug-Kopf
     description: Ein Modell oder Bild eines Bug-Kopfes, der die außerird
     example_image: null
-  film_clip: null
+  film_clip: https://www.youtube.com/watch?v=B203twyaMfM
   puzzle_link: https://www.jigsawplanet.com/?rc=play&pid=1ba467a51156&pieces=24
   posters: []
   trello_card_id: null
@@ -254,7 +254,7 @@ universes:
     name: Zerbrochene Glasampulle mit Prozium
     description: Steht für Emotion als Revolution.
     example_image: null
-  film_clip: null
+  film_clip: https://www.youtube.com/watch?v=-_y7PL23Cko
   puzzle_link: https://www.jigsawplanet.com/?rc=play&pid=31068426f747&pieces=24
   posters: []
   trello_card_id: null
@@ -274,21 +274,27 @@ universes:
     name: RoboCop Helm
     description: Verkörpert die Verschmelzung von Mensch und Maschine.
     example_image: null
-  film_clip: null
+  film_clip: https://www.youtube.com/watch?v=TvJu_8lQl4A
   puzzle_link: https://www.jigsawplanet.com/?rc=play&pid=136cb09e1bab&pieces=24
   posters: []
   trello_card_id: null
   trello_list_id: null
 - title: I, Robot
   status: fertiggeplant
-  characters: []
-  character_ids: []
-  team_id: null
+  characters:
+  - name: Spooner
+    id: '074264'
+  - name: Calvin
+    id: 079685
+  character_ids:
+  - '074264'
+  - 079685
+  team_id: '153949'
   easter_egg:
     name: Roboter mit menschlichen Eigenschaften
     description: Thematisiert die Grenzen zwischen Mensch und Maschine.
     example_image: null
-  film_clip: null
+  film_clip: https://www.youtube.com/watch?v=CMqFyIuSRdA
   puzzle_link: https://www.jigsawplanet.com/?rc=play&pid=2bd0afc7ac31&pieces=24
   posters: []
   trello_card_id: null
@@ -308,21 +314,27 @@ universes:
     name: Silbernes Chromspray
     description: Ritual der Hingabe für Freiheit.
     example_image: null
-  film_clip: null
+  film_clip: https://www.youtube.com/watch?v=4KlSuGNt8e4
   puzzle_link: https://www.jigsawplanet.com/?rc=play&pid=32bcf53ca340&pieces=24
   posters: []
   trello_card_id: null
   trello_list_id: null
 - title: 2001 Odyssee im Weltraum
   status: fertiggeplant
-  characters: []
-  character_ids: []
-  team_id: null
+  characters:
+  - name: Dave
+    id: '303898'
+  - name: HAL
+    id: 044902
+  character_ids:
+  - '303898'
+  - 044902
+  team_id: '348800'
   easter_egg:
     name: Affen
     description: Affen?
     example_image: null
-  film_clip: null
+  film_clip: https://www.youtube.com/watch?v=ARJ8cAGm6JE
   puzzle_link: https://www.jigsawplanet.com/?rc=play&pid=3cea4bb2ead5&pieces=24
   posters: []
   trello_card_id: null
@@ -342,7 +354,7 @@ universes:
     name: Ohrhörer
     description: Bindeglied zwischen Realität und KI-Liebe.
     example_image: null
-  film_clip: null
+  film_clip: https://www.youtube.com/watch?v=JdROh4NhwZo
   puzzle_link: https://www.jigsawplanet.com/?rc=play&pid=049c3aeacc9c&pieces=24
   posters: []
   trello_card_id: null
@@ -350,7 +362,7 @@ universes:
 - title: Transcendence
   status: fertiggeplant
   characters:
-  - name: Dr Will Caster
+  - name: Will
     id: 014449
   - name: Evelyn
     id: '350826'
@@ -362,7 +374,7 @@ universes:
     name: Nano Staubwolke
     description: Easter Eggisiert digitales Bewusstsein jenseits des Körpers.
     example_image: null
-  film_clip: null
+  film_clip: https://www.youtube.com/watch?v=k5wQ8I85x7k
   puzzle_link: https://www.jigsawplanet.com/?rc=play&pid=23be85959819&pieces=24
   posters: []
   trello_card_id: null
@@ -382,7 +394,7 @@ universes:
     name: Papierbotschaft Down with Big Brother
     description: Liebe als Akt der Rebellion.
     example_image: null
-  film_clip: null
+  film_clip: https://www.youtube.com/watch?v=buNcuzQc-u0
   puzzle_link: https://www.jigsawplanet.com/?rc=play&pid=0b0270c81347&pieces=24
   posters: []
   trello_card_id: null
@@ -402,7 +414,7 @@ universes:
     name: Das Labyrinth
     description: Suche nach Wahrheit in einer manipulierten Welt.
     example_image: null
-  film_clip: null
+  film_clip: https://www.youtube.com/watch?v=c9Qg7vm0lSk
   puzzle_link: https://www.jigsawplanet.com/?rc=play&pid=2417c53715a3&pieces=24
   posters: []
   trello_card_id: null
@@ -410,9 +422,9 @@ universes:
 - title: Die Insel
   status: fertiggeplant
   characters:
-  - name: Lincoln Six Echo
+  - name: Lincoln
     id: '102399'
-  - name: Jordan Two Delta
+  - name: Jordan
     id: '350575'
   character_ids:
   - '102399'
@@ -422,7 +434,7 @@ universes:
     name: Weiße Anzüge und genetische Klone
     description: Der Traum von Freiheit als Illusion.
     example_image: null
-  film_clip: null
+  film_clip: https://www.youtube.com/watch?v=1AAhZZpT6PE
   puzzle_link: https://www.jigsawplanet.com/?rc=play&pid=08a586b5ee9d&pieces=24
   posters: []
   trello_card_id: null

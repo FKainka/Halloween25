@@ -73,6 +73,7 @@
   - TeamID: 742722
 - **Easter Egg:** Guy Fawkes Maske
   - **Beschreibung:** Guy Fawkes Maske
+- **Filmausschnitt:** [V wie Vendetta Szene](https://www.youtube.com/watch?v=lqWvvRAj9E4)
 - **Puzzle Link:** [V wie Vendetta Puzzle Link](https://www.jigsawplanet.com/?rc=play&pid=165db06bc0ff&pieces=24)
 
 ## Blade Runner
@@ -82,6 +83,7 @@
   - TeamID: 267576
 - **Easter Egg:** Origami Einhorn
   - **Beschreibung:** Origami Einhorn
+- **Filmausschnitt:** [Blade Runner Szene](https://www.youtube.com/watch?v=ZRcpnM26nJM)
 - **Puzzle Link:** [Blade Runner Puzzle Link](https://www.jigsawplanet.com/?rc=play&pid=33ecfbdf7c26&pieces=24)
 
 ## Gattaca
@@ -91,11 +93,13 @@
   - TeamID: 709415
 - **Easter Egg:** Blut auf der Tastatur
   - **Beschreibung:** Liebe und Täuschung in einer genetischen Welt.
+- **Filmausschnitt:** [Gattaca Szene](https://www.youtube.com/watch?v=SISq9xaC7LA)
 - **Puzzle Link:** [Gattaca Puzzle Link](https://www.jigsawplanet.com/?rc=play&pid=19e9eaf09352&pieces=24)
 
 ## In Time
 - **Easter Egg:** Leuchtende Zeit-Tattoos
   - **Beschreibung:** Verknüpfen Lebenserwartung und soziale Klasse.
+- **Filmausschnitt:** [In Time Szene](https://www.youtube.com/watch?v=16b2cFpK7MA)
 - **Puzzle Link:** [In Time Puzzle Link](https://www.jigsawplanet.com/?rc=play&pid=2cc250f928ae&pieces=24)
 
 ## Wanted
@@ -105,6 +109,7 @@
   - TeamID: 816312
 - **Easter Egg:** Gebogene Kugel
   - **Beschreibung:** Gebogene Kugel
+- **Filmausschnitt:** [Wanted Szene](https://www.youtube.com/watch?v=bsTbiXRi9FY)
 - **Puzzle Link:** [Wanted Puzzle Link](https://www.jigsawplanet.com/?rc=play&pid=308318787d3c&pieces=24)
 
 ## Ex Machina
@@ -114,6 +119,7 @@
   - TeamID: 789178
 - **Easter Egg:** Spiegelnde Glaswände
   - **Beschreibung:** Verdeutlichen Selbsttäuschung und Projektion.
+- **Filmausschnitt:** [Ex Machina Szene](https://www.youtube.com/watch?v=OQ_yuZpUSgM)
 - **Puzzle Link:** [Ex Machina Puzzle Link](https://www.jigsawplanet.com/?rc=play&pid=2a11e236bde6&pieces=24)
 
 ## Genesis Backup [Admins]
@@ -129,6 +135,7 @@
   - TeamID: 607209
 - **Easter Egg:** Bug-Kopf
   - **Beschreibung:** Ein Modell oder Bild eines Bug-Kopfes, der die außerird
+- **Filmausschnitt:** [Starship Troopers Szene](https://www.youtube.com/watch?v=B203twyaMfM)
 - **Puzzle Link:** [Starship Troopers Puzzle Link](https://www.jigsawplanet.com/?rc=play&pid=1ba467a51156&pieces=24)
 
 ## Equilibrium
@@ -138,6 +145,7 @@
   - TeamID: 596344
 - **Easter Egg:** Zerbrochene Glasampulle mit Prozium
   - **Beschreibung:** Steht für Emotion als Revolution.
+- **Filmausschnitt:** [Equilibrium Szene](https://www.youtube.com/watch?v=-_y7PL23Cko)
 - **Puzzle Link:** [Equilibrium Puzzle Link](https://www.jigsawplanet.com/?rc=play&pid=31068426f747&pieces=24)
 
 ## Robocop
@@ -147,11 +155,17 @@
   - TeamID: 917920
 - **Easter Egg:** RoboCop Helm
   - **Beschreibung:** Verkörpert die Verschmelzung von Mensch und Maschine.
+- **Filmausschnitt:** [Robocop Szene](https://www.youtube.com/watch?v=TvJu_8lQl4A)
 - **Puzzle Link:** [Robocop Puzzle Link](https://www.jigsawplanet.com/?rc=play&pid=136cb09e1bab&pieces=24)
 
 ## I, Robot
+- **Charaktere:**
+  - Spooner, Calvin
+  - IDs: 074264, 079685
+  - TeamID: 153949
 - **Easter Egg:** Roboter mit menschlichen Eigenschaften
   - **Beschreibung:** Thematisiert die Grenzen zwischen Mensch und Maschine.
+- **Filmausschnitt:** [I, Robot Szene](https://www.youtube.com/watch?v=CMqFyIuSRdA)
 - **Puzzle Link:** [I, Robot Puzzle Link](https://www.jigsawplanet.com/?rc=play&pid=2bd0afc7ac31&pieces=24)
 
 ## Mad Max
@@ -161,11 +175,17 @@
   - TeamID: 291615
 - **Easter Egg:** Silbernes Chromspray
   - **Beschreibung:** Ritual der Hingabe für Freiheit.
+- **Filmausschnitt:** [Mad Max Szene](https://www.youtube.com/watch?v=4KlSuGNt8e4)
 - **Puzzle Link:** [Mad Max Puzzle Link](https://www.jigsawplanet.com/?rc=play&pid=32bcf53ca340&pieces=24)
 
 ## 2001 Odyssee im Weltraum
+- **Charaktere:**
+  - Dave, HAL
+  - IDs: 303898, 044902
+  - TeamID: 348800
 - **Easter Egg:** Affen
   - **Beschreibung:** Affen?
+- **Filmausschnitt:** [2001 Odyssee im Weltraum Szene](https://www.youtube.com/watch?v=ARJ8cAGm6JE)
 - **Puzzle Link:** [2001 Odyssee im Weltraum Puzzle Link](https://www.jigsawplanet.com/?rc=play&pid=3cea4bb2ead5&pieces=24)
 
 ## Her
@@ -175,15 +195,17 @@
   - TeamID: 695900
 - **Easter Egg:** Ohrhörer
   - **Beschreibung:** Bindeglied zwischen Realität und KI-Liebe.
+- **Filmausschnitt:** [Her Szene](https://www.youtube.com/watch?v=JdROh4NhwZo)
 - **Puzzle Link:** [Her Puzzle Link](https://www.jigsawplanet.com/?rc=play&pid=049c3aeacc9c&pieces=24)
 
 ## Transcendence
 - **Charaktere:**
-  - Dr Will Caster, Evelyn
+  - Will, Evelyn
   - IDs: 014449, 350826
   - TeamID: 365275
 - **Easter Egg:** Nano Staubwolke
   - **Beschreibung:** Easter Eggisiert digitales Bewusstsein jenseits des Körpers.
+- **Filmausschnitt:** [Transcendence Szene](https://www.youtube.com/watch?v=k5wQ8I85x7k)
 - **Puzzle Link:** [Transcendence Puzzle Link](https://www.jigsawplanet.com/?rc=play&pid=23be85959819&pieces=24)
 
 ## 1984
@@ -193,6 +215,7 @@
   - TeamID: 595076
 - **Easter Egg:** Papierbotschaft Down with Big Brother
   - **Beschreibung:** Liebe als Akt der Rebellion.
+- **Filmausschnitt:** [1984 Szene](https://www.youtube.com/watch?v=buNcuzQc-u0)
 - **Puzzle Link:** [1984 Puzzle Link](https://www.jigsawplanet.com/?rc=play&pid=0b0270c81347&pieces=24)
 
 ## Maze Runner
@@ -202,13 +225,15 @@
   - TeamID: 505317
 - **Easter Egg:** Das Labyrinth
   - **Beschreibung:** Suche nach Wahrheit in einer manipulierten Welt.
+- **Filmausschnitt:** [Maze Runner Szene](https://www.youtube.com/watch?v=c9Qg7vm0lSk)
 - **Puzzle Link:** [Maze Runner Puzzle Link](https://www.jigsawplanet.com/?rc=play&pid=2417c53715a3&pieces=24)
 
 ## Die Insel
 - **Charaktere:**
-  - Lincoln Six Echo, Jordan Two Delta
+  - Lincoln, Jordan
   - IDs: 102399, 350575
   - TeamID: 452974
 - **Easter Egg:** Weiße Anzüge und genetische Klone
   - **Beschreibung:** Der Traum von Freiheit als Illusion.
+- **Filmausschnitt:** [Die Insel Szene](https://www.youtube.com/watch?v=1AAhZZpT6PE)
 - **Puzzle Link:** [Die Insel Puzzle Link](https://www.jigsawplanet.com/?rc=play&pid=08a586b5ee9d&pieces=24)
