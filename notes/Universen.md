@@ -24,6 +24,8 @@
   - **Beispielbild:** ![Blaue und Rote Pille](https://imgs.search.brave.com/nUdiVGgGQQ_F-J3GIKjbwH0s4mL20N752rerFP9ayMA/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zdDMu/ZGVwb3NpdHBob3Rv/cy5jb20vNDgwNTcw/My8xNjE3MC9pLzQ1/MC9kZXBvc2l0cGhv/dG9zXzE2MTcwNDYw/NC1zdG9jay1waG90/by1yZWQtYW5kLWJs/dWUtcGlsbHMtb24u/anBn)
 - **Filmausschnitt:** [Matrix Szene](https://youtu.be/CWIfwZ99AVA?si=nrqu70hBEvESXYdl&t=215)
 - **Puzzle Link:** [Matrix Puzzle Link](https://www.jigsawplanet.com/?rc=play&pid=33d524e0e905&pieces=24)
+- **Plakate:**
+  - [Matrix Plakat](https://imgs.search.brave.com/nUdiVGgGQQ_F-J3GIKjbwH0s4mL20N752rerFP9ayMA/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zdDMu/ZGVwb3NpdHBob3Rv/cy5jb20vNDgwNTcw/My8xNjE3MC9pLzQ1/MC9kZXBvc2l0cGhv/dG9zXzE2MTcwNDYw/NC1zdG9jay1waG90/by1yZWQtYW5kLWJs/dWUtcGlsbHMtb24u/anBn)
 
 ## Demolition Man
 - **Charaktere:**
@@ -36,9 +38,7 @@
 - **Filmausschnitt:** [Demolition Man Szene](https://www.youtube.com/watch?v=imv7g7akeok)
 - **Puzzle Link:** [Demolition Man Puzzle Link](https://www.jigsawplanet.com/?rc=play&pid=3494319d2445&pieces=24)
 - **Plakate:**
-  - ![Demolition Man](bilder/DemolitionMan.jpg)
-  - ![Demolition Man](bilder/DemolitionMan2.jpg)
-  - ![Demolition Man](bilder/DemolitionMan2.webp)
+  - [Demolition Man Plakat](https://imgs.search.brave.com/BYJZHHTIQ4wG3qBICh6AyuIRZesub9ky5nY-oIZ9HBc/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWFn/ZXMuZ3V0ZWZyYWdl/Lm5ldC9tZWRpYS9m/cmFnZW4vYmlsZGVy/L3dpZS1iZW51dHp0/LW1hbi1kaWUtZHJl/aS1tdXNjaGVsbi8w/X2JpZy5qcGc_dj0x/Njk2MTAxNTg1Njc3)
 
 ## Terminator
 - **Charaktere:**
@@ -51,8 +51,7 @@
 - **Filmausschnitt:** [Terminator Szene](https://www.youtube.com/watch?v=XPtVZ69lomk)
 - **Puzzle Link:** [Terminator Puzzle Link](https://www.jigsawplanet.com/?rc=play&pid=09f7d810363c&pieces=24)
 - **Plakate:**
-  - ![Terminator](bilder/Terminator.jpg)
-  - ![Terminator](bilder/Terminator2.jpg)
+  - [Terminator Plakat](https://www.figuren-shop.de/media/image/e0/b8/d7/2D_ERsatzbilder-NOW-0948-ML8625_15_1280x1280.jpg)
 
 ## The Fifth Element
 - **Charaktere:**
@@ -65,7 +64,7 @@
 - **Filmausschnitt:** [The Fifth Element Szene](https://www.youtube.com/watch?v=jjE30P8Hf9E)
 - **Puzzle Link:** [The Fifth Element Puzzle Link](https://www.jigsawplanet.com/?rc=play&pid=26d27f5d2bd2&pieces=25)
 - **Plakate:**
-  - ![The Fifth Element](bilder/Das-fuenfte-element.jpg)
+  - [The Fifth Element Plakat](https://i.ytimg.com/vi/AZ-VMEI-mwM/maxresdefault.jpg)
 
 ## V wie Vendetta
 - **Charaktere:**
@@ -73,6 +72,7 @@
   - IDs: 462487, 280235
   - TeamID: 742722
 - **Easter Egg:** Guy Fawkes Maske
+- **Puzzle Link:** [V wie Vendetta Puzzle Link](https://www.jigsawplanet.com/?rc=play&pid=165db06bc0ff&pieces=24)
 
 ## Blade Runner
 - **Charaktere:**
@@ -80,6 +80,7 @@
   - IDs: 129864, 137712
   - TeamID: 267576
 - **Easter Egg:** Origami Einhorn
+- **Puzzle Link:** [Blade Runner Puzzle Link](https://www.jigsawplanet.com/?rc=play&pid=33ecfbdf7c26&pieces=24)
 
 ## Gattaca
 - **Charaktere:**
@@ -88,10 +89,12 @@
   - TeamID: 709415
 - **Easter Egg:** Blut auf der Tastatur
   - **Beschreibung:** Liebe und Täuschung in einer genetischen Welt.
+- **Puzzle Link:** [Gattaca Puzzle Link](https://www.jigsawplanet.com/?rc=play&pid=19e9eaf09352&pieces=24)
 
 ## In Time
 - **Easter Egg:** Leuchtende Zeit-Tattoos
   - **Beschreibung:** Verknüpfen Lebenserwartung und soziale Klasse.
+- **Puzzle Link:** [In Time Puzzle Link](https://www.jigsawplanet.com/?rc=play&pid=2cc250f928ae&pieces=24)
 
 ## Wanted
 - **Charaktere:**
@@ -99,6 +102,7 @@
   - IDs: 328023, 488289
   - TeamID: 816312
 - **Easter Egg:** Gebogene Kugel
+- **Puzzle Link:** [Wanted Puzzle Link](https://www.jigsawplanet.com/?rc=play&pid=308318787d3c&pieces=24)
 
 ## Ex Machina
 - **Charaktere:**
@@ -107,8 +111,9 @@
   - TeamID: 789178
 - **Easter Egg:** Spiegelnde Glaswände
   - **Beschreibung:** Verdeutlichen Selbsttäuschung und Projektion.
+- **Puzzle Link:** [Ex Machina Puzzle Link](https://www.jigsawplanet.com/?rc=play&pid=2a11e236bde6&pieces=24)
 
-## Genesis Backup [ DAS SIND Einfach wir, checkt sonst keiner]
+## Genesis Backup [Admins]
 - **Charaktere:**
   - William, Feng
   - IDs: 290481, 231612
@@ -123,6 +128,7 @@
   - TeamID: 607209
 - **Easter Egg:** Bug-Kopf
   - **Beschreibung:** Ein Modell oder Bild eines Bug-Kopfes, der die außerird
+- **Puzzle Link:** [Starship Troopers Puzzle Link](https://www.jigsawplanet.com/?rc=play&pid=1ba467a51156&pieces=24)
 
 ## Equilibrium
 - **Charaktere:**
@@ -131,6 +137,7 @@
   - TeamID: 596344
 - **Easter Egg:** Zerbrochene Glasampulle mit Prozium
   - **Beschreibung:** Steht für Emotion als Revolution.
+- **Puzzle Link:** [Equilibrium Puzzle Link](https://www.jigsawplanet.com/?rc=play&pid=31068426f747&pieces=24)
 
 ## Robocop
 - **Charaktere:**
@@ -139,21 +146,25 @@
   - TeamID: 917920
 - **Easter Egg:** RoboCop Helm
   - **Beschreibung:** Verkörpert die Verschmelzung von Mensch und Maschine.
+- **Puzzle Link:** [Robocop Puzzle Link](https://www.jigsawplanet.com/?rc=play&pid=136cb09e1bab&pieces=24)
 
 ## I, Robot
 - **Easter Egg:** Roboter mit menschlichen Eigenschaften
   - **Beschreibung:** Thematisiert die Grenzen zwischen Mensch und Maschine.
+- **Puzzle Link:** [I, Robot Puzzle Link](https://www.jigsawplanet.com/?rc=play&pid=2bd0afc7ac31&pieces=24)
 
-## Mad Max Fury Road
+## Mad Max
 - **Charaktere:**
   - Max, Furiosa
   - IDs: 116856, 174759
   - TeamID: 291615
 - **Easter Egg:** Silbernes Chromspray
   - **Beschreibung:** Ritual der Hingabe für Freiheit.
+- **Puzzle Link:** [Mad Max Puzzle Link](https://www.jigsawplanet.com/?rc=play&pid=32bcf53ca340&pieces=24)
 
 ## 2001 Odyssee im Weltraum
 - **Easter Egg:** Affen
+- **Puzzle Link:** [2001 Odyssee im Weltraum Puzzle Link](https://www.jigsawplanet.com/?rc=play&pid=3cea4bb2ead5&pieces=24)
 
 ## Her
 - **Charaktere:**
@@ -162,6 +173,7 @@
   - TeamID: 695900
 - **Easter Egg:** Ohrhörer
   - **Beschreibung:** Bindeglied zwischen Realität und KI-Liebe.
+- **Puzzle Link:** [Her Puzzle Link](https://www.jigsawplanet.com/?rc=play&pid=049c3aeacc9c&pieces=24)
 
 ## Transcendence
 - **Charaktere:**
@@ -170,6 +182,7 @@
   - TeamID: 365275
 - **Easter Egg:** Nano Staubwolke
   - **Beschreibung:** Easter Eggisiert digitales Bewusstsein jenseits des Körpers.
+- **Puzzle Link:** [Transcendence Puzzle Link](https://www.jigsawplanet.com/?rc=play&pid=23be85959819&pieces=24)
 
 ## 1984
 - **Charaktere:**
@@ -178,6 +191,7 @@
   - TeamID: 595076
 - **Easter Egg:** Papierbotschaft Down with Big Brother
   - **Beschreibung:** Liebe als Akt der Rebellion.
+- **Puzzle Link:** [1984 Puzzle Link](https://www.jigsawplanet.com/?rc=play&pid=0b0270c81347&pieces=24)
 
 ## Maze Runner
 - **Charaktere:**
@@ -186,6 +200,7 @@
   - TeamID: 505317
 - **Easter Egg:** Das Labyrinth
   - **Beschreibung:** Suche nach Wahrheit in einer manipulierten Welt.
+- **Puzzle Link:** [Maze Runner Puzzle Link](https://www.jigsawplanet.com/?rc=play&pid=2417c53715a3&pieces=24)
 
 ## Die Insel
 - **Charaktere:**
@@ -194,3 +209,4 @@
   - TeamID: 452974
 - **Easter Egg:** Weiße Anzüge und genetische Klone
   - **Beschreibung:** Der Traum von Freiheit als Illusion.
+- **Puzzle Link:** [Die Insel Puzzle Link](https://www.jigsawplanet.com/?rc=play&pid=08a586b5ee9d&pieces=24)

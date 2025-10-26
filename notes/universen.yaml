@@ -43,9 +43,6 @@ universes:
   puzzle_link: https://www.jigsawplanet.com/?rc=play&pid=3494319d2445&pieces=24
   posters:
   - https://imgs.search.brave.com/BYJZHHTIQ4wG3qBICh6AyuIRZesub9ky5nY-oIZ9HBc/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWFn/ZXMuZ3V0ZWZyYWdl/Lm5ldC9tZWRpYS9m/cmFnZW4vYmlsZGVy/L3dpZS1iZW51dHp0/LW1hbi1kaWUtZHJl/aS1tdXNjaGVsbi8w/X2JpZy5qcGc_dj0x/Njk2MTAxNTg1Njc3
-  - bilder/DemolitionMan.jpg
-  - bilder/DemolitionMan2.jpg
-  - bilder/DemolitionMan2.webp
   trello_card_id: null
   trello_list_id: null
 - title: Terminator
@@ -68,8 +65,6 @@ universes:
   puzzle_link: https://www.jigsawplanet.com/?rc=play&pid=09f7d810363c&pieces=24
   posters:
   - https://www.figuren-shop.de/media/image/e0/b8/d7/2D_ERsatzbilder-NOW-0948-ML8625_15_1280x1280.jpg
-  - bilder/Terminator.jpg
-  - bilder/Terminator2.jpg
   trello_card_id: null
   trello_list_id: null
 - title: The Fifth Element
@@ -91,7 +86,6 @@ universes:
   puzzle_link: https://www.jigsawplanet.com/?rc=play&pid=26d27f5d2bd2&pieces=25
   posters:
   - https://i.ytimg.com/vi/AZ-VMEI-mwM/maxresdefault.jpg
-  - bilder/Das-fuenfte-element.jpg
   trello_card_id: null
   trello_list_id: null
 - title: V wie Vendetta
