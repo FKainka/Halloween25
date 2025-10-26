@@ -1,0 +1,21 @@
+[trello]
+# Deine Trello API-Credentials
+# Erhalte deinen API-Key hier: https://trello.com/app-key
+api_key = DEIN_API_KEY_HIER
+
+# Generiere ein Token hier: https://trello.com/app-key (klicke auf "Token")
+api_token = DEIN_API_TOKEN_HIER
+
+# Die Board-ID findest du in der URL deines Trello-Boards
+# z.B. https://trello.com/b/ABC123/halloween25 -> ABC123
+board_id = DEINE_BOARD_ID_HIER
+
+[paths]
+# Pfad zur Markdown-Datei (relativ zum trello-Verzeichnis)
+markdown = ../notes/Universen.md
+
+# Pfad zur YAML-Datei (wird automatisch erstellt)
+yaml = universen.yaml
+
+# Name der Trello-Liste für Universen/Easter Eggs
+list_name = Universen/Easter Eggs
