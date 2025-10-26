@@ -6,6 +6,7 @@ from models import Universe
 from markdown_parser import MarkdownParser
 from yaml_converter import YAMLConverter
 from trello_client import TrelloClient
+from id_generator import IDGenerator
 from pathlib import Path
 
 
@@ -126,3 +127,51 @@ class SyncManager:
     def import_from_yaml(self) -> None:
         """Importiert YAML zu Markdown"""
         self.yaml_converter.yaml_to_markdown()
+    
+    def generate_character_ids(self) -> None:
+        """Generiert automatisch IDs für alle Charaktere und speichert zurück"""
+        print("🔢 Generiere Charakter-IDs...\n")
+        
+        # Lade Universen aus Markdown
+        universes = self.parser.parse()
+        
+        updated_count = 0
+        
+        for universe in universes:
+            if not universe.characters:
+                continue
+            
+            # Prüfe ob IDs fehlen
+            needs_update = False
+            for char in universe.characters:
+                if not char.character_id:
+                    needs_update = True
+                    break
+            
+            if not universe.team_id and len(universe.characters) >= 2:
+                needs_update = True
+            
+            if needs_update:
+                # Generiere IDs
+                IDGenerator.generate_ids_for_universe(universe)
+                updated_count += 1
+                
+                # Zeige generierte IDs
+                print(f"✓ {universe.title}:")
+                for char in universe.characters:
+                    print(f"  - {char.name}: {char.character_id}")
+                if universe.team_id:
+                    print(f"  → Team-ID: {universe.team_id}")
+                print()
+        
+        if updated_count > 0:
+            # Speichere zurück zu YAML und Markdown
+            self.yaml_converter.save_to_yaml(universes)
+            markdown_content = self.parser.universes_to_markdown(universes)
+            
+            with open(self.markdown_path, 'w', encoding='utf-8') as f:
+                f.write(markdown_content)
+            
+            print(f"✅ {updated_count} Universen wurden mit IDs aktualisiert")
+        else:
+            print("ℹ️  Alle Universen haben bereits IDs")

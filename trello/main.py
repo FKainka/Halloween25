@@ -50,12 +50,13 @@ Beispiele:
   %(prog)s sync           # Bidirektionale Synchronisation
   %(prog)s export         # Exportiert Markdown → YAML
   %(prog)s import         # Importiert YAML → Markdown
+  %(prog)s generate-ids   # Generiert automatisch IDs für Charaktere
         """
     )
     
     parser.add_argument(
         'command',
-        choices=['push', 'pull', 'sync', 'export', 'import'],
+        choices=['push', 'pull', 'sync', 'export', 'import', 'generate-ids'],
         help='Auszuführender Befehl'
     )
     
@@ -92,6 +93,8 @@ Beispiele:
             sync_manager.export_to_yaml()
         elif args.command == 'import':
             sync_manager.import_from_yaml()
+        elif args.command == 'generate-ids':
+            sync_manager.generate_character_ids()
     except Exception as e:
         print(f"\n❌ Fehler: {e}")
         import traceback
