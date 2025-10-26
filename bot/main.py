@@ -85,15 +85,17 @@ def main():
         from handlers.points import points_command
         from handlers.photo import photo_handler
         from handlers.text import text_handler
+        from handlers.team import team_command
         
         application.add_handler(CommandHandler("start", start_command))
         application.add_handler(CommandHandler("help", help_command))
         application.add_handler(CommandHandler("punkte", points_command))
+        application.add_handler(CommandHandler("team", team_command))
         
         # Foto-Handler (ohne Command)
         application.add_handler(MessageHandler(filters.PHOTO, photo_handler))
         
-        # Text-Handler für Team-Beitritt (ohne Command)
+        # Text-Handler für Team-Beitritt (ohne Command - DEPRECATED, nutze /team)
         application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, text_handler))
         
         logger.info("Bot-Handler registriert")

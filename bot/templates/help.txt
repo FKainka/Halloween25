@@ -23,10 +23,10 @@ Hier ist eine Übersicht über alle Möglichkeiten, Punkte für die Rebellion zu
 ✍️ So funktioniert's:
 1. Finde deinen Partner (gleiche Simulation)
 2. Addiert eure Charakter-IDs (z.B. 246935 + 233579 = 480514)
-3. Sende hier: Team: <Team-ID>
+3. Sende hier: /team 480514
 4. Du erhältst einen Link zum Puzzle
 5. Löse das Puzzle gemeinsam
-6. Sende Screenshot mit: Team: <Team-ID>
+6. Sende Screenshot mit Caption: Team: <Team-ID>
 
 ━━━━━━━━━━━━━━━━━━━━━━
 2️⃣ FILM-REFERENZEN
@@ -77,6 +77,7 @@ Mad Max, 1984, Equilibrium, und viele mehr...
 /start - Diese Einführung nochmal anzeigen
 /help - Diese Hilfe anzeigen
 /punkte - Deine aktuellen Punkte ansehen
+/team <ID> - Einem Team beitreten (z.B. /team 480514)
 
 ━━━━━━━━━━━━━━━━━━━━━━
 

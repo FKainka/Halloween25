@@ -8,11 +8,13 @@ from handlers.help import help_command
 from handlers.points import points_command
 from handlers.photo import photo_handler
 from handlers.text import text_handler
+from handlers.team import team_command
 
 __all__ = [
     'start_command',
     'help_command', 
     'points_command',
     'photo_handler',
-    'text_handler'
+    'text_handler',
+    'team_command'
 ]

@@ -129,14 +129,14 @@ DEBUG - Photo saved: photos/party/...
 
 ---
 
-### 6. Test: Team Join (Text-Nachricht)
+### 6. Test: Team Join Command ⭐ NEU
 
 **Vorbereitung:** Berechne Team-ID für "Matrix"
 - Trinity ID: 246935
 - Neo ID: 233579
 - **Team-ID: 480514**
 
-**Aktion:** Sende Text-Nachricht `Team: 480514`
+**Aktion:** Sende Command `/teamid 480514`
 
 **Erwartetes Verhalten:**
 - ✅ Bestätigung: "Willkommen im Team Matrix!"
@@ -152,9 +152,19 @@ INFO - User 123456789 joined team Matrix (480514). Points: 25
 
 ---
 
+### 6b. Test: Team Join (Altes Format - DEPRECATED)
+
+**Aktion:** Sende Text-Nachricht `Team: 480514`
+
+**Erwartetes Verhalten:**
+- ℹ️ Hinweis: "Nutze jetzt `/teamid 480514`"
+- ❌ KEIN Team-Beitritt (nur Hinweis)
+
+---
+
 ### 7. Test: Team Join (ungültige ID)
 
-**Aktion:** Sende Text-Nachricht `Team: 999999`
+**Aktion:** Sende Command `/teamid 999999`
 
 **Erwartetes Verhalten:**
 - ❌ Fehlermeldung: "Team-ID nicht gefunden"
@@ -165,10 +175,10 @@ INFO - User 123456789 joined team Matrix (480514). Points: 25
 
 ### 8. Test: Team Join (falsches Format)
 
-**Aktion:** Sende Text-Nachricht `Team: ABC123`
+**Aktion:** Sende Command `/teamid ABC123`
 
 **Erwartetes Verhalten:**
-- ❌ Fehlermeldung: "Ungültiges Format. Nutze: Team: 123456"
+- ❌ Fehlermeldung: "Die Team-ID muss genau 6 Ziffern haben!"
 - ❌ Keine Punkte vergeben
 
 ---
