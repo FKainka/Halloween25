@@ -322,16 +322,18 @@ async def admin_points_command(update: Update, context: ContextTypes.DEFAULT_TYP
     Usage: /admin_points <telegram_id> <points> <reason>
     """
     user = update.effective_user
+    chat_id = update.effective_chat.id
     
     if not config.is_admin(user.id):
-        await update.message.reply_text("❌ Dieser Command ist nur für Admins verfügbar.")
+        await context.bot.send_message(chat_id=chat_id, text="❌ Dieser Command ist nur für Admins verfügbar.")
         return
     
     if not context.args or len(context.args) < 3:
-        await update.message.reply_text(
-            "❌ Ungültiges Format!\n\n"
-            "Nutze: /admin_points <telegram_id> <points> <reason>\n"
-            "Beispiel: /admin_points 123456789 10 Bonus für cooles Kostüm"
+        await context.bot.send_message(
+            chat_id=chat_id,
+            text="❌ Ungültiges Format!\n\n"
+            "Nutze: /points <telegram_id> <punkte> <grund>\n"
+            "Beispiel: /points 123456789 10 Bonus für cooles Kostüm"
         )
         return
     
@@ -344,7 +346,7 @@ async def admin_points_command(update: Update, context: ContextTypes.DEFAULT_TYP
         player = session.query(crud.User).filter_by(telegram_id=telegram_id).first()
         
         if not player:
-            await update.message.reply_text(f"❌ Spieler mit ID {telegram_id} nicht gefunden.")
+            await context.bot.send_message(chat_id=chat_id, text=f"❌ Spieler mit ID {telegram_id} nicht gefunden.")
             return
         
         # Punkte vergeben
@@ -379,7 +381,7 @@ Neue Punkte: **{player.total_points}**
 Grund: {reason}
 """
         
-        await update.message.reply_text(message, parse_mode='Markdown')
+        await context.bot.send_message(chat_id=chat_id, text=message, parse_mode='Markdown')
         logger.info(f"Admin {user.id} adjusted points for user {telegram_id}: {points:+d} ({reason})")
 
 
