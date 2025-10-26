@@ -11,7 +11,7 @@
 ---
 
 
-# Universen/Referenzen (Fertiggeplant: 4):
+# Universen/Referenzen (Fertiggeplant: 22):
 
 
 ## Matrix
@@ -67,11 +67,6 @@
 - **Plakate:**
   - ![The Fifth Element](bilder/Das-fuenfte-element.jpg)
 
-----
-
-# Universen/Referenzen (Noch in Planung: 7):
-
-
 ## V wie Vendetta
 - **Charaktere:**
   - V, Evey
@@ -120,11 +115,6 @@
   - TeamID: 522093
 - **Easter Egg:** Grüner Stein
 ----
-
-# Weitere Potenzielle Filme/Referenzen (12):
-
-
-## :
 
 ## Starship Troopers
 - **Charaktere:**
