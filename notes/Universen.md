@@ -97,10 +97,21 @@
 - **Puzzle Link:** [Gattaca Puzzle Link](https://www.jigsawplanet.com/?rc=play&pid=19e9eaf09352&pieces=24)
 
 ## In Time
+- **Charaktere:**
+  - Will, Sylvia
 - **Easter Egg:** Leuchtende Zeit-Tattoos
   - **Beschreibung:** Verknüpfen Lebenserwartung und soziale Klasse.
 - **Filmausschnitt:** [In Time Szene](https://www.youtube.com/watch?v=16b2cFpK7MA)
 - **Puzzle Link:** [In Time Puzzle Link](https://www.jigsawplanet.com/?rc=play&pid=2cc250f928ae&pieces=24)
+
+## Inception
+- **Charaktere:**
+  - Cobb, Ariadne
+- **Easter Egg:** Drehender Kreisel
+  - **Beschreibung:** Symbolisiert die Unterscheidung zwischen Traum und Realität.  
+- **Filmausschnitt:** [Inception Szene](https://www.youtube.com/watch?v=XQPy88-E2zo)
+- **Puzzle Link:** [Inception Puzzle Link](https://www.jigsawplanet.com/?rc=play&pid=2fd9aa463d96&pieces=24)
+
 
 ## Wanted
 - **Charaktere:**
