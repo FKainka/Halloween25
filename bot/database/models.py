@@ -62,7 +62,7 @@ class Team(Base):
     character_2 = Column(String(255), nullable=False)
     character_1_id = Column(String(6), nullable=False)
     character_2_id = Column(String(6), nullable=False)
-    puzzle_link = Column(String(500), nullable=False)
+    puzzle_link = Column(String(500), nullable=True)  # Optional für Admin-Team
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
     
     # Relationships
