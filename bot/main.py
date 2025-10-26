@@ -103,15 +103,19 @@ def main():
         application.add_handler(CommandHandler("punkte", points_command))
         application.add_handler(CommandHandler("team", team_command))
         
-        # Admin Commands
-        application.add_handler(CommandHandler("admin_help", admin_help_command))
+        # Admin Commands (mit kurzen Aliasen)
         application.add_handler(CommandHandler("admin", admin_command))
-        application.add_handler(CommandHandler("admin_players", admin_players_command))
-        application.add_handler(CommandHandler("admin_player", admin_player_command))
-        application.add_handler(CommandHandler("admin_teams", admin_teams_command))
-        application.add_handler(CommandHandler("admin_stats", admin_stats_command))
-        application.add_handler(CommandHandler("admin_points", admin_points_command))
-        application.add_handler(CommandHandler("admin_eastereggs", admin_eastereggs_command))
+        application.add_handler(CommandHandler(["help_admin", "adminhelp"], admin_help_command))
+        
+        # Admin: Spieler-Verwaltung
+        application.add_handler(CommandHandler(["players", "admin_players"], admin_players_command))
+        application.add_handler(CommandHandler(["player", "admin_player"], admin_player_command))
+        application.add_handler(CommandHandler(["points", "admin_points"], admin_points_command))
+        
+        # Admin: Teams & Statistiken
+        application.add_handler(CommandHandler(["teams", "admin_teams"], admin_teams_command))
+        application.add_handler(CommandHandler(["stats", "admin_stats"], admin_stats_command))
+        application.add_handler(CommandHandler(["eastereggs", "films", "admin_eastereggs"], admin_eastereggs_command))
         
         # Foto-Handler (ohne Command)
         application.add_handler(MessageHandler(filters.PHOTO, photo_handler))

@@ -13,6 +13,7 @@ from database.crud import get_or_create_user, create_submission, get_team_by_id,
 from database.models import SubmissionType, SubmissionStatus
 from services.photo_manager import photo_manager
 from services.template_manager import template_manager
+from services.ai_evaluator import ai_evaluator
 from config import config
 
 logger = logging.getLogger('bot.handlers.photo')
@@ -250,15 +251,12 @@ async def handle_film_submission(
         )
         return
     
-    # TODO: Hier kommt später die KI-Bewertung
-    # Für jetzt: Automatisch akzeptieren
-    
     try:
         # Foto herunterladen
         file = await context.bot.get_file(photo.file_id)
         photo_bytes = await file.download_as_bytearray()
         
-        # Submission erstellen
+        # Submission erstellen (PENDING bis KI bewertet hat)
         submission = create_submission(
             session=session,
             user_id=db_user.id,
@@ -266,15 +264,11 @@ async def handle_film_submission(
             photo_file_id=photo.file_id,
             caption=caption,
             film_title=film_title,
-            points_awarded=20,
-            status=SubmissionStatus.APPROVED
+            points_awarded=0,  # Noch keine Punkte
+            status=SubmissionStatus.PENDING
         )
         
-        # Easter Egg hinzufügen
-        from database.crud import add_easter_egg
-        add_easter_egg(session, db_user.id, film_title)
-        
-        # Foto lokal speichern
+        # Foto lokal speichern (brauchen wir für KI-Analyse)
         photo_path, thumbnail_path = photo_manager.save_photo(
             photo_bytes=bytes(photo_bytes),
             user_id=user.id,
@@ -288,18 +282,73 @@ async def handle_film_submission(
         submission.thumbnail_path = thumbnail_path
         session.commit()
         
-        # Bestätigung senden
-        response = template_manager.render_film_approved(
-            first_name=user.first_name or "Reisender",
-            film_title=film_title,
-            points=20,
-            total_points=db_user.total_points,
-            ai_reasoning="Film-Referenz wurde erkannt! (KI-Bewertung folgt später)"
+        # "Wird analysiert..." Nachricht
+        processing_msg = await context.bot.send_message(
+            chat_id=chat_id,
+            text=f"🤖 Analysiere deine Referenz zu \"{film_title}\"...\n\nDies kann bis zu 10 Sekunden dauern."
         )
         
-        await context.bot.send_message(chat_id=chat_id, text=response)
+        # KI-Bewertung durchführen
+        is_approved, confidence, reasoning, ai_response = ai_evaluator.evaluate_film_reference(
+            photo_path=photo_path,
+            film_title=film_title
+        )
         
-        logger.info(f"Film reference accepted for user {user.id}: {film_title} (+20 points)")
+        # Submission aktualisieren
+        if is_approved:
+            submission.status = SubmissionStatus.APPROVED
+            submission.points_awarded = 20
+            submission.ai_evaluation = str(ai_response)  # JSON als String speichern
+            
+            # Easter Egg hinzufügen
+            from database.crud import add_easter_egg
+            add_easter_egg(session, db_user.id, film_title)
+            
+            session.commit()
+            
+            # Erfolgs-Nachricht
+            response = template_manager.render_film_approved(
+                first_name=user.first_name or "Reisender",
+                film_title=film_title,
+                points=20,
+                total_points=db_user.total_points,
+                ai_reasoning=f"🎯 Confidence: {confidence}%\n\n{reasoning}"
+            )
+            
+            await context.bot.edit_message_text(
+                chat_id=chat_id,
+                message_id=processing_msg.message_id,
+                text=response
+            )
+            
+            logger.info(
+                f"Film reference APPROVED for user {user.id}: {film_title} "
+                f"(+20 points) | Confidence: {confidence}%"
+            )
+            
+        else:
+            # KI hat Referenz nicht erkannt
+            submission.status = SubmissionStatus.REJECTED
+            submission.ai_evaluation = str(ai_response)
+            session.commit()
+            
+            # Ablehnungs-Nachricht
+            response = template_manager.render_film_rejected(
+                first_name=user.first_name or "Reisender",
+                film_title=film_title,
+                reason=f"🤖 Confidence: {confidence}%\n\n{reasoning}\n\n💡 Tipp: Die Referenz muss eindeutig erkennbar sein!"
+            )
+            
+            await context.bot.edit_message_text(
+                chat_id=chat_id,
+                message_id=processing_msg.message_id,
+                text=response
+            )
+            
+            logger.info(
+                f"Film reference REJECTED for user {user.id}: {film_title} "
+                f"| Confidence: {confidence}%"
+            )
         
     except Exception as e:
         logger.error(f"Error processing film submission: {e}", exc_info=True)

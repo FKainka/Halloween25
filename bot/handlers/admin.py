@@ -4,6 +4,7 @@ Admin Commands für den Halloween Bot
 from telegram import Update
 from telegram.ext import ContextTypes
 import logging
+import json
 
 from database.db import Database
 from database import crud
@@ -30,31 +31,34 @@ async def admin_help_command(update: Update, context: ContextTypes.DEFAULT_TYPE)
 
 **Übersicht:**
 • `/admin` - Admin-Hauptmenü
-• `/admin_help` - Diese Hilfe anzeigen
+• `/help_admin` - Diese Hilfe anzeigen
 
 **Spieler-Verwaltung:**
-• `/admin_players` - Liste aller Spieler mit Punkten
-• `/admin_player <telegram_id>` - Details zu einem Spieler
-• `/admin_points <telegram_id> <punkte> <grund>` - Punkte manuell vergeben/abziehen
+• `/players` - Liste aller Spieler mit Punkten
+• `/player <telegram_id>` - Details zu einem Spieler
+• `/points <telegram_id> <punkte> <grund>` - Punkte manuell vergeben/abziehen
 
 **Team-Verwaltung:**
-• `/admin_teams` - Übersicht aller Teams mit Mitgliedern
+• `/teams` - Übersicht aller Teams mit Mitgliedern
 
 **Statistiken:**
-• `/admin_stats` - Party-Statistiken (Spieler, Submissions, Top 3)
-• `/admin_eastereggs` - Alle erkannten Filme
+• `/stats` - Party-Statistiken (Spieler, Submissions, Top 3)
+• `/eastereggs` (oder `/films`) - Alle erkannten Filme
 
 **Beispiele:**
 ```
-/admin_player 657163418
-/admin_points 657163418 50 Bonus für Kostüm
-/admin_points 657163418 -10 Regelverstoss
+/player 657163418
+/points 657163418 50 Bonus für Kostüm
+/points 657163418 -10 Regelverstoss
+/stats
+/teams
 ```
 
 **Hinweise:**
 • Alle Punkteänderungen werden im AdminLog protokolliert
-• Telegram-IDs findest du mit /admin_players
-• Negative Punkte zum Abziehen verwenden"""
+• Telegram-IDs findest du mit /players
+• Negative Punkte zum Abziehen verwenden
+• Alle Commands funktionieren auch mit `admin_` Präfix"""
     
     await update.message.reply_text(help_text, parse_mode='Markdown')
 
@@ -77,24 +81,21 @@ async def admin_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 🔧 **ADMIN-MENÜ**
 
 **Hilfe:**
-/admin_help - Ausführliche Hilfe mit Beispielen
+/help_admin - Ausführliche Hilfe mit Beispielen
 
 **Spieler-Verwaltung:**
-/admin_players - Alle Spieler anzeigen
-/admin_player <ID> - Details zu einem Spieler
+/players - Alle Spieler anzeigen
+/player <ID> - Details zu einem Spieler
+/points <user_id> <punkte> <grund> - Punkte vergeben/abziehen
 
-**Team-Verwaltung:**
-/admin_teams - Alle Teams anzeigen
-
-**Punkte-Verwaltung:**
-/admin_points <user_id> <points> <reason> - Punkte manuell vergeben/abziehen
-/admin_stats - Party-Statistiken
-
-**Easter Eggs:**
-/admin_eastereggs - Erkannte Filme anzeigen
+**Team & Stats:**
+/teams - Alle Teams anzeigen
+/stats - Party-Statistiken
+/eastereggs (oder /films) - Erkannte Filme
 
 ━━━━━━━━━━━━━━━━━━━━━━
 Du bist eingeloggt als Admin.
+💡 Tipp: Alle Commands funktionieren auch mit admin_ Präfix
 """
     
     await update.message.reply_text(admin_menu, parse_mode='Markdown')
@@ -350,12 +351,19 @@ async def admin_points_command(update: Update, context: ContextTypes.DEFAULT_TYP
         old_points = player.total_points
         player.total_points += points
         
-        # Admin-Log erstellen
+        # Admin-Log erstellen (details als JSON-String)
+        details_dict = {
+            "points": points, 
+            "reason": reason, 
+            "old_total": old_points, 
+            "new_total": player.total_points
+        }
+        
         admin_log = crud.AdminLog(
             admin_id=user.id,
             action="MANUAL_POINTS",
             target_user_id=telegram_id,
-            details={"points": points, "reason": reason, "old_total": old_points, "new_total": player.total_points}
+            details=json.dumps(details_dict)  # Als JSON-String speichern
         )
         session.add(admin_log)
         session.commit()
