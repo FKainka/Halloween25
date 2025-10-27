@@ -27,8 +27,12 @@ class AIEvaluator:
             logger.warning("OPENAI_API_KEY nicht gesetzt - KI-Bewertung deaktiviert")
             self.client = None
         else:
-            self.client = OpenAI(api_key=config.OPENAI_API_KEY)
-            logger.info("AI Evaluator initialisiert")
+            try:
+                self.client = OpenAI(api_key=config.OPENAI_API_KEY)
+                logger.info("AI Evaluator initialisiert")
+            except Exception as e:
+                logger.error(f"Fehler beim Initialisieren des OpenAI Clients: {e}")
+                self.client = None
     
     def _encode_image(self, image_path: str) -> str:
         """
