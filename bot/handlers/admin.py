@@ -27,40 +27,38 @@ async def admin_help_command(update: Update, context: ContextTypes.DEFAULT_TYPE)
         await update.message.reply_text("❌ Dieser Command ist nur für Admins verfügbar.")
         return
     
-    help_text = """🔧 **Admin-Befehle Hilfe**
+    help_text = """🔧 Admin-Befehle Hilfe
 
-**Übersicht:**
-• `/admin` - Admin-Hauptmenü
-• `/help_admin` - Diese Hilfe anzeigen
+Übersicht:
+• /admin - Admin-Hauptmenü
+• /help_admin - Diese Hilfe anzeigen
 
-**Spieler-Verwaltung:**
-• `/players` - Liste aller Spieler mit Punkten
-• `/player <telegram_id>` - Details zu einem Spieler
-• `/points <telegram_id> <punkte> <grund>` - Punkte manuell vergeben/abziehen
+Spieler-Verwaltung:
+• /players - Liste aller Spieler mit Punkten
+• /player <telegram_id> - Details zu einem Spieler
+• /points <telegram_id> <punkte> <grund> - Punkte manuell vergeben/abziehen
 
-**Team-Verwaltung:**
-• `/teams` - Übersicht aller Teams mit Mitgliedern
+Team-Verwaltung:
+• /teams - Übersicht aller Teams mit Mitgliedern
 
-**Statistiken:**
-• `/stats` - Party-Statistiken (Spieler, Submissions, Top 3)
-• `/eastereggs` (oder `/films`) - Alle erkannten Filme
+Statistiken:
+• /stats - Party-Statistiken (Spieler, Submissions, Top 3)
+• /eastereggs (oder /films) - Alle erkannten Filme
 
-**Beispiele:**
-```
+Beispiele:
 /player 657163418
 /points 657163418 50 Bonus für Kostüm
 /points 657163418 -10 Regelverstoss
 /stats
 /teams
-```
 
-**Hinweise:**
+Hinweise:
 • Alle Punkteänderungen werden im AdminLog protokolliert
 • Telegram-IDs findest du mit /players
 • Negative Punkte zum Abziehen verwenden
-• Alle Commands funktionieren auch mit `admin_` Präfix"""
+• Alle Commands funktionieren auch mit admin_ Präfix"""
     
-    await update.message.reply_text(help_text, parse_mode='Markdown')
+    await update.message.reply_text(help_text)
 
 
 async def admin_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -77,28 +75,26 @@ async def admin_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("❌ Dieser Command ist nur für Admins verfügbar.")
         return
     
-    admin_menu = """
-🔧 **ADMIN-MENÜ**
+    admin_menu = """🔧 ADMIN-MENÜ
 
-**Hilfe:**
+Hilfe:
 /help_admin - Ausführliche Hilfe mit Beispielen
 
-**Spieler-Verwaltung:**
+Spieler-Verwaltung:
 /players - Alle Spieler anzeigen
 /player <ID> - Details zu einem Spieler
 /points <user_id> <punkte> <grund> - Punkte vergeben/abziehen
 
-**Team & Stats:**
-/teams - Alle Teams anzeigen
+Team & Stats:
+/teams - Alle Teams anzeigen  
 /stats - Party-Statistiken
 /eastereggs (oder /films) - Erkannte Filme
 
-━━━━━━━━━━━━━━━━━━━━━━
+────────────────────────
 Du bist eingeloggt als Admin.
-💡 Tipp: Alle Commands funktionieren auch mit admin_ Präfix
-"""
+💡 Tipp: Alle Commands funktionieren auch mit admin_ Präfix"""
     
-    await update.message.reply_text(admin_menu, parse_mode='Markdown')
+    await update.message.reply_text(admin_menu)
     logger.info(f"Admin {user.id} accessed admin menu")
 
 
@@ -122,7 +118,7 @@ async def admin_players_command(update: Update, context: ContextTypes.DEFAULT_TY
             await update.message.reply_text("Noch keine Spieler registriert.")
             return
         
-        message = "👥 **ALLE SPIELER**\n\n"
+        message = "👥 ALLE SPIELER\n\n"
         
         for i, u in enumerate(users, 1):
             team_info = ""
@@ -130,10 +126,10 @@ async def admin_players_command(update: Update, context: ContextTypes.DEFAULT_TY
                 team = session.query(crud.Team).filter_by(team_id=u.team_id).first()
                 team_info = f" | Team: {team.film_title}" if team else ""
             
-            message += f"{i}. **{u.first_name}** (@{u.username or 'N/A'})\n"
-            message += f"   ID: `{u.telegram_id}` | Punkte: **{u.total_points}**{team_info}\n\n"
+            message += f"{i}. {u.first_name} (@{u.username or 'N/A'})\n"
+            message += f"   ID: {u.telegram_id} | Punkte: {u.total_points}{team_info}\n\n"
         
-        await update.message.reply_text(message, parse_mode='Markdown')
+        await update.message.reply_text(message)
         logger.info(f"Admin {user.id} viewed all players")
 
 
@@ -181,27 +177,25 @@ async def admin_player_command(update: Update, context: ContextTypes.DEFAULT_TYP
         easter_eggs = session.query(crud.EasterEgg).filter_by(user_id=player.id).all()
         films_list = ", ".join([e.film_title for e in easter_eggs]) if easter_eggs else "Keine"
         
-        message = f"""
-👤 **SPIELER-DETAILS**
+        message = f"""👤 SPIELER-DETAILS
 
-**Name:** {player.first_name} {player.last_name or ''}
-**Username:** @{player.username or 'N/A'}
-**Telegram-ID:** `{player.telegram_id}`
-**DB-ID:** {player.id}
+Name: {player.first_name} {player.last_name or ''}
+Username: @{player.username or 'N/A'}
+Telegram-ID: {player.telegram_id}
+DB-ID: {player.id}
 
-**📊 STATISTIKEN:**
-Gesamt-Punkte: **{player.total_points}**
+📊 STATISTIKEN:
+Gesamt-Punkte: {player.total_points}
 Party-Fotos: {party_photos}
 Film-Referenzen: {films}
 Team: {team_info}
 
-**🎬 Erkannte Filme:**
+🎬 Erkannte Filme:
 {films_list}
 
-**📅 Registriert:** {player.created_at.strftime('%d.%m.%Y %H:%M')}
-"""
+📅 Registriert: {player.created_at.strftime('%d.%m.%Y %H:%M')}"""
         
-        await update.message.reply_text(message, parse_mode='Markdown')
+        await update.message.reply_text(message)
         logger.info(f"Admin {user.id} viewed player {telegram_id}")
 
 
@@ -221,13 +215,13 @@ async def admin_teams_command(update: Update, context: ContextTypes.DEFAULT_TYPE
     with db.get_session() as session:
         teams = session.query(crud.Team).all()
         
-        message = "🎬 **ALLE TEAMS**\n\n"
+        message = "🎬 ALLE TEAMS\n\n"
         
         for team in teams:
             members = session.query(crud.User).filter_by(team_id=team.team_id).all()
             member_count = len(members)
             
-            message += f"**{team.film_title}** (ID: `{team.team_id}`)\n"
+            message += f"{team.film_title} (ID: {team.team_id})\n"
             message += f"Charaktere: {team.character_1} & {team.character_2}\n"
             message += f"Mitglieder: {member_count}\n"
             
@@ -237,7 +231,7 @@ async def admin_teams_command(update: Update, context: ContextTypes.DEFAULT_TYPE
             
             message += "\n"
         
-        await update.message.reply_text(message, parse_mode='Markdown')
+        await update.message.reply_text(message)
         logger.info(f"Admin {user.id} viewed all teams")
 
 
@@ -287,31 +281,29 @@ async def admin_stats_command(update: Update, context: ContextTypes.DEFAULT_TYPE
             crud.User.total_points.desc()
         ).limit(3).all()
         
-        message = f"""
-📊 **PARTY-STATISTIKEN**
+        message = f"""📊 PARTY-STATISTIKEN
 
-**Gesamt:**
+Gesamt:
 👥 Spieler: {total_users}
 📸 Submissions: {total_submissions}
 ⭐ Gesamt-Punkte: {sum_points}
 
-**Submissions nach Typ:**
+Submissions nach Typ:
 📷 Party-Fotos: {party_photos}
 🎬 Film-Referenzen: {films}
 👫 Team-Beitritte: {team_joins}
 🧩 Puzzles gelöst: {puzzles}
 
-**Teams:**
+Teams:
 Aktive Teams: {teams_with_members}
 
-**🏆 TOP 3:**
-"""
+🏆 TOP 3:"""
         
         for i, u in enumerate(top_users, 1):
             emoji = ["🥇", "🥈", "🥉"][i-1]
-            message += f"{emoji} {u.first_name}: **{u.total_points}** Punkte\n"
+            message += f"\n{emoji} {u.first_name}: {u.total_points} Punkte"
         
-        await update.message.reply_text(message, parse_mode='Markdown')
+        await update.message.reply_text(message)
         logger.info(f"Admin {user.id} viewed stats")
 
 
@@ -370,18 +362,16 @@ async def admin_points_command(update: Update, context: ContextTypes.DEFAULT_TYP
         session.add(admin_log)
         session.commit()
         
-        message = f"""
-✅ **PUNKTE ANGEPASST**
+        message = f"""✅ PUNKTE ANGEPASST
 
 Spieler: {player.first_name}
 Alte Punkte: {old_points}
 Anpassung: {points:+d}
-Neue Punkte: **{player.total_points}**
+Neue Punkte: {player.total_points}
 
-Grund: {reason}
-"""
+Grund: {reason}"""
         
-        await context.bot.send_message(chat_id=chat_id, text=message, parse_mode='Markdown')
+        await context.bot.send_message(chat_id=chat_id, text=message)
         logger.info(f"Admin {user.id} adjusted points for user {telegram_id}: {points:+d} ({reason})")
 
 
@@ -414,11 +404,11 @@ async def admin_eastereggs_command(update: Update, context: ContextTypes.DEFAULT
             user_obj = session.query(crud.User).filter_by(id=egg.user_id).first()
             films_dict[egg.film_title].append(user_obj.first_name)
         
-        message = "🎬 **ERKANNTE FILME**\n\n"
+        message = "🎬 ERKANNTE FILME\n\n"
         
         for film, users in sorted(films_dict.items()):
-            message += f"**{film}** ({len(users)}x)\n"
+            message += f"{film} ({len(users)}x)\n"
             message += f"→ {', '.join(users)}\n\n"
         
-        await update.message.reply_text(message, parse_mode='Markdown')
+        await update.message.reply_text(message)
         logger.info(f"Admin {user.id} viewed easter eggs")
