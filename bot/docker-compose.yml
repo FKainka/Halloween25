@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  halloween-bot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: halloween-bot
+    restart: unless-stopped
+    
+    # Environment-Variablen aus .env laden
+    env_file:
+      - .env
+    
+    # Persistente Volumes für Daten
+    volumes:
+      - ./bot.db:/app/bot.db
+      - ./photos:/app/photos
+      - ./logs:/app/logs
+      - ../notes/universen.yaml:/app/../notes/universen.yaml:ro
+      - ./templates:/app/templates:ro
+    
+    # Logging-Konfiguration
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    
+    # Netzwerk
+    networks:
+      - bot-network
+
+networks:
+  bot-network:
+    driver: bridge

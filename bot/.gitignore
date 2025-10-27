@@ -36,3 +36,12 @@ photos/
 # Alembic
 alembic/versions/*.py
 !alembic/versions/__init__.py
+
+# Docker
+.dockerignore
+docker-compose.override.yml
+
+# Backups
+backups/
+*.backup
+*.bak

@@ -4,25 +4,53 @@ Telegram-Bot für die Halloween-Party 2025: "Rebellion gegen die KI"
 
 ## 🚀 Setup
 
-### 1. Dependencies installieren
+### Empfohlen: Docker Setup (einfach & isoliert)
+
+```bash
+# 1. Environment-Variablen konfigurieren
+cp .env.example .env
+nano .env  # Trage TELEGRAM_BOT_TOKEN und OPENAI_API_KEY ein
+
+# 2. Bot starten
+docker-compose up -d
+
+# 3. Logs anzeigen
+docker-compose logs -f
+```
+
+**Oder mit Makefile (noch einfacher):**
+```bash
+make setup   # .env erstellen
+make up      # Bot starten
+make logs    # Logs anzeigen
+make help    # Alle Befehle anzeigen
+```
+
+📖 **Ausführliche Docker-Dokumentation:** siehe [DOCKER.md](DOCKER.md)
+
+---
+
+### Alternative: Manuelle Installation
+
+#### 1. Dependencies installieren
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 2. Bot bei BotFather registrieren
+#### 2. Bot bei BotFather registrieren
 
 1. Öffne Telegram und suche nach `@BotFather`
 2. Sende `/newbot`
 3. Folge den Anweisungen und wähle einen Namen
 4. Kopiere den Bot-Token
 
-### 3. Environment-Variablen konfigurieren
+#### 3. Environment-Variablen konfigurieren
 
 Kopiere `.env.example` zu `.env`:
 
 ```bash
-copy .env.example .env
+cp .env.example .env
 ```
 
 Fülle die `.env` mit deinen Daten:
@@ -37,10 +65,10 @@ ADMIN_USER_IDS=deine_telegram_user_id
 - Sende eine Nachricht an `@userinfobot`
 - Kopiere deine User-ID
 
-### 4. Bot starten
+#### 4. Bot starten
 
 ```bash
-python main.py
+python3 main.py
 ```
 
 ## 📁 Projekt-Struktur
