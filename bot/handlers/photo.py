@@ -1,6 +1,6 @@
 """
 Foto-Upload Handler
-Verarbeitet hochgeladene Fotos und erkennt Caption-Befehle.
+Verarbeitet hochgeladene Fotos mit Caption-Erkennung.
 """
 
 from telegram import Update
@@ -9,12 +9,17 @@ import re
 import logging
 
 from database.db import db
-from database.crud import get_or_create_user, create_submission, get_team_by_id, join_team, has_recognized_film
+from database.crud import (
+    get_or_create_user, 
+    create_submission, 
+    has_recognized_film,
+    add_easter_egg,
+    has_solved_puzzle
+)
 from database.models import SubmissionType, SubmissionStatus
 from services.photo_manager import photo_manager
 from services.template_manager import template_manager
 from services.ai_evaluator import ai_evaluator
-from config import config
 
 logger = logging.getLogger('bot.handlers.photo')
 
@@ -22,7 +27,7 @@ logger = logging.getLogger('bot.handlers.photo')
 async def photo_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """
     Handler für Foto-Uploads.
-    Erkennt: Team: (für Puzzle), Film: oder allgemeines Partyfoto.
+    Erkennt Caption-Befehle: "Film: <Titel>", "Puzzle"
     """
     user = update.effective_user
     chat_id = update.effective_chat.id
@@ -53,9 +58,9 @@ async def photo_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         # Caption parsen
         caption_lower = caption.lower().strip()
         
-        # Puzzle-Screenshot: "Team: 123456" (User muss bereits im Team sein)
-        if caption_lower.startswith('team:'):
-            await handle_puzzle_submission(update, context, session, db_user, photo, caption)
+        # Puzzle-Screenshot: "Puzzle"
+        if caption_lower == 'puzzle':
+            await handle_puzzle_submission(update, context, session, db_user, photo)
             return
         
         # Film-Referenz: "Film: Matrix"
@@ -132,36 +137,23 @@ async def handle_puzzle_submission(
     context: ContextTypes.DEFAULT_TYPE,
     session,
     db_user,
-    photo,
-    caption: str
+    photo
 ):
-    """Verarbeitet Puzzle-Screenshot (User muss bereits im Team sein)."""
+    """Verarbeitet Puzzle-Screenshot mit Caption 'Puzzle'."""
     user = update.effective_user
     chat_id = update.effective_chat.id
     
-    # Team-ID extrahieren
-    match = re.search(r'team:\s*(\d{6})', caption, re.IGNORECASE)
-    
-    if not match:
+    # Prüfen ob User in einem Team ist
+    if not db_user.team_id:
         await context.bot.send_message(
             chat_id=chat_id,
-            text=template_manager.render_error('team_invalid', 'Format: Team: 123456')
+            text="❌ Du musst zuerst einem Team beitreten!\n\n"
+                 "👥 Nutze: `/team <Team-ID>`"
         )
-        return
-    
-    team_id = match.group(1)
-    
-    # Prüfen ob User in diesem Team ist
-    if not db_user.team_id or db_user.team_id != team_id:
-        await context.bot.send_message(
-            chat_id=chat_id,
-            text="❌ Du bist nicht in diesem Team! Trete zuerst mit 'Team: <ID>' (nur Text) bei."
-        )
+        logger.info(f"User {user.id} tried to submit puzzle without being in a team")
         return
     
     # Prüfen ob User Puzzle bereits gelöst hat
-    from database.crud import has_solved_puzzle
-    
     if has_solved_puzzle(session, db_user.id):
         await context.bot.send_message(
             chat_id=chat_id,
@@ -181,7 +173,8 @@ async def handle_puzzle_submission(
             submission_type=SubmissionType.PUZZLE,
             photo_file_id=photo.file_id,
             points_awarded=25,
-            status=SubmissionStatus.APPROVED
+            status=SubmissionStatus.APPROVED,
+            caption="Puzzle"
         )
         
         # Foto lokal speichern
@@ -224,7 +217,7 @@ async def handle_film_submission(
     photo,
     caption: str
 ):
-    """Verarbeitet Film-Referenz Submission."""
+    """Verarbeitet Film-Referenz Submission mit Caption 'Film: Titel'."""
     user = update.effective_user
     chat_id = update.effective_chat.id
     
@@ -234,7 +227,9 @@ async def handle_film_submission(
     if not match:
         await context.bot.send_message(
             chat_id=chat_id,
-            text="❌ Bitte gib den Film-Titel an: Film: <Titel>"
+            text="❌ Bitte gib den Film-Titel an!\n\n"
+                 "📝 Format: `Film: <Titel>`\n"
+                 "Beispiel: `Film: Matrix`"
         )
         return
     
@@ -285,7 +280,8 @@ async def handle_film_submission(
         # "Wird analysiert..." Nachricht
         processing_msg = await context.bot.send_message(
             chat_id=chat_id,
-            text=f"🤖 Analysiere deine Referenz zu \"{film_title}\"...\n\nDies kann bis zu 10 Sekunden dauern."
+            text=f"🤖 Analysiere deine Referenz zu \"{film_title}\"...\n\n"
+                 f"Dies kann bis zu 10 Sekunden dauern."
         )
         
         # KI-Bewertung durchführen
@@ -298,10 +294,9 @@ async def handle_film_submission(
         if is_approved:
             submission.status = SubmissionStatus.APPROVED
             submission.points_awarded = 20
-            submission.ai_evaluation = str(ai_response)  # JSON als String speichern
+            submission.ai_evaluation = str(ai_response)
             
             # Easter Egg hinzufügen
-            from database.crud import add_easter_egg
             add_easter_egg(session, db_user.id, film_title)
             
             session.commit()
@@ -336,7 +331,8 @@ async def handle_film_submission(
             response = template_manager.render_film_rejected(
                 first_name=user.first_name or "Reisender",
                 film_title=film_title,
-                reason=f"🤖 Confidence: {confidence}%\n\n{reasoning}\n\n💡 Tipp: Die Referenz muss eindeutig erkennbar sein!"
+                reason=f"🤖 Confidence: {confidence}%\n\n{reasoning}\n\n"
+                       f"💡 Tipp: Die Referenz muss eindeutig erkennbar sein!"
             )
             
             await context.bot.edit_message_text(
@@ -356,3 +352,4 @@ async def handle_film_submission(
             chat_id=chat_id,
             text="❌ Fehler beim Verarbeiten der Film-Referenz. Bitte versuche es erneut."
         )
+

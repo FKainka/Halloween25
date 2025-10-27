@@ -86,6 +86,7 @@ def main():
         from handlers.photo import photo_handler
         from handlers.text import text_handler
         from handlers.team import team_command
+        from handlers.keyboard import keyboard_handler
         from handlers.admin import (
             admin_help_command,
             admin_command,
@@ -116,6 +117,13 @@ def main():
         application.add_handler(CommandHandler(["teams", "admin_teams"], admin_teams_command))
         application.add_handler(CommandHandler(["stats", "admin_stats"], admin_stats_command))
         application.add_handler(CommandHandler(["eastereggs", "films", "admin_eastereggs"], admin_eastereggs_command))
+        
+        # Keyboard-Button Handler (VOR text_handler!)
+        application.add_handler(MessageHandler(
+            filters.TEXT & ~filters.COMMAND & 
+            filters.Regex(r'^(🏆 Meine Punkte|❓ Hilfe|ℹ️ Anleitung)$'),
+            keyboard_handler
+        ))
         
         # Foto-Handler (ohne Command)
         application.add_handler(MessageHandler(filters.PHOTO, photo_handler))

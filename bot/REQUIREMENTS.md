@@ -38,7 +38,7 @@ Entwicklung eines interaktiven Telegram-Bots, der:
 
 #### 2.1.2 Hilfe-System
 **Anforderung:** `FR-02`
-- **Beschreibung:** `/help` Command oder Menü-Button "Hilfe"
+- **Beschreibung:** `/help` Command oder Custom Keyboard Button "❓ Hilfe"
 - **Inhalt:**
   - Detaillierte Spielregeln
   - Erklärung aller Foto-Challenge-Typen
@@ -46,18 +46,38 @@ Entwicklung eines interaktiven Telegram-Bots, der:
   - Beispiele für korrekte Foto-Submissions
   - Kontakt bei Problemen
 
-#### 2.1.3 Foto-Upload: Allgemeine Partyfotos
-**Anforderung:** `FR-03`
-- **Beschreibung:** User kann jederzeit Partyfotos ohne Keyword hochladen
+#### 2.1.3 Custom Keyboard Navigation
+**Anforderung:** `FR-02b` (NEU)
+- **Beschreibung:** Permanentes Custom Keyboard für einfache Navigation
+- **Buttons:**
+  - 📸 Partyfoto - Foto ohne Kategorie hochladen
+  - 🎬 Film-Referenz - Hinweis zum /film Command
+  - 👥 Team beitreten - Hinweis zum /team Command
+  - 🧩 Puzzle lösen - Hinweis zum /puzzle Command
+  - 🏆 Meine Punkte - Punktestand abfragen
+  - ❓ Hilfe - Spielregeln anzeigen
 - **Verhalten:**
-  - Foto wird empfangen
+  - Erscheint nach /start automatisch
+  - Bleibt permanent sichtbar unter Chat-Eingabe
+  - Buttons sind selbsterklärend und intuitiv
+
+#### 2.1.4 Foto-Upload: Allgemeine Partyfotos
+**Anforderung:** `FR-03`
+- **Beschreibung:** User kann jederzeit Partyfotos ohne Command hochladen
+- **Verhalten:**
+  - Foto wird empfangen (ohne Caption oder mit beliebiger Caption)
   - User erhält **1 Punkt** automatisch
   - Bestätigungsnachricht: "Danke für das Partyfoto! +1 Punkt"
   - Foto wird in DB gespeichert mit Timestamp
+- **Alternative:** Button "📸 Partyfoto" nutzen
 
-#### 2.1.4 Foto-Upload: Film-Referenzen
+#### 2.1.5 Foto-Upload: Film-Referenzen (NEU: Command-basiert)
 **Anforderung:** `FR-04`
-- **Beschreibung:** User kann Foto mit Caption `Film: <Filmtitel>` hochladen
+- **Beschreibung:** User sendet Foto mit `/film <Filmtitel>` Command
+- **Usage:**
+  - Foto auswählen
+  - Als Caption eingeben: `/film Matrix`
+  - Senden
 - **Verhalten:**
   - Foto wird mit KI (OpenAI Vision API) analysiert
   - KI prüft, ob Foto eine Referenz zum genannten Film zeigt
@@ -65,6 +85,11 @@ Entwicklung eines interaktiven Telegram-Bots, der:
   - Bei Ablehnung: Feedback-Nachricht mit Grund
   - System prüft, ob User diesen Film bereits submitted hat (Easter Egg Tracking)
   - Gleicher Film kann nur 1x pro User punkten
+- **Vorteile gegenüber Caption-Parsing:**
+  - ✅ Autocomplete im Telegram-Client
+  - ✅ Weniger fehleranfällig
+  - ✅ Klare Syntax
+  - ✅ Command erscheint in /help
 
 **Film-Katalog:** 22 Filme aus `notes/universen.yaml`:
 - Matrix, Demolition Man, Terminator, The Fifth Element, V wie Vendetta
@@ -73,9 +98,9 @@ Entwicklung eines interaktiven Telegram-Bots, der:
 - 2001 Odyssee im Weltraum, Her, Transcendence, 1984
 - Maze Runner, Die Insel, Genesis Backup (Admin-Only)
 
-#### 2.1.5 Team-Bildung via QR-Code
+#### 2.1.6 Team-Bildung via Command
 **Anforderung:** `FR-05`
-- **Beschreibung:** User scannt QR-Code und sendet `Team: <6-stellige Team-ID>`
+- **Beschreibung:** User sendet `/team <6-stellige Team-ID>`
 - **Team-IDs:** 22 Teams basierend auf Film-Charakteren (siehe `universen.yaml`)
 - **Verhalten:**
   - Bot validiert Team-ID gegen Liste
@@ -83,6 +108,7 @@ Entwicklung eines interaktiven Telegram-Bots, der:
   - User erhält **25 Punkte**
   - Bot sendet Bestätigungsnachricht mit Puzzle-Link
   - User kann nur 1 Team beitreten
+- **Usage:** `/team 480514`
 
 **Beispiel Team-IDs:**
 - Matrix: `480514` (Trinity + Neo)
@@ -90,19 +116,27 @@ Entwicklung eines interaktiven Telegram-Bots, der:
 - Wanted: `816312` (Wesley + Fox)
 - usw. (alle 22 Teams aus YAML)
 
-#### 2.1.6 Puzzle-Lösung
+#### 2.1.7 Puzzle-Lösung (NEU: Command-basiert)
 **Anforderung:** `FR-06`
-- **Beschreibung:** User löst Puzzle und sendet Screenshot mit `Team: <Team-ID>`
+- **Beschreibung:** User sendet Screenshot mit `/puzzle` Command
+- **Usage:**
+  - Puzzle lösen (Link vom Bot nach Team-Beitritt)
+  - Screenshot machen
+  - Screenshot mit Caption `/puzzle` senden
 - **Verhalten:**
   - Bot empfängt Screenshot
   - Prüft, ob User bereits Team-Member ist
   - Prüft, ob User bereits Puzzle-Punkte erhalten hat
   - Bei Erfolg: **25 Punkte** + Glückwunsch-Nachricht
   - Nur 1x pro User möglich
+- **Vorteile:**
+  - ✅ Keine Team-ID mehr nötig (wird aus User-Profil gelesen)
+  - ✅ Einfachere Eingabe
+  - ✅ Klarer Command-Name
 
-#### 2.1.7 Punktestand abfragen
+#### 2.1.8 Punktestand abfragen
 **Anforderung:** `FR-07`
-- **Beschreibung:** `/punkte` Command oder Menü-Button "Meine Punkte"
+- **Beschreibung:** `/punkte` Command oder Custom Keyboard Button "🏆 Meine Punkte"
 - **Anzeige:**
   - Aktuelle Gesamtpunktzahl
   - Breakdown nach Kategorien:
@@ -203,10 +237,13 @@ Entwicklung eines interaktiven Telegram-Bots, der:
 
 ### 3.5 Usability
 **Anforderung:** `NFR-05`
-- Intuitive Bot-Befehle mit Custom Keyboard
-- Klare Fehlermeldungen
+- Intuitive Bot-Befehle mit Custom Keyboard (ReplyKeyboardMarkup)
+- Command-basiertes System für Film und Puzzle (statt fehleranfällige Captions)
+- Klare Fehlermeldungen mit Beispielen
 - Feedback bei jeder Aktion
 - Story-basierte, freundliche Bot-Persönlichkeit
+- Permanentes Menü für wichtigste Funktionen
+- Autocomplete-Unterstützung durch Telegram Commands
 
 ### 3.6 Wartbarkeit
 **Anforderung:** `NFR-06`

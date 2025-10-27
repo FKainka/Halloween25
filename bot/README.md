@@ -75,10 +75,79 @@ bot/
 - ✅ `/help` Command mit Spielregeln
 - ✅ Admin-System vorbereitet
 
-## 🎮 Bot-Commands (aktuell)
+## 🎮 Bot-Commands
 
-- `/start` - Begrüßung und Einführung in die Story
-- `/help` - Detaillierte Spielregeln
+### User-Commands
+- `/start` - Begrüßung und Einführung in die Story (zeigt Custom Keyboard)
+- `/help` - Detaillierte Spielregeln und Anleitung
+- `/punkte` - Aktuellen Punktestand und Breakdown anzeigen
+- `/team <Team-ID>` - Einem Team beitreten (z.B. `/team 480514`)
+- `/film <Filmtitel>` - Film-Referenz mit Foto einreichen (z.B. `/film Matrix`)
+- `/puzzle` - Puzzle-Screenshot einreichen (benötigt Team-Mitgliedschaft)
+
+### Custom Keyboard Buttons
+Nach `/start` erhältst du ein permanentes Menü mit folgenden Buttons:
+- **📸 Partyfoto** - Allgemeines Partyfoto hochladen (1 Punkt)
+- **🎬 Film-Referenz** - Film-Referenz mit /film Command einreichen
+- **👥 Team beitreten** - Mit /team Command einem Team beitreten
+- **🧩 Puzzle lösen** - Puzzle-Screenshot mit /puzzle einreichen
+- **🏆 Meine Punkte** - Punktestand abfragen
+- **❓ Hilfe** - Spielregeln anzeigen
+
+### Admin-Commands
+- `/admin` - Admin-Dashboard
+- `/players` - Alle Spieler anzeigen
+- `/teams` - Team-Übersicht
+- `/stats` - Party-Statistiken
+- `/eastereggs` - Erkannte Film-Referenzen
+- `/points <user_id> <punkte> <grund>` - Punkte manuell anpassen
+
+## 📋 Foto-Upload Workflows
+
+### 1️⃣ Allgemeines Partyfoto (1 Punkt)
+- Einfach Foto senden (ohne Command)
+- ODER Button "📸 Partyfoto" nutzen
+- Automatisch 1 Punkt
+
+### 2️⃣ Film-Referenz einreichen (20 Punkte bei Erfolg)
+```
+1. Foto mit Film-Referenz aufnehmen
+2. Foto mit Caption senden: /film Matrix
+3. KI analysiert das Foto (ca. 10 Sekunden)
+4. Bei Erfolg: +20 Punkte
+```
+
+### 3️⃣ Team beitreten (25 Punkte)
+```
+1. QR-Code oder Team-IDs erhalten
+2. Command senden: /team 480514
+3. Automatisch +25 Punkte + Puzzle-Link
+```
+
+### 4️⃣ Puzzle lösen (25 Punkte)
+```
+1. Zuerst einem Team beitreten
+2. Puzzle lösen (Link vom Bot)
+3. Screenshot machen
+4. Screenshot mit Command senden: /puzzle
+5. Automatisch +25 Punkte
+```
+
+## 🔧 BotFather Setup
+
+Um die Commands im Telegram-Client sichtbar zu machen, konfiguriere sie bei @BotFather:
+
+```
+/setcommands
+
+start - Bot starten und Menü anzeigen
+help - Spielregeln und Hilfe
+punkte - Punktestand abfragen
+team - Team beitreten (Team-ID erforderlich)
+film - Film-Referenz einreichen (mit Foto)
+puzzle - Puzzle-Screenshot einreichen
+admin - Admin-Dashboard (nur für Admins)
+```
 
 ## 📝 Nächste Schritte (Phase 2)
 
