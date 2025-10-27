@@ -45,13 +45,13 @@ class Config:
         self.ENVIRONMENT = os.getenv('ENVIRONMENT', 'development')
         self.LOG_LEVEL = os.getenv('LOG_LEVEL', 'INFO')
         
-        # File Storage - relativ zum bot-Verzeichnis
+        # File Storage - alle Daten im data/ Verzeichnis
         script_dir = Path(__file__).parent
-        photos_path = os.getenv('PHOTOS_BASE_PATH', './photos')
-        logs_path = os.getenv('LOGS_BASE_PATH', './logs')
+        data_base_path = os.getenv('DATA_BASE_PATH', './data')
+        data_path = script_dir / data_base_path if not Path(data_base_path).is_absolute() else Path(data_base_path)
         
-        self.PHOTOS_BASE_PATH = script_dir / photos_path if not Path(photos_path).is_absolute() else Path(photos_path)
-        self.LOGS_BASE_PATH = script_dir / logs_path if not Path(logs_path).is_absolute() else Path(logs_path)
+        self.PHOTOS_BASE_PATH = data_path / 'photos'
+        self.LOGS_BASE_PATH = data_path / 'logs'
         
         # AI Settings
         self.AI_CONFIDENCE_THRESHOLD = int(

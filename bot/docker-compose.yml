@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   halloween-bot:
     build:
@@ -11,12 +9,12 @@ services:
     # Environment-Variablen aus .env laden
     env_file:
       - .env
+    environment:
+      - DATABASE_URL=sqlite:////app/data/db/bot.db
     
-    # Persistente Volumes für Daten
+    # Persistente Volumes für Daten - alles in data/ Ordner
     volumes:
-      - ./bot.db:/app/bot.db
-      - ./photos:/app/photos
-      - ./logs:/app/logs
+      - ./data:/app/data
       - ../notes/universen.yaml:/app/../notes/universen.yaml:ro
       - ./templates:/app/templates:ro
     
