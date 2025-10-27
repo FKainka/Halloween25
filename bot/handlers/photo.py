@@ -14,12 +14,14 @@ from database.crud import (
     create_submission, 
     has_recognized_film,
     add_easter_egg,
-    has_solved_puzzle
+    has_solved_puzzle,
+    get_team_by_id
 )
 from database.models import SubmissionType, SubmissionStatus
 from services.photo_manager import photo_manager
 from services.template_manager import template_manager
 from services.ai_evaluator import ai_evaluator
+from utils.yaml_loader import universe_loader
 
 logger = logging.getLogger('bot.handlers.photo')
 
@@ -161,19 +163,28 @@ async def handle_puzzle_submission(
         )
         return
     
+    # Team-Informationen holen
+    team = get_team_by_id(session, db_user.team_id)
+    if not team:
+        await context.bot.send_message(
+            chat_id=chat_id,
+            text="❌ Fehler: Team nicht gefunden!"
+        )
+        return
+    
     try:
         # Foto herunterladen
         file = await context.bot.get_file(photo.file_id)
         photo_bytes = await file.download_as_bytearray()
         
-        # Submission erstellen
+        # Submission erstellen (PENDING bis KI bewertet hat)
         submission = create_submission(
             session=session,
             user_id=db_user.id,
             submission_type=SubmissionType.PUZZLE,
             photo_file_id=photo.file_id,
-            points_awarded=25,
-            status=SubmissionStatus.APPROVED,
+            points_awarded=0,  # Noch keine Punkte
+            status=SubmissionStatus.PENDING,
             caption="Puzzle"
         )
         
@@ -190,16 +201,67 @@ async def handle_puzzle_submission(
         submission.thumbnail_path = thumbnail_path
         session.commit()
         
-        # Bestätigung senden
-        response = template_manager.render_puzzle_completed(
-            first_name=user.first_name or "Reisender",
-            points=25,
-            total_points=db_user.total_points
+        # "Wird analysiert..." Nachricht
+        processing_msg = await context.bot.send_message(
+            chat_id=chat_id,
+            text=f"🤖 Prüfe dein Puzzle zu \"{team.film_title}\"...\n\n"
+                 f"Dies kann bis zu 10 Sekunden dauern."
         )
         
-        await context.bot.send_message(chat_id=chat_id, text=response)
+        # Team-Daten aus YAML holen für Poster-URLs
+        teams_data = universe_loader.get_teams()
+        team_data = next((t for t in teams_data if t['team_id'] == db_user.team_id), None)
+        poster_urls = team_data.get('posters', []) if team_data else []
         
-        logger.info(f"Puzzle completed by user {user.id}: +25 points")
+        # KI-Bewertung durchführen (Puzzle-Poster-Validierung)
+        is_approved, confidence, reasoning, ai_response = ai_evaluator.evaluate_puzzle_poster(
+            photo_path=photo_path,
+            film_title=team.film_title,
+            poster_urls=poster_urls
+        )
+        
+        # Submission aktualisieren
+        if is_approved:
+            submission.status = SubmissionStatus.APPROVED
+            submission.points_awarded = 25
+            submission.ai_evaluation = str(ai_response)
+            session.commit()
+            
+            # Erfolgs-Nachricht
+            response = template_manager.render_puzzle_completed(
+                first_name=user.first_name or "Reisender",
+                points=25,
+                total_points=db_user.total_points
+            )
+            
+            await context.bot.edit_message_text(
+                chat_id=chat_id,
+                message_id=processing_msg.message_id,
+                text=response + f"\n\n🎯 Confidence: {confidence}%\n{reasoning}"
+            )
+            
+            logger.info(f"Puzzle APPROVED for user {user.id}: {team.film_title} (+25 points) | Confidence: {confidence}%")
+            
+        else:
+            # KI hat Puzzle nicht als gültig erkannt
+            submission.status = SubmissionStatus.REJECTED
+            submission.ai_evaluation = str(ai_response)
+            session.commit()
+            
+            # Ablehnungs-Nachricht
+            await context.bot.edit_message_text(
+                chat_id=chat_id,
+                message_id=processing_msg.message_id,
+                text=f"❌ Puzzle konnte nicht verifiziert werden\n\n"
+                     f"🤖 Confidence: {confidence}%\n\n"
+                     f"{reasoning}\n\n"
+                     f"💡 **Wichtig:**\n"
+                     f"- Puzzle muss vollständig gelöst sein\n"
+                     f"- Muss ein Filmplakat zu \"{team.film_title}\" zeigen\n"
+                     f"- Film-Titel oder eindeutige Elemente müssen erkennbar sein"
+            )
+            
+            logger.info(f"Puzzle REJECTED for user {user.id}: {team.film_title} | Confidence: {confidence}%")
         
     except Exception as e:
         logger.error(f"Error processing puzzle screenshot: {e}", exc_info=True)
@@ -284,10 +346,22 @@ async def handle_film_submission(
                  f"Dies kann bis zu 10 Sekunden dauern."
         )
         
+        # Film-Daten aus YAML holen für Easter Egg Beschreibung
+        teams_data = universe_loader.get_teams()
+        film_data = next((t for t in teams_data if t['film_title'].lower() == film_title.lower()), None)
+        easter_egg_description = None
+        if film_data and film_data.get('easter_egg'):
+            easter_egg = film_data['easter_egg']
+            easter_egg_description = (
+                f"Easter Egg: {easter_egg.get('name', '')}\n"
+                f"Beschreibung: {easter_egg.get('description', '')}"
+            )
+        
         # KI-Bewertung durchführen
         is_approved, confidence, reasoning, ai_response = ai_evaluator.evaluate_film_reference(
             photo_path=photo_path,
-            film_title=film_title
+            film_title=film_title,
+            easter_egg_description=easter_egg_description
         )
         
         # Submission aktualisieren
@@ -301,13 +375,25 @@ async def handle_film_submission(
             
             session.commit()
             
+            # Referenz-Typ aus AI Response
+            reference_type = ai_response.get('reference_type', 'unknown')
+            type_emoji = {
+                'easter_egg': '🥚',
+                'scene': '🎬',
+                'screen_capture': '📺',
+                'poster': '🎭',
+                'costume': '👗',
+                'prop': '🔧',
+                'other': '✨'
+            }.get(reference_type, '✨')
+            
             # Erfolgs-Nachricht
             response = template_manager.render_film_approved(
                 first_name=user.first_name or "Reisender",
                 film_title=film_title,
                 points=20,
                 total_points=db_user.total_points,
-                ai_reasoning=f"🎯 Confidence: {confidence}%\n\n{reasoning}"
+                ai_reasoning=f"{type_emoji} Typ: {reference_type}\n🎯 Confidence: {confidence}%\n\n{reasoning}"
             )
             
             await context.bot.edit_message_text(
@@ -318,7 +404,7 @@ async def handle_film_submission(
             
             logger.info(
                 f"Film reference APPROVED for user {user.id}: {film_title} "
-                f"(+20 points) | Confidence: {confidence}%"
+                f"(+20 points) | Type: {reference_type} | Confidence: {confidence}%"
             )
             
         else:
@@ -332,7 +418,13 @@ async def handle_film_submission(
                 first_name=user.first_name or "Reisender",
                 film_title=film_title,
                 reason=f"🤖 Confidence: {confidence}%\n\n{reasoning}\n\n"
-                       f"💡 Tipp: Die Referenz muss eindeutig erkennbar sein!"
+                       f"💡 **Tipps für gültige Referenzen:**\n"
+                       f"- 🥚 Easter Egg (spezifischer Gegenstand aus dem Film)\n"
+                       f"- 🎬 Nachgestellte Szene\n"
+                       f"- 📺 Foto vom laufenden Film\n"
+                       f"- 🎭 Filmplakat\n"
+                       f"- 👗 Kostüm/Verkleidung als Charakter\n"
+                       f"- 🔧 Ikonische Requisite"
             )
             
             await context.bot.edit_message_text(
