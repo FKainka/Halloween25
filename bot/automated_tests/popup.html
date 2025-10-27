@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Halloween Bot Tester</title>
+    <style>
+        body {
+            width: 300px;
+            padding: 15px;
+            font-family: Arial, sans-serif;
+            background: #2c3e50;
+            color: white;
+        }
+        
+        h2 {
+            margin: 0 0 15px 0;
+            color: #f39c12;
+        }
+        
+        button {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            background: #3498db;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        button:hover {
+            background: #2980b9;
+        }
+        
+        .status {
+            background: #34495e;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-size: 12px;
+        }
+        
+        .info {
+            font-size: 11px;
+            opacity: 0.8;
+            margin-top: 10px;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+    <h2>🎃 Bot Tester</h2>
+    
+    <div class="status" id="status">
+        Bereit für Tests auf Telegram Web
+    </div>
+    
+    <button id="openTelegram">📱 Telegram Web öffnen</button>
+    <button id="runAutoTest">🚀 Auto-Test starten</button>
+    
+    <hr style="margin: 15px 0; border-color: #34495e;">
+    
+    <h3 style="margin: 10px 0; font-size: 14px;">Manuelle Tests:</h3>
+    
+    <button id="sendStart">📤 /start</button>
+    <button id="sendHelp">📤 /help</button>
+    <button id="sendPunkte">📤 /punkte</button>
+    <button id="joinTeam">🎭 Team Matrix</button>
+    
+    <div class="info">
+        <strong>Verwendung:</strong><br>
+        1. Telegram Web öffnen<br>
+        2. Bot-Chat finden<br>
+        3. Tests ausführen<br>
+        4. Responses prüfen
+        
+        <br><br>
+        <strong>Team-IDs:</strong><br>
+        Matrix: 480514<br>
+        Terminator: 226215<br>
+        Demolition: 417849
+    </div>
+    
+    <script src="popup.js"></script>
+</body>
+</html>

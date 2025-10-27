@@ -1,0 +1,41 @@
+{
+  "manifest_version": 3,
+  "name": "Halloween Bot Test Helper",
+  "version": "1.0.0",
+  "description": "Automatisierte Test-Hilfe für Telegram Halloween Bot",
+  
+  "permissions": [
+    "activeTab",
+    "storage"
+  ],
+  
+  "host_permissions": [
+    "https://web.telegram.org/*"
+  ],
+  
+  "content_scripts": [
+    {
+      "matches": [
+        "https://web.telegram.org/*"
+      ],
+      "js": ["telegram_test_extension.js"],
+      "run_at": "document_end"
+    }
+  ],
+  
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Halloween Bot Tester",
+    "default_icon": {
+      "16": "icon16.png",
+      "48": "icon48.png", 
+      "128": "icon128.png"
+    }
+  },
+  
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  }
+}
