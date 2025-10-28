@@ -11,7 +11,8 @@ Hier ist eine Übersicht über alle Möglichkeiten, Punkte für die Rebellion zu
 📋 Aufgabe:
 • Jeder von euch hat eine 6-stellige Charakter-ID
 • Finde deinen Partner aus deiner Simulation
-• Addiert eure beiden IDs zur Team-ID
+• Addiert eure beiden Charakter-IDs zur Team-ID
+• Tretet dem Team bei
 • Löst das Puzzle zusammen
 • Sendet einen Screenshot vom gelösten Puzzle
 
@@ -22,11 +23,12 @@ Hier ist eine Übersicht über alle Möglichkeiten, Punkte für die Rebellion zu
 
 ✍️ So funktioniert's:
 1. Finde deinen Partner (gleiche Simulation)
-2. Addiert eure Charakter-IDs (z.B. 246935 + 233579 = 480514)
-3. Sende hier: /team 480514
-4. Du erhältst einen Link zum Puzzle
+2. Addiert eure Charakter-IDs
+   Beispiel: 123456 + 234567 = 358023
+3. Trete dem Team bei: /team 358023
+4. Du erhältst automatisch den Puzzle-Link
 5. Löse das Puzzle gemeinsam
-6. Sende Screenshot mit Caption: Team: <Team-ID>
+6. Sende Screenshot mit Caption: Puzzle
 
 ━━━━━━━━━━━━━━━━━━━━━━
 2️⃣ FILM-REFERENZEN
@@ -42,15 +44,12 @@ Hier ist eine Übersicht über alle Möglichkeiten, Punkte für die Rebellion zu
 • Jeder Film nur 1× pro Person
 
 ✍️ So funktioniert's:
-1. Finde Easter Eggs auf der Party
+1. Finde Easter Eggs auf der Party oder stelle eine Szene nach
 2. Mache ein Foto
-3. Sende Foto mit: Film: <Filmtitel>
-4. Unsere KI prüft die Referenz
+3. Sende Foto mit Caption: Film: <Filmtitel>
+   Beispiel Caption: Film: Alien
+4. Unsere KI prüft die Referenz automatisch
 5. Bei Erfolg: +20 Punkte!
-
-💡 Beispiel-Filme:
-Matrix, Terminator, Blade Runner, V wie Vendetta, 
-Mad Max, 1984, Equilibrium, und viele mehr...
 
 ━━━━━━━━━━━━━━━━━━━━━━
 3️⃣ PARTY-MOMENTE
@@ -67,7 +66,7 @@ Mad Max, 1984, Equilibrium, und viele mehr...
 
 ✍️ So funktioniert's:
 1. Mache ein Foto von der Party
-2. Sende das Foto OHNE Text
+2. Sende das Foto OHNE Caption
 3. Automatisch +1 Punkt!
 
 ━━━━━━━━━━━━━━━━━━━━━━

@@ -28,10 +28,11 @@ async def team_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         if not context.args or len(context.args) != 1:
             await update.message.reply_text(
                 "❌ Ungültiges Format!\n\n"
-                "📝 Nutze: /team <6-stellige ID>\n"
+                "📝 Nutze: /team <Team-ID>\n"
                 "Beispiel: /team 480514\n\n"
-                "💡 Die Team-ID erhältst du, indem du die IDs deiner beiden "
-                "Charaktere addierst."
+                "💡 Die Team-ID erhältst du, indem du deine Charakter-ID "
+                "mit der deines Partners addierst.\n"
+                "Beispiel: 123456 + 234567 = 358023"
             )
             return
         
@@ -41,8 +42,9 @@ async def team_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         if not re.match(r'^\d{6}$', team_id_str):
             await update.message.reply_text(
                 "❌ Die Team-ID muss genau 6 Ziffern haben!\n\n"
-                f"Du hast eingegeben: {team_id_str}\n"
-                "Beispiel: /team 480514"
+                f"Du hast eingegeben: {team_id_str}\n\n"
+                "💡 Addiere deine Charakter-ID mit der deines Partners.\n"
+                "Beispiel: 123456 + 234567 = 358023"
             )
             return
         
@@ -82,10 +84,11 @@ async def team_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 await update.message.reply_text(
                     f"❌ Team-ID **{team_id}** wurde nicht gefunden!\n\n"
                     "🔍 Mögliche Ursachen:\n"
-                    "• Falsche Berechnung der IDs\n"
+                    "• Falsche Berechnung der Charakter-IDs\n"
                     "• Tippfehler bei der Eingabe\n\n"
-                    "💡 Tipp: Addiere die ID deines Charakters mit der ID "
-                    "deines Partners und versuche es erneut.",
+                    "💡 Tipp: Addiere deine Charakter-ID mit der ID "
+                    "deines Partners und versuche es erneut.\n"
+                    "Beispiel: 123456 + 234567 = 358023",
                     parse_mode='Markdown'
                 )
                 logger.warning(f"User {user.id} tried invalid team_id: {team_id}")

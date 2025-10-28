@@ -62,8 +62,9 @@ async def puzzle_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await context.bot.send_message(
                 chat_id=chat_id,
                 text="❌ Du musst zuerst einem Team beitreten!\n\n"
-                     "👥 Nutze: /team <Team-ID>\n"
-                     "oder den Button '👥 Team beitreten'"
+                     "👥 Nutze: /team <Team-ID>\n\n"
+                     "💡 Addiere deine Charakter-ID mit der deines Partners.\n"
+                     "Beispiel: /team 358023"
             )
             logger.info(f"User {user.id} tried to submit puzzle without being in a team")
             return

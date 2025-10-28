@@ -15,21 +15,28 @@ Für die Aufgaben benötigt ihr euren Weltendecoder in eurer Hand, auch Smartpho
 🎯 So könnt ihr Punkte sammeln:
 
 1️⃣ TEAM-MISSION (50 Punkte gesamt)
-Wir gehen davon aus, dass sich eine weitere Person aus deiner Simulation aktuell in dieser Welt befindet. Jeder von euch hat eine 6-stellige ID erhalten. Findet euren Partner, addiert eure beiden IDs und gebt die Summe als Team-ID ein. Dann löst gemeinsam das Puzzle und schickt einen Screenshot.
+Wir gehen davon aus, dass sich eine weitere Person aus deiner Simulation aktuell in dieser Welt befindet. Jeder von euch hat eine 6-stellige Charakter-ID erhalten. Findet euren Partner, addiert eure beiden IDs zur Team-ID und tretet dem Team bei. Dann löst gemeinsam das Puzzle und schickt einen Screenshot.
 
-📝 Sende: Team: <Summe eurer beiden IDs>
+📝 Nutze: /team <Team-ID>
+Beispiel: Deine ID ist 123456, Partner-ID ist 234567
+Team-ID = 123456 + 234567 = 358023
+Dann sende: /team 358023
+
+Nach dem Beitritt erhältst du den Puzzle-Link!
+Wenn das Puzzle gelöst ist, sende einen Screenshot mit: Puzzle
 
 2️⃣ FILM-REFERENZEN (20 Punkte pro Film)
 Uns ist aufgefallen, dass sich Bruchstücke zu anderen Welten oft als Filme, Serien oder Bücher in anderen Welten zeigen. Auch in dieser Location haben wir eine Reihe dieser Artefakte gefunden. Dabei kann es sich um plötzlich erscheinende Sequenzen, Bilder oder Gegenstände handeln.
 
 Identifiziert diese Referenzen, schreibt den euch bekannten Titel des Werkes dazu und schickt ein Foto. Teilweise sind es nur einfache Gegenstände und wir brauchen zusätzlich auch eine nachgestellte Szene auf dem Foto.
 
-📝 Sende Foto mit: Film: <Filmtitel>
+📝 Sende Foto mit Caption: Film: <Filmtitel>
+Beispiel: Film: Matrix
 
 3️⃣ PARTY-MOMENTE (1 Punkt pro Foto)
 Wir sollten unsere Menschlichkeit nicht vergessen. Deswegen könnt ihr jederzeit Fotos von Party- und Spaßmomenten machen und hier schicken. Auch das gibt jederzeit Punkte.
 
-📝 Sende einfach ein Foto ohne Text
+📝 Sende einfach ein Foto ohne Caption
 
 Lasst uns gemeinsam die Rebellion starten und die KI stürzen!
 

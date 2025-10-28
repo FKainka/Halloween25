@@ -113,11 +113,12 @@ Du bist jetzt Teil von Team "{team_name}"!
 
 +{points} Punkte für die Rebellion!
 
-🧩 Hier ist dein Puzzle:
+🧩 Hier ist euer Puzzle-Link:
 {puzzle_link}
 
-Löse das Puzzle gemeinsam mit deinem Partner und sende einen Screenshot mit:
-Team: <Team-ID>
+Löse das Puzzle gemeinsam mit deinem Partner und sende dann einen Screenshot des gelösten Puzzles mit der Caption:
+
+Puzzle
 
 Viel Erfolg! 💪"""
         return text
