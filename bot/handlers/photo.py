@@ -11,7 +11,8 @@ import logging
 from database.db import db
 from database.crud import (
     get_or_create_user, 
-    create_submission, 
+    create_submission,
+    update_submission_status,
     has_recognized_film,
     add_easter_egg,
     has_solved_puzzle,
@@ -107,7 +108,8 @@ async def handle_party_photo(
             photo_bytes=bytes(photo_bytes),
             user_id=user.id,
             submission_id=submission.id,
-            category='party'
+            category='party',
+            user_name=user.first_name
         )
         
         # Pfade in Submission aktualisieren
@@ -193,7 +195,8 @@ async def handle_puzzle_submission(
             photo_bytes=bytes(photo_bytes),
             user_id=user.id,
             submission_id=submission.id,
-            category='puzzles'
+            category='puzzles',
+            user_name=user.first_name
         )
         
         # Pfade in Submission aktualisieren
@@ -222,10 +225,16 @@ async def handle_puzzle_submission(
         
         # Submission aktualisieren
         if is_approved:
-            submission.status = SubmissionStatus.APPROVED
-            submission.points_awarded = 25
-            submission.ai_evaluation = str(ai_response)
-            session.commit()
+            update_submission_status(
+                session=session,
+                submission_id=submission.id,
+                status=SubmissionStatus.APPROVED,
+                points_awarded=25,
+                ai_evaluation=str(ai_response)
+            )
+            
+            # User-Punkte neu laden
+            session.refresh(db_user)
             
             # Erfolgs-Nachricht
             response = template_manager.render_puzzle_completed(
@@ -244,9 +253,12 @@ async def handle_puzzle_submission(
             
         else:
             # KI hat Puzzle nicht als gültig erkannt
-            submission.status = SubmissionStatus.REJECTED
-            submission.ai_evaluation = str(ai_response)
-            session.commit()
+            update_submission_status(
+                session=session,
+                submission_id=submission.id,
+                status=SubmissionStatus.REJECTED,
+                ai_evaluation=str(ai_response)
+            )
             
             # Ablehnungs-Nachricht
             await context.bot.edit_message_text(
@@ -331,7 +343,8 @@ async def handle_film_submission(
             user_id=user.id,
             submission_id=submission.id,
             category='films',
-            film_title=film_title
+            film_title=film_title,
+            user_name=user.first_name
         )
         
         # Pfade in Submission aktualisieren
@@ -366,14 +379,19 @@ async def handle_film_submission(
         
         # Submission aktualisieren
         if is_approved:
-            submission.status = SubmissionStatus.APPROVED
-            submission.points_awarded = 20
-            submission.ai_evaluation = str(ai_response)
+            update_submission_status(
+                session=session,
+                submission_id=submission.id,
+                status=SubmissionStatus.APPROVED,
+                points_awarded=20,
+                ai_evaluation=str(ai_response)
+            )
             
             # Easter Egg hinzufügen
             add_easter_egg(session, db_user.id, film_title)
             
-            session.commit()
+            # User-Punkte neu laden
+            session.refresh(db_user)
             
             # Referenz-Typ aus AI Response
             reference_type = ai_response.get('reference_type', 'unknown')
@@ -409,9 +427,12 @@ async def handle_film_submission(
             
         else:
             # KI hat Referenz nicht erkannt
-            submission.status = SubmissionStatus.REJECTED
-            submission.ai_evaluation = str(ai_response)
-            session.commit()
+            update_submission_status(
+                session=session,
+                submission_id=submission.id,
+                status=SubmissionStatus.REJECTED,
+                ai_evaluation=str(ai_response)
+            )
             
             # Ablehnungs-Nachricht
             response = template_manager.render_film_rejected(

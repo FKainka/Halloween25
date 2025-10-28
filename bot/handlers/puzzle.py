@@ -100,7 +100,8 @@ async def puzzle_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 photo_bytes=bytes(photo_bytes),
                 user_id=user.id,
                 submission_id=submission.id,
-                category='puzzles'
+                category='puzzles',
+                user_name=user.first_name
             )
             
             # Pfade in Submission aktualisieren

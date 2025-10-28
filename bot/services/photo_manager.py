@@ -37,7 +37,8 @@ class PhotoManager:
         user_id: int,
         submission_id: int,
         category: str = 'party',
-        film_title: str = None
+        film_title: str = None,
+        user_name: str = None
     ) -> tuple[str, str]:
         """
         Speichert Foto lokal und erstellt Thumbnail.
@@ -48,12 +49,19 @@ class PhotoManager:
             submission_id: Submission-ID
             category: 'party', 'films' oder 'puzzles'
             film_title: Film-Titel (für films-Kategorie)
+            user_name: Name des Users (für Dateinamen)
         
         Returns:
             tuple: (photo_path, thumbnail_path)
         """
         timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-        filename = f"{user_id}_{timestamp}_{submission_id}.jpg"
+        
+        # Dateiname mit User-Name am Anfang wenn vorhanden
+        if user_name:
+            sanitized_name = self._sanitize_filename(user_name)
+            filename = f"{sanitized_name}_{user_id}_{timestamp}_{submission_id}.jpg"
+        else:
+            filename = f"{user_id}_{timestamp}_{submission_id}.jpg"
         
         # Ziel-Verzeichnis
         if category == 'films' and film_title:

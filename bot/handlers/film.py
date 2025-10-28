@@ -8,7 +8,13 @@ from telegram.ext import ContextTypes
 import logging
 
 from database.db import db
-from database.crud import get_or_create_user, create_submission, has_recognized_film, add_easter_egg
+from database.crud import (
+    get_or_create_user, 
+    create_submission, 
+    update_submission_status,
+    has_recognized_film, 
+    add_easter_egg
+)
 from database.models import SubmissionType, SubmissionStatus
 from services.photo_manager import photo_manager
 from services.template_manager import template_manager
@@ -108,7 +114,8 @@ async def film_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 user_id=user.id,
                 submission_id=submission.id,
                 category='films',
-                film_title=film_title
+                film_title=film_title,
+                user_name=user.first_name
             )
             
             # Pfade in Submission aktualisieren
@@ -131,14 +138,19 @@ async def film_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
             
             # Submission aktualisieren
             if is_approved:
-                submission.status = SubmissionStatus.APPROVED
-                submission.points_awarded = 20
-                submission.ai_evaluation = str(ai_response)
+                update_submission_status(
+                    session=session,
+                    submission_id=submission.id,
+                    status=SubmissionStatus.APPROVED,
+                    points_awarded=20,
+                    ai_evaluation=str(ai_response)
+                )
                 
                 # Easter Egg hinzufügen
                 add_easter_egg(session, db_user.id, film_title)
                 
-                session.commit()
+                # User-Punkte neu laden
+                session.refresh(db_user)
                 
                 # Erfolgs-Nachricht
                 response = template_manager.render_film_approved(
@@ -162,9 +174,12 @@ async def film_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 
             else:
                 # KI hat Referenz nicht erkannt
-                submission.status = SubmissionStatus.REJECTED
-                submission.ai_evaluation = str(ai_response)
-                session.commit()
+                update_submission_status(
+                    session=session,
+                    submission_id=submission.id,
+                    status=SubmissionStatus.REJECTED,
+                    ai_evaluation=str(ai_response)
+                )
                 
                 # Ablehnungs-Nachricht
                 response = template_manager.render_film_rejected(

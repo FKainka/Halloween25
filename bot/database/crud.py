@@ -173,13 +173,15 @@ def create_submission(
         status=status
     )
     session.add(submission)
-    session.commit()
+    session.flush()  # Flush um ID zu bekommen, aber noch nicht committen
     
-    # Punkte zum User hinzufügen
-    if points_awarded > 0:
+    # Punkte zum User hinzufügen (nur wenn status APPROVED ist)
+    if points_awarded > 0 and status == SubmissionStatus.APPROVED:
         update_user_points(session, user_id, points_awarded)
     
-    logger.info(f"Submission created: {submission.id} (type={submission_type.value}, points={points_awarded})")
+    session.commit()
+    
+    logger.info(f"Submission created: {submission.id} (type={submission_type.value}, points={points_awarded}, status={status.value})")
     return submission
 
 
@@ -207,6 +209,50 @@ def count_user_submissions(
         Submission.user_id == user_id,
         Submission.submission_type == submission_type
     ).count()
+
+
+def update_submission_status(
+    session: Session,
+    submission_id: int,
+    status: SubmissionStatus,
+    points_awarded: int = None,
+    ai_evaluation: str = None
+):
+    """
+    Aktualisiert den Status einer Submission und vergibt Punkte.
+    
+    Args:
+        session: DB-Session
+        submission_id: ID der Submission
+        status: Neuer Status
+        points_awarded: Zu vergebende Punkte (optional)
+        ai_evaluation: AI Evaluation JSON (optional)
+    """
+    submission = session.query(Submission).filter(Submission.id == submission_id).first()
+    
+    if not submission:
+        logger.error(f"Submission {submission_id} not found")
+        return
+    
+    old_status = submission.status
+    submission.status = status
+    
+    if ai_evaluation is not None:
+        submission.ai_evaluation = ai_evaluation
+    
+    # Punkte vergeben wenn APPROVED und Punkte gesetzt
+    if status == SubmissionStatus.APPROVED and points_awarded is not None:
+        old_points = submission.points_awarded
+        submission.points_awarded = points_awarded
+        
+        # Nur Differenz zu den bereits vergebenen Punkten hinzufügen
+        points_diff = points_awarded - old_points
+        if points_diff > 0:
+            update_user_points(session, submission.user_id, points_diff)
+            logger.info(f"Submission {submission_id}: Added {points_diff} points (was {old_points}, now {points_awarded})")
+    
+    session.commit()
+    logger.info(f"Submission {submission_id} status updated: {old_status.value} -> {status.value}")
 
 
 def has_solved_puzzle(session: Session, user_id: int) -> bool:
