@@ -23,6 +23,11 @@ class AIEvaluator:
     
     def __init__(self):
         """Initialisiert OpenAI Client."""
+        # Token-Tracking
+        self.total_tokens_used = 0
+        self.total_requests = 0
+        self.total_cost_usd = 0.0
+        
         if not config.OPENAI_API_KEY:
             logger.warning("OPENAI_API_KEY nicht gesetzt - KI-Bewertung deaktiviert")
             self.client = None
@@ -33,6 +38,20 @@ class AIEvaluator:
             except Exception as e:
                 logger.error(f"Fehler beim Initialisieren des OpenAI Clients: {e}")
                 self.client = None
+    
+    def get_usage_stats(self) -> dict:
+        """
+        Gibt API-Nutzungsstatistiken zurück.
+        
+        Returns:
+            dict: Statistiken über Token-Verbrauch und Kosten
+        """
+        return {
+            'total_requests': self.total_requests,
+            'total_tokens_used': self.total_tokens_used,
+            'total_cost_usd': round(self.total_cost_usd, 4),
+            'avg_tokens_per_request': round(self.total_tokens_used / max(self.total_requests, 1), 2)
+        }
     
     def _encode_image(self, image_path: str) -> str:
         """
@@ -206,6 +225,18 @@ Beispiele für UNGÜLTIG:
                 timeout=config.AI_TIMEOUT_SECONDS
             )
             
+            # Token-Nutzung tracken
+            if hasattr(response, 'usage'):
+                tokens_used = response.usage.total_tokens
+                self.total_tokens_used += tokens_used
+                self.total_requests += 1
+                # Kosten berechnen (GPT-4o: ~$0.005 per 1K tokens input, ~$0.015 per 1K tokens output)
+                prompt_tokens = response.usage.prompt_tokens
+                completion_tokens = response.usage.completion_tokens
+                cost = (prompt_tokens * 0.005 / 1000) + (completion_tokens * 0.015 / 1000)
+                self.total_cost_usd += cost
+                logger.debug(f"API-Call: {tokens_used} tokens | Cost: ${cost:.4f}")
+            
             # Response parsen
             content = response.choices[0].message.content
             logger.debug(f"OpenAI Response: {content}")
@@ -312,6 +343,18 @@ Beispiele für UNGÜLTIG:
                 max_tokens=500,
                 timeout=config.AI_TIMEOUT_SECONDS
             )
+            
+            # Token-Nutzung tracken
+            if hasattr(response, 'usage'):
+                tokens_used = response.usage.total_tokens
+                self.total_tokens_used += tokens_used
+                self.total_requests += 1
+                # Kosten berechnen (GPT-4o: ~$0.005 per 1K tokens input, ~$0.015 per 1K tokens output)
+                prompt_tokens = response.usage.prompt_tokens
+                completion_tokens = response.usage.completion_tokens
+                cost = (prompt_tokens * 0.005 / 1000) + (completion_tokens * 0.015 / 1000)
+                self.total_cost_usd += cost
+                logger.debug(f"API-Call (Puzzle): {tokens_used} tokens | Cost: ${cost:.4f}")
             
             # Response parsen
             content = response.choices[0].message.content

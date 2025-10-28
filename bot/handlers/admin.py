@@ -8,8 +8,9 @@ import json
 
 from database.db import Database
 from database import crud
-from database.models import SubmissionType, SubmissionStatus
+from database.models import SubmissionType, SubmissionStatus, User, Submission, EasterEgg
 from config import config
+from services.ai_evaluator import ai_evaluator
 
 logger = logging.getLogger('bot.handlers.admin')
 
@@ -44,6 +45,10 @@ Team-Verwaltung:
 Statistiken:
 • /stats - Party-Statistiken (Spieler, Submissions, Top 3)
 • /eastereggs (oder /films) - Alle erkannten Filme
+• /apiusage - OpenAI API Nutzung und Kosten
+
+System:
+• /reset CONFIRM - Spiel zurücksetzen (ACHTUNG: Löscht alle Daten!)
 
 Beispiele:
 /player 657163418
@@ -51,6 +56,8 @@ Beispiele:
 /points 657163418 -10 Regelverstoss
 /stats
 /teams
+/apiusage
+/reset CONFIRM
 
 Hinweise:
 • Alle Punkteänderungen werden im AdminLog protokolliert
@@ -89,6 +96,10 @@ Team & Stats:
 /teams - Alle Teams anzeigen  
 /stats - Party-Statistiken
 /eastereggs (oder /films) - Erkannte Filme
+/apiusage - OpenAI API Nutzung
+
+System:
+/reset CONFIRM - Spiel zurücksetzen (⚠️ VORSICHT!)
 
 ────────────────────────
 Du bist eingeloggt als Admin.
@@ -105,9 +116,10 @@ async def admin_players_command(update: Update, context: ContextTypes.DEFAULT_TY
     Usage: /admin_players
     """
     user = update.effective_user
+    chat_id = update.effective_chat.id
     
     if not config.is_admin(user.id):
-        await update.message.reply_text("❌ Dieser Command ist nur für Admins verfügbar.")
+        await context.bot.send_message(chat_id=chat_id, text="❌ Dieser Command ist nur für Admins verfügbar.")
         return
     
     db = Database()
@@ -115,7 +127,7 @@ async def admin_players_command(update: Update, context: ContextTypes.DEFAULT_TY
         users = session.query(crud.User).order_by(crud.User.total_points.desc()).all()
         
         if not users:
-            await update.message.reply_text("Noch keine Spieler registriert.")
+            await context.bot.send_message(chat_id=chat_id, text="Noch keine Spieler registriert.")
             return
         
         message = "👥 ALLE SPIELER\n\n"
@@ -129,7 +141,7 @@ async def admin_players_command(update: Update, context: ContextTypes.DEFAULT_TY
             message += f"{i}. {u.first_name} (@{u.username or 'N/A'})\n"
             message += f"   ID: {u.telegram_id} | Punkte: {u.total_points}{team_info}\n\n"
         
-        await update.message.reply_text(message)
+        await context.bot.send_message(chat_id=chat_id, text=message)
         logger.info(f"Admin {user.id} viewed all players")
 
 
@@ -412,3 +424,116 @@ async def admin_eastereggs_command(update: Update, context: ContextTypes.DEFAULT
         
         await update.message.reply_text(message)
         logger.info(f"Admin {user.id} viewed easter eggs")
+
+
+async def admin_reset_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """
+    Setzt das Spiel zurück - VORSICHT: Löscht alle Daten!
+    
+    Usage: /reset CONFIRM
+    """
+    user = update.effective_user
+    chat_id = update.effective_chat.id
+    
+    if not config.is_admin(user.id):
+        await context.bot.send_message(chat_id=chat_id, text="❌ Dieser Command ist nur für Admins verfügbar.")
+        return
+    
+    # Sicherheitsabfrage - User muss CONFIRM als Argument angeben
+    if not context.args or len(context.args) != 1 or context.args[0] != 'CONFIRM':
+        await context.bot.send_message(
+            chat_id=chat_id,
+            text="⚠️ GAME RESET\n\n"
+            "Dieser Befehl löscht ALLE Spieldaten:\n"
+            "• Alle Punkte werden auf 0 gesetzt\n"
+            "• Alle Easter Eggs werden gelöscht\n"
+            "• Alle Submissions werden gelöscht\n"
+            "• Alle Team-Zuordnungen werden entfernt\n"
+            "• User-Accounts bleiben erhalten\n"
+            "• Team-Definitionen bleiben erhalten\n\n"
+            "⚠️ DIESE AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!\n\n"
+            "Um fortzufahren, nutze:\n"
+            "/reset CONFIRM"
+        )
+        return
+    
+    db = Database()
+    with db.get_session() as session:
+        # Statistiken VOR dem Reset
+        total_users = session.query(User).count()
+        total_submissions = session.query(Submission).count()
+        total_eggs = session.query(EasterEgg).count()
+        total_points = sum([u.total_points for u in session.query(User).all()])
+        users_with_teams = session.query(User).filter(User.team_id.isnot(None)).count()
+        
+        # 1. Alle Submissions löschen
+        session.query(Submission).delete()
+        
+        # 2. Alle Easter Eggs löschen
+        session.query(EasterEgg).delete()
+        
+        # 3. Alle User-Punkte auf 0 setzen UND Team-Zuordnung entfernen
+        for user_obj in session.query(User).all():
+            user_obj.total_points = 0
+            user_obj.team_id = None  # Team-Zuordnung entfernen
+        
+        session.commit()
+        
+        message = f"""✅ GAME RESET ERFOLGREICH
+
+🔄 Folgende Daten wurden zurückgesetzt:
+
+👥 User: {total_users} (behalten)
+📸 Submissions: {total_submissions} (gelöscht)
+🎬 Easter Eggs: {total_eggs} (gelöscht)
+⭐ Punkte: {total_points} → 0 (zurückgesetzt)
+👫 Team-Zuordnungen: {users_with_teams} → 0 (entfernt)
+
+Das Spiel wurde erfolgreich zurückgesetzt.
+Alle Spieler können von vorne beginnen!"""
+        
+        await context.bot.send_message(chat_id=chat_id, text=message)
+        logger.warning(f"Admin {user.id} has RESET THE GAME! Users: {total_users}, Submissions: {total_submissions}, Teams cleared: {users_with_teams}")
+
+
+async def admin_apiusage_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """
+    Zeigt OpenAI API Nutzung und Token-Verbrauch.
+    
+    Usage: /apiusage
+    """
+    user = update.effective_user
+    chat_id = update.effective_chat.id
+    
+    if not config.is_admin(user.id):
+        await context.bot.send_message(chat_id=chat_id, text="❌ Dieser Command ist nur für Admins verfügbar.")
+        return
+    
+    # Statistiken von ai_evaluator holen
+    stats = ai_evaluator.get_usage_stats()
+    
+    # Geschätzte verbleibende Credits (OpenAI hat kein direktes API für Credits)
+    # Das müsste manuell konfiguriert werden
+    message = f"""📊 OPENAI API NUTZUNG
+
+🤖 Requests:
+• Total: {stats['total_requests']}
+• Ø Tokens/Request: {stats['avg_tokens_per_request']}
+
+🎯 Token-Verbrauch:
+• Total Tokens: {stats['total_tokens_used']:,}
+
+💰 Kosten (geschätzt):
+• Total: ${stats['total_cost_usd']:.4f} USD
+
+📝 Hinweis:
+• GPT-4o Kosten: ~$0.005/1K input, ~$0.015/1K output tokens
+• Diese Statistiken gelten seit letztem Bot-Neustart
+• Für genaue Credits: OpenAI Dashboard prüfen
+
+🔗 OpenAI Dashboard:
+https://platform.openai.com/usage"""
+    
+    await context.bot.send_message(chat_id=chat_id, text=message)
+    logger.info(f"Admin {user.id} viewed API usage stats")
+

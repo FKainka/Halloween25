@@ -17,6 +17,13 @@ services:
       - ./data:/app/data
       - ../notes/universen.yaml:/app/../notes/universen.yaml:ro
       - ./templates:/app/templates:ro
+      # Code als Volume für Entwicklung (kommentiere aus für Production)
+      - ./handlers:/app/handlers:ro
+      - ./services:/app/services:ro
+      - ./database:/app/database:ro
+      - ./utils:/app/utils:ro
+      - ./config.py:/app/config.py:ro
+      - ./main.py:/app/main.py:ro
     
     # Logging-Konfiguration
     logging:

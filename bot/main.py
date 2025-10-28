@@ -95,7 +95,9 @@ def main():
             admin_teams_command,
             admin_stats_command,
             admin_points_command,
-            admin_eastereggs_command
+            admin_eastereggs_command,
+            admin_reset_command,
+            admin_apiusage_command
         )
         
         # User Commands
@@ -117,6 +119,10 @@ def main():
         application.add_handler(CommandHandler(["teams", "admin_teams"], admin_teams_command))
         application.add_handler(CommandHandler(["stats", "admin_stats"], admin_stats_command))
         application.add_handler(CommandHandler(["eastereggs", "films", "admin_eastereggs"], admin_eastereggs_command))
+        
+        # Admin: System
+        application.add_handler(CommandHandler(["apiusage", "admin_apiusage"], admin_apiusage_command))
+        application.add_handler(CommandHandler(["reset", "admin_reset"], admin_reset_command))
         
         # Keyboard-Button Handler (VOR text_handler!)
         application.add_handler(MessageHandler(

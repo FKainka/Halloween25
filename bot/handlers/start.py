@@ -3,6 +3,7 @@
 Begrüßt neue User und registriert sie in der Datenbank.
 """
 
+from pathlib import Path
 from telegram import Update, ReplyKeyboardMarkup, KeyboardButton
 from telegram.ext import ContextTypes
 
@@ -66,6 +67,20 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         if config.is_admin(user.id):
             admin_note = "\n\n🔧 Admin-Modus aktiviert"
             logger.info(f"Admin user {user.id} detected")
+        
+        # Titelbild senden
+        titel_image_path = Path(__file__).parent.parent / 'templates' / 'titel.jpg'
+        
+        if titel_image_path.exists():
+            try:
+                with open(titel_image_path, 'rb') as photo:
+                    await context.bot.send_photo(
+                        chat_id=chat_id,
+                        photo=photo,
+                        caption="🎃 Halloween Party 2025 - Rebellion gegen die KI 🤖"
+                    )
+            except Exception as e:
+                logger.warning(f"Could not send title image: {e}")
         
         # Nachricht mit Custom Keyboard senden
         await context.bot.send_message(
