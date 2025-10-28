@@ -76,7 +76,7 @@ Hier ist eine Übersicht über alle Möglichkeiten, Punkte für die Rebellion zu
 /start - Diese Einführung nochmal anzeigen
 /help - Diese Hilfe anzeigen
 /punkte - Deine aktuellen Punkte ansehen
-/team <ID> - Einem Team beitreten (z.B. /team 480514)
+/team <ID> - Einem Team beitreten (z.B. /team 358023)
 
 ━━━━━━━━━━━━━━━━━━━━━━
 

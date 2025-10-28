@@ -130,8 +130,8 @@ async def film_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
                      f"Dies kann bis zu 10 Sekunden dauern."
             )
             
-            # KI-Bewertung durchführen
-            is_approved, confidence, reasoning, ai_response = ai_evaluator.evaluate_film_reference(
+            # KI-Bewertung durchführen (async für bessere Performance)
+            is_approved, confidence, reasoning, ai_response = await ai_evaluator.evaluate_film_reference_async(
                 photo_path=photo_path,
                 film_title=film_title
             )

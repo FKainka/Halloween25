@@ -218,8 +218,8 @@ async def handle_puzzle_submission(
         team_data = next((t for t in teams_data if t['team_id'] == db_user.team_id), None)
         poster_urls = team_data.get('posters', []) if team_data else []
         
-        # KI-Bewertung durchführen (Puzzle-Poster-Validierung)
-        is_approved, confidence, reasoning, ai_response = ai_evaluator.evaluate_puzzle_poster(
+        # KI-Bewertung durchführen (async für bessere Performance)
+        is_approved, confidence, reasoning, ai_response = await ai_evaluator.evaluate_puzzle_poster_async(
             photo_path=photo_path,
             film_title=team.film_title,
             poster_urls=poster_urls
@@ -372,8 +372,8 @@ async def handle_film_submission(
                 f"Beschreibung: {easter_egg.get('description', '')}"
             )
         
-        # KI-Bewertung durchführen
-        is_approved, confidence, reasoning, ai_response = ai_evaluator.evaluate_film_reference(
+        # KI-Bewertung durchführen (async für bessere Performance)
+        is_approved, confidence, reasoning, ai_response = await ai_evaluator.evaluate_film_reference_async(
             photo_path=photo_path,
             film_title=film_title,
             easter_egg_description=easter_egg_description

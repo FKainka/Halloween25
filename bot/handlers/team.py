@@ -19,7 +19,7 @@ async def team_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     Handler für /team <ID> Command.
     User tritt einem Team bei durch Eingabe der Team-ID.
     
-    Usage: /team 480514
+    Usage: /team 358023
     """
     user = update.effective_user
     
@@ -29,7 +29,7 @@ async def team_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await update.message.reply_text(
                 "❌ Ungültiges Format!\n\n"
                 "📝 Nutze: /team <Team-ID>\n"
-                "Beispiel: /team 480514\n\n"
+                "Beispiel: /team 358023\n\n"
                 "💡 Die Team-ID erhältst du, indem du deine Charakter-ID "
                 "mit der deines Partners addierst.\n"
                 "Beispiel: 123456 + 234567 = 358023"

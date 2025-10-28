@@ -19,7 +19,7 @@ async def teamid_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     Handler für /teamid <ID> Command.
     User tritt einem Team bei durch Eingabe der Team-ID.
     
-    Usage: /teamid 480514
+    Usage: /teamid 358023
     """
     user = update.effective_user
     
@@ -29,7 +29,7 @@ async def teamid_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await update.message.reply_text(
                 "❌ Ungültiges Format!\n\n"
                 "📝 Nutze: /teamid <6-stellige ID>\n"
-                "Beispiel: /teamid 480514\n\n"
+                "Beispiel: /teamid 358023\n\n"
                 "💡 Die Team-ID erhältst du, indem du die IDs deiner beiden "
                 "Charaktere addierst."
             )
@@ -42,7 +42,7 @@ async def teamid_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await update.message.reply_text(
                 "❌ Die Team-ID muss genau 6 Ziffern haben!\n\n"
                 f"Du hast eingegeben: {team_id_str}\n"
-                "Beispiel: /teamid 480514"
+                "Beispiel: /teamid 358023"
             )
             return
         

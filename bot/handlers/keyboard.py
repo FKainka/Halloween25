@@ -44,7 +44,7 @@ async def keyboard_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                  "→ Beispiel: `Film: Matrix`\n\n"
                  "*👥 Team beitreten* (25 Punkte)\n"
                  "→ Command: `/team <6-stellige ID>`\n"
-                 "→ Beispiel: `/team 480514`\n\n"
+                 "→ Beispiel: `/team 358023`\n\n"
                  "*🧩 Puzzle lösen* (25 Punkte)\n"
                  "→ Screenshot mit Caption: `Puzzle`\n\n"
                  "💡 *Tipp:* Tippe `/` um alle Commands zu sehen!",

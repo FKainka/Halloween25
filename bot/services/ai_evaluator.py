@@ -3,11 +3,12 @@ OpenAI Vision API Integration für Film-Referenz und Puzzle-Bewertung.
 """
 import json
 import logging
+import asyncio
 from typing import Dict, Optional, Tuple
 from pathlib import Path
 import base64
 
-from openai import OpenAI
+from openai import AsyncOpenAI, OpenAI
 from openai import APIError, APITimeoutError, RateLimitError
 
 from config import config
@@ -31,13 +32,18 @@ class AIEvaluator:
         if not config.OPENAI_API_KEY:
             logger.warning("OPENAI_API_KEY nicht gesetzt - KI-Bewertung deaktiviert")
             self.client = None
+            self.async_client = None
         else:
             try:
+                # Sync Client für Fallback
                 self.client = OpenAI(api_key=config.OPENAI_API_KEY)
-                logger.info("AI Evaluator initialisiert")
+                # Async Client für bessere Performance
+                self.async_client = AsyncOpenAI(api_key=config.OPENAI_API_KEY)
+                logger.info("AI Evaluator initialisiert (async mode)")
             except Exception as e:
                 logger.error(f"Fehler beim Initialisieren des OpenAI Clients: {e}")
                 self.client = None
+                self.async_client = None
     
     def get_usage_stats(self) -> dict:
         """
@@ -417,6 +423,214 @@ Beispiele für UNGÜLTIG:
             True wenn OpenAI API-Key gesetzt
         """
         return self.client is not None
+    
+    # ========================================================================
+    # ASYNC METHODS - Für bessere Concurrency
+    # ========================================================================
+    
+    async def evaluate_film_reference_async(
+        self, 
+        photo_path: str, 
+        film_title: str,
+        easter_egg_description: str = None
+    ) -> Tuple[bool, int, str, Dict]:
+        """
+        Async Version: Bewertet ob Foto eine Referenz zum Film zeigt.
+        
+        Für bessere Performance bei vielen gleichzeitigen Requests.
+        """
+        # Fallback wenn KI deaktiviert
+        if not self.async_client:
+            logger.warning(f"KI deaktiviert - Auto-Approve für {film_title}")
+            return True, 100, "KI-Bewertung deaktiviert (kein API-Key)", {}
+        
+        try:
+            # Bild laden und kodieren
+            logger.info(f"[ASYNC] Bewerte Film-Referenz: {film_title} | Foto: {photo_path}")
+            base64_image = self._encode_image(photo_path)
+            
+            # Async API-Request
+            response = await self.async_client.chat.completions.create(
+                model="gpt-4o",
+                messages=[
+                    {
+                        "role": "user",
+                        "content": [
+                            {
+                                "type": "text",
+                                "text": self._create_prompt(film_title, easter_egg_description)
+                            },
+                            {
+                                "type": "image_url",
+                                "image_url": {
+                                    "url": f"data:image/jpeg;base64,{base64_image}"
+                                }
+                            }
+                        ]
+                    }
+                ],
+                max_tokens=500,
+                timeout=config.AI_TIMEOUT_SECONDS
+            )
+            
+            # Token-Nutzung tracken
+            if hasattr(response, 'usage'):
+                tokens_used = response.usage.total_tokens
+                self.total_tokens_used += tokens_used
+                self.total_requests += 1
+                prompt_tokens = response.usage.prompt_tokens
+                completion_tokens = response.usage.completion_tokens
+                cost = (prompt_tokens * 0.005 / 1000) + (completion_tokens * 0.015 / 1000)
+                self.total_cost_usd += cost
+                logger.debug(f"[ASYNC] API-Call: {tokens_used} tokens | Cost: ${cost:.4f}")
+            
+            # Response parsen (gleiche Logik wie sync Version)
+            content = response.choices[0].message.content.strip()
+            if content.startswith("```json"):
+                content = content[7:]
+            if content.startswith("```"):
+                content = content[3:]
+            if content.endswith("```"):
+                content = content[:-3]
+            content = content.strip()
+            
+            result = json.loads(content)
+            
+            is_reference = result.get('is_reference', False)
+            confidence = int(result.get('confidence', 0))
+            reasoning = result.get('reasoning', 'Keine Begründung')
+            detected_elements = result.get('detected_elements', [])
+            reference_type = result.get('reference_type', 'unknown')
+            
+            is_approved = is_reference and confidence >= config.AI_CONFIDENCE_THRESHOLD
+            
+            logger.info(
+                f"[ASYNC] KI-Bewertung Film: {film_title} | "
+                f"Reference={is_reference} | Confidence={confidence}% | "
+                f"Type={reference_type} | Approved={is_approved}"
+            )
+            
+            return is_approved, confidence, reasoning, result
+            
+        except json.JSONDecodeError as e:
+            logger.error(f"[ASYNC] JSON-Parse-Fehler: {e}")
+            return False, 0, "Fehler bei der KI-Bewertung (JSON-Parse)", {}
+            
+        except APITimeoutError:
+            logger.error(f"[ASYNC] OpenAI API Timeout nach {config.AI_TIMEOUT_SECONDS}s")
+            return False, 0, "KI-Bewertung Timeout - bitte Admin kontaktieren", {}
+            
+        except RateLimitError:
+            logger.error("[ASYNC] OpenAI API Rate Limit")
+            return False, 0, "Zu viele Anfragen - bitte später versuchen", {}
+            
+        except APIError as e:
+            logger.error(f"[ASYNC] OpenAI API Error: {e}")
+            return False, 0, "KI-Service vorübergehend nicht verfügbar", {}
+            
+        except Exception as e:
+            logger.error(f"[ASYNC] Unerwarteter Fehler: {e}", exc_info=True)
+            return False, 0, "Technischer Fehler bei der Bewertung", {}
+    
+    async def evaluate_puzzle_poster_async(
+        self,
+        photo_path: str,
+        film_title: str,
+        poster_urls: list = None
+    ) -> Tuple[bool, int, str, Dict]:
+        """
+        Async Version: Bewertet ob Screenshot ein gelöstes Puzzle-Poster zeigt.
+        
+        Für bessere Performance bei vielen gleichzeitigen Requests.
+        """
+        # Fallback wenn KI deaktiviert
+        if not self.async_client:
+            logger.warning(f"[ASYNC] KI deaktiviert - Auto-Approve für Puzzle {film_title}")
+            return True, 100, "KI-Bewertung deaktiviert (kein API-Key)", {}
+        
+        try:
+            logger.info(f"[ASYNC] Bewerte Puzzle-Poster: {film_title} | Foto: {photo_path}")
+            base64_image = self._encode_image(photo_path)
+            
+            # Async API-Request
+            response = await self.async_client.chat.completions.create(
+                model="gpt-4o",
+                messages=[
+                    {
+                        "role": "user",
+                        "content": [
+                            {
+                                "type": "text",
+                                "text": self._create_puzzle_prompt(film_title, poster_urls)
+                            },
+                            {
+                                "type": "image_url",
+                                "image_url": {
+                                    "url": f"data:image/jpeg;base64,{base64_image}"
+                                }
+                            }
+                        ]
+                    }
+                ],
+                max_tokens=500,
+                timeout=config.AI_TIMEOUT_SECONDS
+            )
+            
+            # Token-Nutzung tracken
+            if hasattr(response, 'usage'):
+                tokens_used = response.usage.total_tokens
+                self.total_tokens_used += tokens_used
+                self.total_requests += 1
+                prompt_tokens = response.usage.prompt_tokens
+                completion_tokens = response.usage.completion_tokens
+                cost = (prompt_tokens * 0.005 / 1000) + (completion_tokens * 0.015 / 1000)
+                self.total_cost_usd += cost
+                logger.debug(f"[ASYNC] API-Call (Puzzle): {tokens_used} tokens | Cost: ${cost:.4f}")
+            
+            # Response parsen
+            content = response.choices[0].message.content.strip()
+            if content.startswith("```json"):
+                content = content[7:]
+            if content.startswith("```"):
+                content = content[3:]
+            if content.endswith("```"):
+                content = content[:-3]
+            content = content.strip()
+            
+            result = json.loads(content)
+            
+            is_valid = result.get('is_valid_puzzle', False)
+            confidence = int(result.get('confidence', 0))
+            reasoning = result.get('reasoning', 'Keine Begründung')
+            
+            is_approved = is_valid and confidence >= config.AI_CONFIDENCE_THRESHOLD
+            
+            logger.info(
+                f"[ASYNC] KI-Bewertung Puzzle: {film_title} | "
+                f"Valid={is_valid} | Confidence={confidence}% | Approved={is_approved}"
+            )
+            
+            return is_approved, confidence, reasoning, result
+            
+        except json.JSONDecodeError as e:
+            logger.error(f"[ASYNC] JSON-Parse-Fehler (Puzzle): {e}")
+            return False, 0, "Fehler bei der KI-Bewertung", {}
+            
+        except APITimeoutError:
+            logger.error(f"[ASYNC] OpenAI API Timeout (Puzzle) nach {config.AI_TIMEOUT_SECONDS}s")
+            return False, 0, "KI-Bewertung Timeout", {}
+            
+        except RateLimitError:
+            logger.error("[ASYNC] OpenAI API Rate Limit (Puzzle)")
+            return False, 0, "Zu viele Anfragen - bitte später versuchen", {}
+            
+        except APIError as e:
+            logger.error(f"[ASYNC] OpenAI API Error (Puzzle): {e}")
+            return False, 0, "KI-Service vorübergehend nicht verfügbar", {}
+            
+        except Exception as e:
+            logger.error(f"[ASYNC] Unerwarteter Fehler (Puzzle): {e}", exc_info=True)
+            return False, 0, "Technischer Fehler bei der Bewertung", {}
 
 
 # Singleton-Instanz
