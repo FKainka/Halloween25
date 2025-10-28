@@ -36,11 +36,16 @@ async def admin_help_command(update: Update, context: ContextTypes.DEFAULT_TYPE)
 
 Spieler-Verwaltung:
 • /players - Liste aller Spieler mit Punkten
-• /player <telegram_id> - Details zu einem Spieler
+• /player <id|name|@user> - Details zu einem Spieler
 • /points <telegram_id> <punkte> <grund> - Punkte manuell vergeben/abziehen
 
 Team-Verwaltung:
 • /teams - Übersicht aller Teams mit Mitgliedern
+
+Nachrichten:
+• /broadcast <text> - Nachricht an alle Spieler
+• /message <id|name|@user> <text> - Nachricht an einen Spieler
+• /teammessage <team_id> <text> - Nachricht an ein Team
 
 Statistiken:
 • /stats - Party-Statistiken (Spieler, Submissions, Top 3)
@@ -51,17 +56,20 @@ System:
 • /reset CONFIRM - Spiel zurücksetzen (ACHTUNG: Löscht alle Daten!)
 
 Beispiele:
+/player Fabian
+/player @username
 /player 657163418
+/message Fabian Deine Punkte wurden korrigiert!
+/broadcast Party beginnt in 30 Minuten! 🎉
+/teammessage 417849 Großartige Leistung!
 /points 657163418 50 Bonus für Kostüm
-/points 657163418 -10 Regelverstoss
 /stats
 /teams
 /apiusage
-/reset CONFIRM
 
 Hinweise:
 • Alle Punkteänderungen werden im AdminLog protokolliert
-• Telegram-IDs findest du mit /players
+• Spieler können per ID, Username oder Namen angesprochen werden
 • Negative Punkte zum Abziehen verwenden
 • Alle Commands funktionieren auch mit admin_ Präfix"""
     
@@ -89,8 +97,13 @@ Hilfe:
 
 Spieler-Verwaltung:
 /players - Alle Spieler anzeigen
-/player <ID> - Details zu einem Spieler
+/player <ID|Name|@user> - Details zu einem Spieler
 /points <user_id> <punkte> <grund> - Punkte vergeben/abziehen
+
+Nachrichten:
+/broadcast <text> - Nachricht an alle senden
+/message <ID|Name|@user> <text> - Nachricht an einen Spieler
+/teammessage <team_id> <text> - Nachricht an ein Team
 
 Team & Stats:
 /teams - Alle Teams anzeigen  
@@ -149,7 +162,11 @@ async def admin_player_command(update: Update, context: ContextTypes.DEFAULT_TYP
     """
     Zeigt Details zu einem bestimmten Spieler.
     
-    Usage: /admin_player <telegram_id>
+    Usage: /player <telegram_id|username|name>
+    Beispiele:
+    - /player 657163418
+    - /player @username
+    - /player Fabian
     """
     user = update.effective_user
     
@@ -157,21 +174,29 @@ async def admin_player_command(update: Update, context: ContextTypes.DEFAULT_TYP
         await update.message.reply_text("❌ Dieser Command ist nur für Admins verfügbar.")
         return
     
-    if not context.args or len(context.args) != 1:
+    if not context.args or len(context.args) < 1:
         await update.message.reply_text(
             "❌ Ungültiges Format!\n\n"
-            "Nutze: /admin_player <telegram_id>"
+            "Nutze: /player <telegram_id|username|name>\n\n"
+            "Beispiele:\n"
+            "• /player 657163418\n"
+            "• /player @username\n"
+            "• /player Fabian"
         )
         return
     
-    telegram_id = int(context.args[0])
+    # Alle Argumente zusammenfügen (für Namen mit Leerzeichen)
+    identifier = " ".join(context.args)
     
     db = Database()
     with db.get_session() as session:
-        player = session.query(crud.User).filter_by(telegram_id=telegram_id).first()
+        player = crud.find_user_by_identifier(session, identifier)
         
         if not player:
-            await update.message.reply_text(f"❌ Spieler mit ID {telegram_id} nicht gefunden.")
+            await update.message.reply_text(
+                f"❌ Spieler '{identifier}' nicht gefunden.\n\n"
+                f"Tipp: Verwende Telegram-ID, @username oder Namen."
+            )
             return
         
         # Submissions zählen
@@ -208,7 +233,7 @@ Team: {team_info}
 📅 Registriert: {player.created_at.strftime('%d.%m.%Y %H:%M')}"""
         
         await update.message.reply_text(message)
-        logger.info(f"Admin {user.id} viewed player {telegram_id}")
+        logger.info(f"Admin {user.id} viewed player {identifier}")
 
 
 async def admin_teams_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -536,4 +561,230 @@ https://platform.openai.com/usage"""
     
     await context.bot.send_message(chat_id=chat_id, text=message)
     logger.info(f"Admin {user.id} viewed API usage stats")
+
+
+async def admin_broadcast_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """
+    Sendet eine Nachricht an alle Spieler.
+    
+    Usage: /broadcast <nachricht>
+    Beispiel: /broadcast Party beginnt in 30 Minuten! 🎉
+    """
+    user = update.effective_user
+    chat_id = update.effective_chat.id
+    
+    # Prüfen ob User Admin ist
+    if not config.is_admin(user.id):
+        await update.message.reply_text("❌ Dieser Command ist nur für Admins verfügbar.")
+        return
+    
+    # Nachricht extrahieren
+    if not context.args:
+        await context.bot.send_message(
+            chat_id=chat_id,
+            text="❌ Verwendung: /broadcast <nachricht>\n\n"
+                 "Beispiel: /broadcast Party beginnt in 30 Minuten! 🎉"
+        )
+        return
+    
+    message = " ".join(context.args)
+    
+    # Alle Benutzer aus der Datenbank holen
+    db = Database()
+    
+    with db.get_session() as session:
+        users = crud.get_all_users(session)
+        
+        if not users:
+            await context.bot.send_message(chat_id=chat_id, text="❌ Keine Benutzer gefunden.")
+            return
+        
+        # Nachricht an alle senden
+        success_count = 0
+        fail_count = 0
+        
+        broadcast_message = f"📢 ADMIN-NACHRICHT:\n\n{message}"
+        
+        for target_user in users:
+            try:
+                await context.bot.send_message(
+                    chat_id=target_user.telegram_id,
+                    text=broadcast_message
+                )
+                success_count += 1
+            except Exception as e:
+                logger.warning(f"Failed to send broadcast to user {target_user.telegram_id}: {e}")
+                fail_count += 1
+        
+        # Bestätigung an Admin
+        await context.bot.send_message(
+            chat_id=chat_id,
+            text=f"✅ Broadcast gesendet!\n\n"
+                 f"📤 Erfolgreich: {success_count}\n"
+                 f"❌ Fehlgeschlagen: {fail_count}\n\n"
+                 f"Nachricht:\n{message}"
+        )
+        logger.info(f"Admin {user.id} sent broadcast to {success_count} users (failed: {fail_count})")
+
+
+async def admin_message_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """
+    Sendet eine Nachricht an einen einzelnen Spieler.
+    
+    Usage: /message <user_id_or_name> <nachricht>
+    Beispiel: /message 657163418 Bitte melde dich!
+    Beispiel: /message @username Deine Punkte wurden korrigiert
+    Beispiel: /message Fabian Gut gemacht!
+    """
+    user = update.effective_user
+    chat_id = update.effective_chat.id
+    
+    # Prüfen ob User Admin ist
+    if not config.is_admin(user.id):
+        await update.message.reply_text("❌ Dieser Command ist nur für Admins verfügbar.")
+        return
+    
+    # Mindestens 2 Argumente erforderlich
+    if len(context.args) < 2:
+        await context.bot.send_message(
+            chat_id=chat_id,
+            text="❌ Verwendung: /message <user_id_or_name> <nachricht>\n\n"
+                 "Beispiele:\n"
+                 "• /message 657163418 Hallo!\n"
+                 "• /message @username Deine Punkte wurden aktualisiert\n"
+                 "• /message Fabian Gut gemacht!"
+        )
+        return
+    
+    user_identifier = context.args[0]
+    message = " ".join(context.args[1:])
+    
+    # Benutzer finden (per ID, Username oder Name)
+    db = Database()
+    
+    with db.get_session() as session:
+        target_user = crud.find_user_by_identifier(session, user_identifier)
+        
+        if not target_user:
+            await context.bot.send_message(
+                chat_id=chat_id,
+                text=f"❌ Benutzer '{user_identifier}' nicht gefunden.\n\n"
+                     f"Tipp: Verwende Telegram-ID, @username oder Namen."
+            )
+            return
+        
+        # Nachricht senden
+        admin_message = f"📨 NACHRICHT VOM ADMIN:\n\n{message}"
+        
+        try:
+            await context.bot.send_message(
+                chat_id=target_user.telegram_id,
+                text=admin_message
+            )
+            
+            # Bestätigung an Admin
+            await context.bot.send_message(
+                chat_id=chat_id,
+                text=f"✅ Nachricht gesendet an:\n"
+                     f"👤 {target_user.first_name or 'N/A'} "
+                     f"(@{target_user.username or 'N/A'}) "
+                     f"[ID: {target_user.telegram_id}]\n\n"
+                     f"Nachricht:\n{message}"
+            )
+            logger.info(f"Admin {user.id} sent message to user {target_user.telegram_id}")
+            
+        except Exception as e:
+            await context.bot.send_message(
+                chat_id=chat_id,
+                text=f"❌ Fehler beim Senden der Nachricht: {str(e)}"
+            )
+            logger.error(f"Failed to send message to user {target_user.telegram_id}: {e}")
+
+
+async def admin_team_message_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """
+    Sendet eine Nachricht an alle Mitglieder eines Teams.
+    
+    Usage: /teammessage <team_id> <nachricht>
+    Beispiel: /teammessage 417849 Euer Team liegt auf Platz 1! 🏆
+    """
+    user = update.effective_user
+    chat_id = update.effective_chat.id
+    
+    # Prüfen ob User Admin ist
+    if not config.is_admin(user.id):
+        await update.message.reply_text("❌ Dieser Command ist nur für Admins verfügbar.")
+        return
+    
+    # Mindestens 2 Argumente erforderlich
+    if len(context.args) < 2:
+        await context.bot.send_message(
+            chat_id=chat_id,
+            text="❌ Verwendung: /teammessage <team_id> <nachricht>\n\n"
+                 "Beispiel: /teammessage 417849 Großartige Leistung! 🎉"
+        )
+        return
+    
+    try:
+        team_id = int(context.args[0])
+    except ValueError:
+        await context.bot.send_message(
+            chat_id=chat_id,
+            text="❌ Team-ID muss eine Zahl sein.\n\n"
+                 "Beispiel: /teammessage 417849 Nachricht"
+        )
+        return
+    
+    message = " ".join(context.args[1:])
+    
+    # Team-Mitglieder finden
+    db = Database()
+    
+    with db.get_session() as session:
+        team = crud.get_team_by_id(session, team_id)
+        
+        if not team:
+            await context.bot.send_message(
+                chat_id=chat_id,
+                text=f"❌ Team {team_id} nicht gefunden."
+            )
+            return
+        
+        # Alle Mitglieder des Teams holen
+        team_users = crud.get_users_by_team(session, team_id)
+        
+        if not team_users:
+            await context.bot.send_message(
+                chat_id=chat_id,
+                text=f"❌ Team {team_id} ({team.film_title}) hat keine Mitglieder."
+            )
+            return
+        
+        # Nachricht an alle Team-Mitglieder senden
+        success_count = 0
+        fail_count = 0
+        
+        team_message = f"📢 TEAM-NACHRICHT ({team.film_title}):\n\n{message}"
+        
+        for target_user in team_users:
+            try:
+                await context.bot.send_message(
+                    chat_id=target_user.telegram_id,
+                    text=team_message
+                )
+                success_count += 1
+            except Exception as e:
+                logger.warning(f"Failed to send team message to user {target_user.telegram_id}: {e}")
+                fail_count += 1
+        
+        # Bestätigung an Admin
+        await context.bot.send_message(
+            chat_id=chat_id,
+            text=f"✅ Team-Nachricht gesendet!\n\n"
+                 f"🎬 Team: {team.film_title} (ID: {team_id})\n"
+                 f"📤 Erfolgreich: {success_count}\n"
+                 f"❌ Fehlgeschlagen: {fail_count}\n\n"
+                 f"Nachricht:\n{message}"
+        )
+        logger.info(f"Admin {user.id} sent team message to team {team_id} ({success_count} users)")
 

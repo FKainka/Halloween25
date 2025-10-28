@@ -97,7 +97,10 @@ def main():
             admin_points_command,
             admin_eastereggs_command,
             admin_reset_command,
-            admin_apiusage_command
+            admin_apiusage_command,
+            admin_broadcast_command,
+            admin_message_command,
+            admin_team_message_command
         )
         
         # User Commands
@@ -119,6 +122,11 @@ def main():
         application.add_handler(CommandHandler(["teams", "admin_teams"], admin_teams_command))
         application.add_handler(CommandHandler(["stats", "admin_stats"], admin_stats_command))
         application.add_handler(CommandHandler(["eastereggs", "films", "admin_eastereggs"], admin_eastereggs_command))
+        
+        # Admin: Nachrichten
+        application.add_handler(CommandHandler(["broadcast", "admin_broadcast"], admin_broadcast_command))
+        application.add_handler(CommandHandler(["message", "admin_message"], admin_message_command))
+        application.add_handler(CommandHandler(["teammessage", "admin_teammessage"], admin_team_message_command))
         
         # Admin: System
         application.add_handler(CommandHandler(["apiusage", "admin_apiusage"], admin_apiusage_command))

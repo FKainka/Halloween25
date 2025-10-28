@@ -87,6 +87,75 @@ def get_user_ranking(session: Session, user_id: int) -> tuple[int, int]:
     return (higher_ranked + 1, total_users)
 
 
+def get_all_users(session: Session) -> List[User]:
+    """Holt alle User aus der Datenbank."""
+    return session.query(User).all()
+
+
+def get_users_by_team(session: Session, team_id: str) -> List[User]:
+    """Holt alle User eines Teams."""
+    return session.query(User).filter(User.team_id == team_id).all()
+
+
+def find_user_by_identifier(session: Session, identifier: str) -> Optional[User]:
+    """
+    Findet einen User anhand verschiedener Identifikatoren:
+    - Telegram-ID (numerisch)
+    - Username (mit oder ohne @)
+    - Vorname
+    - Nachname
+    - Vollständiger Name (Vorname + Nachname)
+    
+    Args:
+        session: DB-Session
+        identifier: Suchstring (ID, Username oder Name)
+    
+    Returns:
+        User oder None
+    """
+    # Versuche als Telegram-ID
+    try:
+        telegram_id = int(identifier)
+        user = session.query(User).filter(User.telegram_id == telegram_id).first()
+        if user:
+            return user
+    except ValueError:
+        pass
+    
+    # Entferne @ falls vorhanden
+    clean_identifier = identifier.lstrip('@').lower()
+    
+    # Suche nach Username
+    user = session.query(User).filter(
+        func.lower(User.username) == clean_identifier
+    ).first()
+    if user:
+        return user
+    
+    # Suche nach Vorname
+    user = session.query(User).filter(
+        func.lower(User.first_name) == clean_identifier
+    ).first()
+    if user:
+        return user
+    
+    # Suche nach Nachname
+    user = session.query(User).filter(
+        func.lower(User.last_name) == clean_identifier
+    ).first()
+    if user:
+        return user
+    
+    # Suche nach vollständigem Namen (Vorname + Nachname)
+    users = session.query(User).all()
+    for user in users:
+        full_name = f"{user.first_name or ''} {user.last_name or ''}".strip().lower()
+        if full_name == clean_identifier:
+            return user
+    
+    return None
+
+
 # ============================================================================
 # TEAM OPERATIONS
 # ============================================================================

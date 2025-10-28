@@ -17,7 +17,12 @@ from .admin import (
     admin_teams_command,
     admin_stats_command,
     admin_points_command,
-    admin_eastereggs_command
+    admin_eastereggs_command,
+    admin_reset_command,
+    admin_apiusage_command,
+    admin_broadcast_command,
+    admin_message_command,
+    admin_team_message_command
 )
 
 __all__ = [
@@ -28,10 +33,16 @@ __all__ = [
     'text_handler',
     'team_command',
     'admin_command',
+    'admin_help_command',
     'admin_players_command',
     'admin_player_command',
     'admin_teams_command',
     'admin_stats_command',
     'admin_points_command',
-    'admin_eastereggs_command'
+    'admin_eastereggs_command',
+    'admin_reset_command',
+    'admin_apiusage_command',
+    'admin_broadcast_command',
+    'admin_message_command',
+    'admin_team_message_command'
 ]
