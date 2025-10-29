@@ -1,0 +1,48 @@
+home_assistant:
+  url: http://homeassistant.local:8123
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI1Mjg2YzhiNDdhZTE0M2VlYjNiOTM1YzU4NjQyMWUwYiIsImlhdCI6MTc2MTY3MzY2OSwiZXhwIjoyMDc3MDMzNjY5fQ.jac7l5NwkTd5rWNpFtF-NeyEZitjvVVcVchSInIkYJA
+immich_kiosk:
+  base_url: https://kiosk.fkainka.de
+  params: null
+fire_tv_devices:
+# - entity_id: media_player.fabian_s_fire_tv_stick
+#   name: Fabian's Fire TV stick
+# - entity_id: media_player.fabian_s_2nd_fire_tv_stick
+#   name: Fabian's 2nd Fire TV stick
+# - entity_id: media_player.fabian_s_3rd_fire_tv_stick
+#   name: Fabian's 3rd Fire TV stick
+# - entity_id: media_player.fabian_s_2nd_fire_tv
+#   name: Fabian's 2nd Fire TV
+# - entity_id: media_player.fabian_s_3rd_fire_tv
+#   name: FireTV Wohnzimmer
+# - entity_id: media_player.fabian_s_4th_fire_tv
+#   name: Fabian's 4th Fire TV
+- entity_id: media_player.wohnzimmer_fire_tv
+  name: Wohnzimmer Fire TV
+- entity_id: media_player.wohnzimmer_fire_tv_2
+  name: Wohnzimmer Fire TV 2025
+- entity_id: media_player.fire_tv_192_168_178_103
+  name: Schlafzimmer Fire TV
+- entity_id: media_player.fire_tv_192_168_178_46
+  name: Alter Fire TV
+fully_kiosk_devices:
+- name: Tablet Eingang
+  ip: 192.168.178.56
+  password: duckya
+- name: Tablet Flur
+  ip: 192.168.178.55
+  password: duckya
+- name: Tablet Flur
+  ip: 192.168.178.54
+  password: duckya
+- name: Tablet Flur
+  ip: 192.168.178.59
+  password: duckya
+operating_hours:
+  enabled: true
+  start_time: '17:00'
+  end_time: '23:59'
+logging:
+  level: INFO
+  file: logs/media_controller.log
+  console: true
