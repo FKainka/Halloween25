@@ -29,24 +29,33 @@ logger = logging.getLogger('bot.handlers.photo')
 
 async def photo_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """
-    Handler für Foto-Uploads.
+    Handler für Foto-Uploads und Videos.
     Erkennt Caption-Befehle: "Film: <Titel>", "Puzzle"
     """
     user = update.effective_user
     chat_id = update.effective_chat.id
     
-    # Foto-Objekt holen
-    if not update.message or not update.message.photo:
+    # Foto oder Video-Objekt holen
+    media = None
+    media_type = None
+    
+    if update.message and update.message.photo:
+        media = update.message.photo[-1]  # Größtes Foto
+        media_type = 'photo'
+    elif update.message and update.message.video:
+        media = update.message.video
+        media_type = 'video'
+    
+    if not media:
         await context.bot.send_message(
             chat_id=chat_id,
-            text="❌ Bitte sende ein Foto!"
+            text="❌ Bitte sende ein Foto oder Video!"
         )
         return
     
-    photo = update.message.photo[-1]  # Größtes Foto
     caption = update.message.caption or ""
     
-    logger.info(f"User {user.id} uploaded photo with caption: '{caption}'")
+    logger.info(f"User {user.id} uploaded {media_type} with caption: '{caption}'")
     
     with db.get_session() as session:
         # User registrieren/holen
@@ -63,17 +72,17 @@ async def photo_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         
         # Puzzle-Screenshot: "Puzzle"
         if caption_lower == 'puzzle':
-            await handle_puzzle_submission(update, context, session, db_user, photo)
+            await handle_puzzle_submission(update, context, session, db_user, media, media_type)
             return
         
         # Film-Referenz: "Film: Matrix"
         elif caption_lower.startswith('film:'):
-            await handle_film_submission(update, context, session, db_user, photo, caption)
+            await handle_film_submission(update, context, session, db_user, media, media_type, caption)
             return
         
-        # Allgemeines Partyfoto (kein Caption oder anderes)
+        # Allgemeines Partyfoto/Video (kein Caption oder anderes)
         else:
-            await handle_party_photo(update, context, session, db_user, photo)
+            await handle_party_photo(update, context, session, db_user, media, media_type)
             return
 
 
@@ -82,42 +91,53 @@ async def handle_party_photo(
     context: ContextTypes.DEFAULT_TYPE,
     session,
     db_user,
-    photo
+    media,
+    media_type: str
 ):
-    """Verarbeitet allgemeines Partyfoto."""
+    """Verarbeitet allgemeines Partyfoto oder -video."""
     user = update.effective_user
     chat_id = update.effective_chat.id
     
     try:
-        # Foto herunterladen
-        file = await context.bot.get_file(photo.file_id)
-        photo_bytes = await file.download_as_bytearray()
+        # Media herunterladen
+        file = await context.bot.get_file(media.file_id)
+        media_bytes = await file.download_as_bytearray()
         
         # Submission erstellen (für ID)
         submission = create_submission(
             session=session,
             user_id=db_user.id,
             submission_type=SubmissionType.PARTY_PHOTO,
-            photo_file_id=photo.file_id,
+            photo_file_id=media.file_id,
             points_awarded=1,
             status=SubmissionStatus.APPROVED
         )
         
-        # Foto lokal speichern
-        photo_path, thumbnail_path = photo_manager.save_photo(
-            photo_bytes=bytes(photo_bytes),
-            user_id=user.id,
-            submission_id=submission.id,
-            category='party',
-            user_name=user.first_name
-        )
+        # Media lokal speichern
+        if media_type == 'video':
+            media_path, thumbnail_path = photo_manager.save_video(
+                video_bytes=bytes(media_bytes),
+                user_id=user.id,
+                submission_id=submission.id,
+                category='party',
+                user_name=user.first_name
+            )
+        else:
+            media_path, thumbnail_path = photo_manager.save_photo(
+                photo_bytes=bytes(media_bytes),
+                user_id=user.id,
+                submission_id=submission.id,
+                category='party',
+                user_name=user.first_name
+            )
         
         # Pfade in Submission aktualisieren
-        submission.photo_path = photo_path
+        submission.photo_path = media_path
         submission.thumbnail_path = thumbnail_path
         session.commit()
         
         # Bestätigung senden
+        media_label = "Video" if media_type == 'video' else "Foto"
         response = template_manager.render_party_photo_thanks(
             first_name=user.first_name or "Reisender",
             points=1,
@@ -126,13 +146,13 @@ async def handle_party_photo(
         
         await context.bot.send_message(chat_id=chat_id, text=response)
         
-        logger.info(f"Party photo processed for user {user.id}: +1 point")
+        logger.info(f"Party {media_type} processed for user {user.id}: +1 point")
         
     except Exception as e:
-        logger.error(f"Error processing party photo: {e}", exc_info=True)
+        logger.error(f"Error processing party {media_type}: {e}", exc_info=True)
         await context.bot.send_message(
             chat_id=chat_id,
-            text="❌ Fehler beim Verarbeiten des Fotos. Bitte versuche es erneut."
+            text="❌ Fehler beim Verarbeiten. Bitte versuche es erneut."
         )
 
 
@@ -141,11 +161,20 @@ async def handle_puzzle_submission(
     context: ContextTypes.DEFAULT_TYPE,
     session,
     db_user,
-    photo
+    media,
+    media_type: str
 ):
     """Verarbeitet Puzzle-Screenshot mit Caption 'Puzzle'."""
     user = update.effective_user
     chat_id = update.effective_chat.id
+    
+    # Videos nicht für Puzzles erlauben
+    if media_type == 'video':
+        await context.bot.send_message(
+            chat_id=chat_id,
+            text="❌ Für Puzzle-Submissions bitte ein Foto (Screenshot) verwenden!"
+        )
+        return
     
     # Prüfen ob User in einem Team ist
     if not db_user.team_id:
@@ -177,8 +206,8 @@ async def handle_puzzle_submission(
         return
     
     try:
-        # Foto herunterladen
-        file = await context.bot.get_file(photo.file_id)
+        # Foto herunterladen (Puzzles nur als Foto)
+        file = await context.bot.get_file(media.file_id)
         photo_bytes = await file.download_as_bytearray()
         
         # Submission erstellen (PENDING bis KI bewertet hat)
@@ -186,7 +215,7 @@ async def handle_puzzle_submission(
             session=session,
             user_id=db_user.id,
             submission_type=SubmissionType.PUZZLE,
-            photo_file_id=photo.file_id,
+            photo_file_id=media.file_id,
             points_awarded=0,  # Noch keine Punkte
             status=SubmissionStatus.PENDING,
             caption="Puzzle"
@@ -290,7 +319,8 @@ async def handle_film_submission(
     context: ContextTypes.DEFAULT_TYPE,
     session,
     db_user,
-    photo,
+    media,
+    media_type: str,
     caption: str
 ):
     """Verarbeitet Film-Referenz Submission mit Caption 'Film: Titel'."""
@@ -323,41 +353,53 @@ async def handle_film_submission(
         return
     
     try:
-        # Foto herunterladen
-        file = await context.bot.get_file(photo.file_id)
-        photo_bytes = await file.download_as_bytearray()
+        # Media herunterladen
+        file = await context.bot.get_file(media.file_id)
+        media_bytes = await file.download_as_bytearray()
         
         # Submission erstellen (PENDING bis KI bewertet hat)
         submission = create_submission(
             session=session,
             user_id=db_user.id,
             submission_type=SubmissionType.FILM_REFERENCE,
-            photo_file_id=photo.file_id,
+            photo_file_id=media.file_id,
             caption=caption,
             film_title=film_title,
             points_awarded=0,  # Noch keine Punkte
             status=SubmissionStatus.PENDING
         )
         
-        # Foto lokal speichern (brauchen wir für KI-Analyse)
-        photo_path, thumbnail_path = photo_manager.save_photo(
-            photo_bytes=bytes(photo_bytes),
-            user_id=user.id,
-            submission_id=submission.id,
-            category='films',
-            film_title=film_title,
-            user_name=user.first_name
-        )
+        # Media lokal speichern (brauchen wir für KI-Analyse)
+        # Für Videos: Erstes Frame extrahieren für KI-Analyse
+        if media_type == 'video':
+            media_path, thumbnail_path = photo_manager.save_video(
+                video_bytes=bytes(media_bytes),
+                user_id=user.id,
+                submission_id=submission.id,
+                category='films',
+                film_title=film_title,
+                user_name=user.first_name
+            )
+        else:
+            media_path, thumbnail_path = photo_manager.save_photo(
+                photo_bytes=bytes(media_bytes),
+                user_id=user.id,
+                submission_id=submission.id,
+                category='films',
+                film_title=film_title,
+                user_name=user.first_name
+            )
         
         # Pfade in Submission aktualisieren
-        submission.photo_path = photo_path
+        submission.photo_path = media_path
         submission.thumbnail_path = thumbnail_path
         session.commit()
         
         # "Wird analysiert..." Nachricht
+        media_label = "Video" if media_type == 'video' else "Referenz"
         processing_msg = await context.bot.send_message(
             chat_id=chat_id,
-            text=f"🤖 Analysiere deine Referenz zu \"{film_title}\"...\n\n"
+            text=f"🤖 Analysiere deine {media_label} zu \"{film_title}\"...\n\n"
                  f"Dies kann bis zu 10 Sekunden dauern."
         )
         
@@ -373,8 +415,10 @@ async def handle_film_submission(
             )
         
         # KI-Bewertung durchführen (async für bessere Performance)
+        # Bei Videos: Nutze Thumbnail für KI-Analyse
+        analysis_path = thumbnail_path if media_type == 'video' else media_path
         is_approved, confidence, reasoning, ai_response = await ai_evaluator.evaluate_film_reference_async(
-            photo_path=photo_path,
+            photo_path=analysis_path,
             film_title=film_title,
             easter_egg_description=easter_egg_description
         )

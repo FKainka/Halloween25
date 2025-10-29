@@ -142,6 +142,9 @@ def main():
         # Foto-Handler (ohne Command)
         application.add_handler(MessageHandler(filters.PHOTO, photo_handler))
         
+        # Video-Handler (ohne Command) - für Party-Fotos und Film-Referenzen
+        application.add_handler(MessageHandler(filters.VIDEO, photo_handler))
+        
         # Text-Handler für Team-Beitritt (ohne Command - DEPRECATED, nutze /team)
         application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, text_handler))
         
