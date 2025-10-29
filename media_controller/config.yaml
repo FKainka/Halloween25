@@ -35,7 +35,7 @@ fully_kiosk_devices:
 - name: Tablet Flur
   ip: 192.168.178.54
   password: duckya
-- name: Tablet Flur
+- name: Tablet Dach
   ip: 192.168.178.59
   password: duckya
 operating_hours:
