@@ -57,6 +57,39 @@ def init_database():
             logger.info(f"Loaded {loaded_count} new teams from YAML")
 
 
+async def error_handler(update: object, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """
+    Globaler Error Handler für alle Exceptions.
+    Loggt Fehler und sendet Benutzer-freundliche Nachricht.
+    """
+    logger = logging.getLogger('bot.error_handler')
+    
+    # Exception loggen
+    logger.error("Exception while handling an update:", exc_info=context.error)
+    
+    # Versuche dem User eine Fehlermeldung zu senden
+    try:
+        if update and hasattr(update, 'effective_chat') and update.effective_chat:
+            error_message = (
+                "❌ Ein unerwarteter Fehler ist aufgetreten.\n\n"
+                "Bitte versuche es erneut oder kontaktiere einen Admin."
+            )
+            
+            # Spezifische Fehlermeldungen für bekannte Fehler
+            if isinstance(context.error, ValueError):
+                error_message = (
+                    "❌ Ungültige Eingabe!\n\n"
+                    "💡 Nutze /help für eine Übersicht der Befehle."
+                )
+            
+            await context.bot.send_message(
+                chat_id=update.effective_chat.id,
+                text=error_message
+            )
+    except Exception as e:
+        logger.error(f"Error while sending error message to user: {e}")
+
+
 def main():
     """Hauptfunktion - Startet den Bot."""
     
@@ -149,6 +182,9 @@ def main():
         
         # Text-Handler für Team-Beitritt (ohne Command - DEPRECATED, nutze /team)
         application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, text_handler))
+        
+        # Globalen Error Handler registrieren
+        application.add_error_handler(error_handler)
         
         logger.info("Bot-Handler registriert")
         logger.info(f"Admin-User-IDs: {config.ADMIN_USER_IDS}")
