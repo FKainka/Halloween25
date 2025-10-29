@@ -87,6 +87,7 @@ def main():
         from handlers.text import text_handler
         from handlers.team import team_command
         from handlers.keyboard import keyboard_handler
+        from handlers.guide import guide_command
         from handlers.admin import (
             admin_help_command,
             admin_command,
@@ -108,6 +109,7 @@ def main():
         application.add_handler(CommandHandler("help", help_command))
         application.add_handler(CommandHandler("punkte", points_command))
         application.add_handler(CommandHandler("team", team_command))
+        application.add_handler(CommandHandler("anleitung", guide_command))
         
         # Admin Commands (mit kurzen Aliasen)
         application.add_handler(CommandHandler("admin", admin_command))
