@@ -327,6 +327,15 @@ async def handle_film_submission(
     user = update.effective_user
     chat_id = update.effective_chat.id
     
+    # Videos nicht für Film-Referenzen erlauben (nur Fotos)
+    if media_type == 'video':
+        await context.bot.send_message(
+            chat_id=chat_id,
+            text="❌ Für Film-Referenzen bitte ein Foto verwenden!\n\n"
+                 "💡 Videos sind nur für Party-Content erlaubt."
+        )
+        return
+    
     # Film-Titel extrahieren: "Film: Matrix"
     match = re.search(r'film:\s*(.+)', caption, re.IGNORECASE)
     
@@ -353,9 +362,9 @@ async def handle_film_submission(
         return
     
     try:
-        # Media herunterladen
+        # Foto herunterladen (nur Fotos für Film-Referenzen)
         file = await context.bot.get_file(media.file_id)
-        media_bytes = await file.download_as_bytearray()
+        photo_bytes = await file.download_as_bytearray()
         
         # Submission erstellen (PENDING bis KI bewertet hat)
         submission = create_submission(
@@ -369,37 +378,25 @@ async def handle_film_submission(
             status=SubmissionStatus.PENDING
         )
         
-        # Media lokal speichern (brauchen wir für KI-Analyse)
-        # Für Videos: Erstes Frame extrahieren für KI-Analyse
-        if media_type == 'video':
-            media_path, thumbnail_path = photo_manager.save_video(
-                video_bytes=bytes(media_bytes),
-                user_id=user.id,
-                submission_id=submission.id,
-                category='films',
-                film_title=film_title,
-                user_name=user.first_name
-            )
-        else:
-            media_path, thumbnail_path = photo_manager.save_photo(
-                photo_bytes=bytes(media_bytes),
-                user_id=user.id,
-                submission_id=submission.id,
-                category='films',
-                film_title=film_title,
-                user_name=user.first_name
-            )
+        # Foto lokal speichern (brauchen wir für KI-Analyse)
+        photo_path, thumbnail_path = photo_manager.save_photo(
+            photo_bytes=bytes(photo_bytes),
+            user_id=user.id,
+            submission_id=submission.id,
+            category='films',
+            film_title=film_title,
+            user_name=user.first_name
+        )
         
         # Pfade in Submission aktualisieren
-        submission.photo_path = media_path
+        submission.photo_path = photo_path
         submission.thumbnail_path = thumbnail_path
         session.commit()
         
         # "Wird analysiert..." Nachricht
-        media_label = "Video" if media_type == 'video' else "Referenz"
         processing_msg = await context.bot.send_message(
             chat_id=chat_id,
-            text=f"🤖 Analysiere deine {media_label} zu \"{film_title}\"...\n\n"
+            text=f"🤖 Analysiere deine Referenz zu \"{film_title}\"...\n\n"
                  f"Dies kann bis zu 10 Sekunden dauern."
         )
         
@@ -415,10 +412,8 @@ async def handle_film_submission(
             )
         
         # KI-Bewertung durchführen (async für bessere Performance)
-        # Bei Videos: Nutze Thumbnail für KI-Analyse
-        analysis_path = thumbnail_path if media_type == 'video' else media_path
         is_approved, confidence, reasoning, ai_response = await ai_evaluator.evaluate_film_reference_async(
-            photo_path=analysis_path,
+            photo_path=photo_path,
             film_title=film_title,
             easter_egg_description=easter_egg_description
         )

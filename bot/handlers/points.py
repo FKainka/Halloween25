@@ -8,7 +8,7 @@ from telegram.ext import ContextTypes
 import logging
 
 from database.db import db
-from database.crud import get_or_create_user, get_user_stats
+from database.crud import get_or_create_user, get_user_stats, get_top_players, get_top_teams
 from services.template_manager import template_manager
 
 logger = logging.getLogger('bot.handlers.points')
@@ -38,12 +38,18 @@ async def points_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
             # Statistiken holen
             stats = get_user_stats(session, db_user.id)
             
+            # Top-Spieler und -Teams holen
+            top_players = get_top_players(session, limit=3)
+            top_teams = get_top_teams(session, limit=3)
+            
             # Punkte-Übersicht aus Template rendern
             points_text = template_manager.render_points(
                 first_name=user.first_name or "Reisender",
                 total_points=stats['total_points'],
                 party_photos_count=stats['party_photos_count'],
                 party_points=stats['party_points'],
+                film_submitted=stats['film_submitted'],
+                film_approved=stats['film_approved'],
                 film_count=stats['film_count'],
                 film_points=stats['film_points'],
                 team_points=stats['team_points'],
@@ -51,7 +57,9 @@ async def points_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 team_name=stats['team_name'],
                 recognized_films=stats['recognized_films'],
                 ranking=stats['ranking'],
-                total_users=stats['total_users']
+                total_users=stats['total_users'],
+                top_players=top_players,
+                top_teams=top_teams
             )
             
             # Nachricht senden

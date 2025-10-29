@@ -363,6 +363,67 @@ def get_user_easter_eggs(session: Session, user_id: int) -> List[str]:
     return [egg.film_title for egg in eggs]
 
 
+def get_top_players(session: Session, limit: int = 3) -> List[dict]:
+    """
+    Holt die Top-Spieler nach Punkten.
+    
+    Args:
+        session: DB-Session
+        limit: Anzahl der Spieler
+    
+    Returns:
+        List[dict]: Liste mit {name, points, team}
+    """
+    users = session.query(User).order_by(User.total_points.desc()).limit(limit).all()
+    
+    result = []
+    for user in users:
+        result.append({
+            'name': user.first_name or user.username or f"User {user.telegram_id}",
+            'points': user.total_points,
+            'team': user.team.film_title if user.team else None
+        })
+    
+    return result
+
+
+def get_top_teams(session: Session, limit: int = 3) -> List[dict]:
+    """
+    Holt die Top-Teams nach Gesamtpunkten der Mitglieder.
+    
+    Args:
+        session: DB-Session
+        limit: Anzahl der Teams
+    
+    Returns:
+        List[dict]: Liste mit {team_name, total_points, member_count}
+    """
+    # Gruppiere User nach Team und summiere Punkte
+    results = session.query(
+        User.team_id,
+        func.sum(User.total_points).label('total_points'),
+        func.count(User.id).label('member_count')
+    ).filter(
+        User.team_id.isnot(None)
+    ).group_by(
+        User.team_id
+    ).order_by(
+        func.sum(User.total_points).desc()
+    ).limit(limit).all()
+    
+    team_list = []
+    for team_id, total_points, member_count in results:
+        team = get_team_by_id(session, team_id)
+        if team:
+            team_list.append({
+                'team_name': team.film_title,
+                'total_points': int(total_points) if total_points else 0,
+                'member_count': member_count
+            })
+    
+    return team_list
+
+
 # ============================================================================
 # STATISTICS
 # ============================================================================
@@ -379,15 +440,26 @@ def get_user_stats(session: Session, user_id: int) -> dict:
     if not user:
         return {}
     
-    # Zähle Submissions nach Typ
+    # Zähle Party Photos (alle zählen als approved)
     party_count = count_user_submissions(session, user_id, SubmissionType.PARTY_PHOTO)
-    film_count = count_user_submissions(session, user_id, SubmissionType.FILM_REFERENCE)
+    
+    # Film-Referenzen: Eingereicht vs. Korrekt
+    film_submitted = session.query(Submission).filter(
+        Submission.user_id == user_id,
+        Submission.submission_type == SubmissionType.FILM_REFERENCE
+    ).count()
+    
+    film_approved = session.query(Submission).filter(
+        Submission.user_id == user_id,
+        Submission.submission_type == SubmissionType.FILM_REFERENCE,
+        Submission.status == SubmissionStatus.APPROVED
+    ).count()
     
     # Puzzle und Team
     has_team = user.team_id is not None
     solved_puzzle = has_solved_puzzle(session, user_id)
     
-    # Erkannte Filme
+    # Erkannte Filme (nur genehmigte)
     recognized_films = get_user_easter_eggs(session, user_id)
     
     # Ranking
@@ -397,8 +469,10 @@ def get_user_stats(session: Session, user_id: int) -> dict:
         'total_points': user.total_points,
         'party_photos_count': party_count,
         'party_points': party_count * 1,
-        'film_count': film_count,
-        'film_points': film_count * 20,
+        'film_submitted': film_submitted,
+        'film_approved': film_approved,
+        'film_count': film_approved,  # Backward compatibility
+        'film_points': film_approved * 20,
         'team_points': 25 if has_team else 0,
         'puzzle_points': 25 if solved_puzzle else 0,
         'team_name': user.team.film_title if user.team else None,

@@ -80,7 +80,11 @@ class TemplateManager:
         team_name: str = None,
         recognized_films: list = None,
         ranking: int = None,
-        total_users: int = None
+        total_users: int = None,
+        film_submitted: int = 0,
+        film_approved: int = 0,
+        top_players: list = None,
+        top_teams: list = None
     ) -> str:
         """Rendert Punkte-Übersicht."""
         return self.render(
@@ -91,12 +95,16 @@ class TemplateManager:
             party_points=party_points,
             film_count=film_count,
             film_points=film_points,
+            film_submitted=film_submitted,
+            film_approved=film_approved,
             team_points=team_points,
             puzzle_points=puzzle_points,
             team_name=team_name,
             recognized_films=recognized_films or [],
             ranking=ranking,
-            total_users=total_users
+            total_users=total_users,
+            top_players=top_players or [],
+            top_teams=top_teams or []
         )
     
     def render_team_joined(

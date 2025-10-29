@@ -37,8 +37,8 @@ async def keyboard_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await context.bot.send_message(
             chat_id=update.effective_chat.id,
             text="📱 *Schnellanleitung*\n\n"
-                 "*📸 Partyfoto* (1 Punkt)\n"
-                 "→ Foto senden (ohne Caption)\n\n"
+                 "*📸 Party-Content* (1 Punkt)\n"
+                 "→ Foto oder Video senden (ohne Caption)\n\n"
                  "*🎬 Film-Referenz* (20 Punkte)\n"
                  "→ Foto mit Caption: `Film: <Titel>`\n"
                  "→ Beispiel: `Film: Matrix`\n\n"

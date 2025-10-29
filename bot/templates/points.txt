@@ -15,8 +15,12 @@ Hallo {{ first_name }}!
 📊 BREAKDOWN
 ━━━━━━━━━━━━━━━━━━━━━━
 
-🎉 Partyfotos: {{ party_photos_count }} × 1 = {{ party_points }} Punkte
-🎬 Film-Referenzen: {{ film_count }} × 20 = {{ film_points }} Punkte
+🎉 Party-Content: {{ party_photos_count }} × 1 = {{ party_points }} Punkte
+{% if film_submitted > 0 %}
+🎬 Film-Referenzen: {{ film_approved }}/{{ film_submitted }} korrekt × 20 = {{ film_points }} Punkte
+{% else %}
+🎬 Film-Referenzen: 0 × 20 = 0 Punkte
+{% endif %}
 👥 Team-Beitritt: {{ team_points }} Punkte
 🧩 Puzzle gelöst: {{ puzzle_points }} Punkte
 
@@ -34,6 +38,24 @@ Team: {{ team_name }}
 ━━━━━━━━━━━━━━━━━━━━━━
 
 {% for film in recognized_films %}• {{ film }}
+{% endfor %}
+{% endif %}
+
+{% if top_players %}
+━━━━━━━━━━━━━━━━━━━━━━
+🏆 TOP SPIELER
+━━━━━━━━━━━━━━━━━━━━━━
+
+{% for player in top_players %}{{ loop.index }}. {{ player.name }}: {{ player.points }} Punkte{% if player.team %} ({{ player.team }}){% endif %}
+{% endfor %}
+{% endif %}
+
+{% if top_teams %}
+━━━━━━━━━━━━━━━━━━━━━━
+👥 TOP TEAMS
+━━━━━━━━━━━━━━━━━━━━━━
+
+{% for team in top_teams %}{{ loop.index }}. {{ team.team_name }}: {{ team.total_points }} Punkte ({{ team.member_count }} Mitglieder)
 {% endfor %}
 {% endif %}
 
